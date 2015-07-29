@@ -28,7 +28,7 @@ gulp.task('livereload', function() {
 })
 
 gulp.task('typescript', function() {
-    console.info("typescript compiling");
+    console.info("compile changes");
 })
 
 gulp.task('watch', function() {
