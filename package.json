@@ -9,7 +9,11 @@
   "author": "Oliver Brüntje",
   "license": "ISC",
   "devDependencies": {
+    "glob": "^5.0.14",
     "gulp": "^3.9.0",
+    "gulp-connect": "^2.2.0",
+    "gulp-print": "^1.1.0",
+    "gulp-watch": "^4.3.4",
     "gulp-webserver": "^0.9.1"
   }
 }
