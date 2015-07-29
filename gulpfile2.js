@@ -10,7 +10,7 @@ gulp.task('serve', function() {
     console.info('serve started...');
     connect.server(
         {
-            root:'sabbat.notes.ui',
+            root:'.',
             port:8000,
             livereload: true
         });
