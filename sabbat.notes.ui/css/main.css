@@ -18,7 +18,7 @@ padding: 20px;
 .content {
 width: 100px;
 padding-top: 100px;
-background: yellow;
+background: red;
 }
 
 #leftregion {
@@ -28,7 +28,7 @@ background: yellow;
 #rightregion {
     width: 200px;
     padding: 10px;
-    background-color: green;
+    background-color: blue;
 }
 
 #rightregion textarea {

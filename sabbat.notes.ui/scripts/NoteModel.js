@@ -4,6 +4,8 @@
 
 var NodeModelCreator;
 
+var console = require('console');
+
 function NodeModel(options) {
     this.Title = options.Title;
     this.Content = options.Content;

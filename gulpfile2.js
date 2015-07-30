@@ -4,13 +4,13 @@ var console = require("console");
 var connect = require("gulp-connect");
 var watch = require("gulp-watch");
 
-var srcDirsUi = ['sabbat.notes.ui/*.html', 'sabbat.notes.ui/css/*.css', 'sabbat.notes.ui/scripts/*.js'];
+var srcDirsUi = ['sabbat.notes.ui/**/*.html', 'sabbat.notes.ui/**/*.css', 'sabbat.notes.ui/**/*.js'];
 
 gulp.task('serve', function() {
     console.info('serve started...');
     connect.server(
         {
-            root:'.',
+            root:'./sabbat.notes.ui',
             port:8000,
             livereload: true
         });

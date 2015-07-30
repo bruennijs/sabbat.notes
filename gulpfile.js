@@ -1,36 +1,52 @@
 var gulp = require("gulp");
-var print = require("gulp-print")
-var console = require("console")
-var webserver = require("gulp-webserver")
-var glob = require('glob')
+var print = require("gulp-print");
+var console = require("console");
+var server = require("browser-sync").create("sabbat.notes static server");
+var glob = require('glob');
 
-gulp.task('default', ['serve']);
+var srcDirsUi = ['sabbat.notes.ui/**/*.html', 'sabbat.notes.ui/**/*.css', 'sabbat.notes.ui/**/*.js'];
+
+gulp.task('reload', function () {
+    gulp.src(srcDirsUi)
+        .pipe(print())
+        .pipe(server.stream({once:true}));
+        /*.pipe(server.notify('Hello this is a notification'));*/
+});
+
+gulp.task('notify', function() {
+    server.notify('test notification');
+})
+
+gulp.task('typescript', function() {
+    console.info("compile changes");
+});
+
+gulp.task('watch', function() {
+    gulp.watch(srcDirsUi, ['reload']);
+});
 
 gulp.task('serve', function() {
     console.info('serve started...')
 
-    stream = gulp.src(["sabbat.notes.ui/*.html", "sabbat.notes.ui/css/*.css"])
-        .pipe(print(function(path) {
-            console.info(path);
-        }))
-        .pipe(webserver(
-            {
-                port:8000,
-                livereload: true,
-                directoryListing: true,
-                open:'http://localhost:8000/index.html',
-                //path:'public',
-                https:false}));
+    //server.getSingletonEmitter().on("init", function() {
+    //    console.info("Servicer initialized");
+    //});
+
+    server.init(
+        {
+            port: 8000,
+            server: {
+                baseDir: "./sabbat.notes.ui",
+                index: "index.html"
+            },
+            // Change the default weinre port
+            ui: {
+                port: 8001,
+                weinre: {
+                    port: 8002
+                }
+            }
+        });
 });
 
-gulp.task('stop', function() {
-    webserver.reload;
-})
-
-gulp.task('dirs', function() {
-    glob("**", {ignore: "node_modules"}, function(err, files) {
-        files.forEach(function(val, idx) {
-            console.info(val + "[" + idx + "]")
-        })
-    })
-})
+gulp.task('default', ['serve', 'watch']);
