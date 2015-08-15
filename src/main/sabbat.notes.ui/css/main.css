@@ -1,0 +1,45 @@
+
+#container {
+width: 1024px;
+margin: 10px auto;
+background: #999;
+padding: 20px;
+    border-color: #dedede;
+}
+
+#header {
+    height: 100px;
+}
+
+#footer {
+    height: 200px;
+}
+
+.content {
+width: 100px;
+padding-top: 100px;
+background: red;
+}
+
+#leftregion {
+    width: 200px;
+}
+
+#rightregion {
+    width: 200px;
+    padding: 10px;
+    background-color: blue;
+}
+
+#rightregion textarea {
+    #width: 90%;
+    background-color: #E9DC51;
+}
+
+.notelist {
+    background: aquamarine;
+}
+
+.noteeditor {
+    background: white;
+}
