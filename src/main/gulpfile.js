@@ -6,7 +6,8 @@ var console = require("console");
 var server = require("browser-sync").create("sabbat.notes static server");
 var glob = require('glob');
 var gfilemetadata = require('commonjs/gulp-file-metadata');
-var exec = require('gulp-exec');
+//var exec = require('gulp-exec');
+var exec = require('child_process').exec;
 
 var srcDirsUi = ['sabbat.notes.ui/**/*.html', 'sabbat.notes.ui/**/*.css', 'sabbat.notes.ui/**/*.js'];
 
@@ -21,7 +22,7 @@ gulp.task('notify', function() {
     server.notify('test notification');
 });
 
-gulp.task('ts', function() {
+gulp.task('ts', function(cb) {
     console.info("Typescript transpiling");
 
     var options = {
@@ -30,9 +31,15 @@ gulp.task('ts', function() {
         customTemplateThing: 'some string to be templated'
     };
 
-    gulp.src('sabbat.notes.ui/ts/**/*.ts')
+/*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
         .pipe(gfilemetadata({log: true}))
-        .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));
+        .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));*/
+
+    exec("node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/dal.js sabbat.notes.ui/ts/UserRepository.ts", function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+    });
 });
 
 gulp.task('watch', function() {
@@ -63,4 +70,4 @@ gulp.task('serve', function() {
         });
 });
 
-gulp.task('default', ['serve', 'watch']);
+gulp.task('default', ['ts', 'serve', 'watch']);
