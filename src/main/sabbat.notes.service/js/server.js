@@ -14,4 +14,4 @@ repo.Init();
 
 repo.Insert(new dal.Models.IdObject("789"));
 
-repo.Get();
+repo.Get().forEach((obj) => console.log(util.format('[id=%s', obj.getId)))

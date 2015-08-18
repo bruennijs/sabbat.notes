@@ -59,9 +59,8 @@ export module Repository {
         }
 
         Get():Models.IdObject[] {
-            fs.readdir(this.dbDir, (err, files) =>
+            fs.readdirSync(this.dbDir, (err, files) =>
             {
-                files.forEach((file) => console.log(file));
             });
 
             return [];

@@ -5,8 +5,9 @@ var print = require("gulp-print");
 var console = require("console");
 var glob = require('glob');
 var spawn = require('child_process').spawn;
+var exec = require('gulp-exec');
 
-gulp.task('ts', function(cb) {
+gulp.task('ts.dist', function(cb) {
   console.info("Typescript transpiling");
 
   var options = {
@@ -41,7 +42,7 @@ gulp.task('ts', function(cb) {
   });
 });
 
-gulp.task('js', function() {
+gulp.task('js.dist', function() {
   gulp.src('js/**/*.js').
       pipe(gulp.dest('dist/js'));
 });
@@ -69,4 +70,17 @@ gulp.task('server', function(cb) {
   });
 });
 
-gulp.task('default', ['js', 'ts', 'server']);
+gulp.task('test.dist', function () {
+    gulp.src('test/**/*.js')
+        .pipe(print())
+       .pipe(gulp.dest('dist/js/test'));
+});
+
+gulp.task('test.run', function () {
+    gulp.src('dist/js/test')
+        .pipe(exec('node_modules/mocha/bin/mocha --reporter dot <%= file.path %>'));
+});
+
+gulp.task('default', ['js.dist', 'ts.dist', 'test.dist', 'server']);
+
+gulp.task('test', ['test.dist', 'test.run']);
