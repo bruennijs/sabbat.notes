@@ -53,7 +53,9 @@ export module Repository {
         }
 
         Init(): void {
-            fs.mkdirSync(this.dbDir);
+            if (!fs.existsSync(this.dbDir)) {
+                fs.mkdirSync(this.dbDir);
+            }
         }
 
         Get():Models.IdObject[] {
@@ -69,8 +71,6 @@ export module Repository {
             console.log(util.format('Insert object[id=%s]', object.id));
 
             fs.writeFileSync(path.join(this.dbDir, util.format('%s.js', object.id)), JSON.stringify(object), 'utf8');
-
-            return;
         }
     }
 }
