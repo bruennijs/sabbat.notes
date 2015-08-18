@@ -35,7 +35,7 @@ gulp.task('ts', function(cb) {
         .pipe(gfilemetadata({log: true}))
         .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));*/
 
-    exec("node node_modules/typescript/bin/tsc -d -t ES5 --out dist/js/dal.js ts/UserRepository.ts ts/Models.ts ts/Repository.ts", function (err, stdout, stderr) {
+    exec("node node_modules/typescript/bin/tsc -d -t ES5 --out dist/js/dal.js ts/UserRepository.ts ts/Models.ts ts/Dal.ts", function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);

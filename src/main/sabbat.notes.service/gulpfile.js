@@ -24,8 +24,8 @@ gulp.task('ts', function(cb) {
                           '-t', 'ES5',
                           '--outDir', './dist/js',
                           //'./ts/Models.ts',
-                          './ts/Repository.ts',
-                          './ts/server.ts']);
+                          './ts/Dal.ts',
+                          './ts/serverts.ts']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
