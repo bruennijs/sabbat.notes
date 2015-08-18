@@ -72,13 +72,18 @@ gulp.task('server', function(cb) {
 
 gulp.task('test.dist', function () {
     gulp.src('test/**/*.js')
-        .pipe(print())
        .pipe(gulp.dest('dist/js/test'));
 });
 
 gulp.task('test.run', function () {
-    gulp.src('dist/js/test')
-        .pipe(exec('node_modules/mocha/bin/mocha --reporter dot <%= file.path %>'));
+    var opt = {
+        continueOnError: false, // default = false, true means don't emit error event
+        pipeStdout: true
+    };
+
+    gulp.src('dist/js/test/**/*.js')
+        .pipe(print())
+        .pipe(exec('node_modules/mocha/bin/mocha --reporter dot <%= file.path %>', opt));
 });
 
 gulp.task('default', ['js.dist', 'ts.dist', 'test.dist', 'server']);
