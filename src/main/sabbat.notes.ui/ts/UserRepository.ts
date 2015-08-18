@@ -2,9 +2,6 @@
  * Created by bruenni on 17.08.15.
  */
 
-/// <reference path="Models.ts" />
-/// <reference path="Repository.ts" />
-
 module Sabbat.Notes.Repository {
 
     //import Repo = require('./Repository');

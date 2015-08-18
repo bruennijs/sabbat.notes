@@ -1,0 +1,22 @@
+{
+  "name": "sabbat.notes.ui",
+  "version": "1.0.0",
+  "description": "Manage private  notes in a private cloud",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oliver Brüntje",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.8.1",
+    "commonjs": "bruennijs/commonjs",
+    "glob": "^5.0.14",
+    "gulp": "^3.9.0",
+    "gulp-connect": "^2.2.0",
+    "gulp-print": "^1.1.0",
+    "gulp-watch": "^4.3.4",
+    "gulp-webserver": "^0.9.1",
+    "typescript": "^1.5.3"
+  }
+}

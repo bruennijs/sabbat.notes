@@ -9,7 +9,7 @@ var gfilemetadata = require('commonjs/gulp-file-metadata');
 //var exec = require('gulp-exec');
 var exec = require('child_process').exec;
 
-var srcDirsUi = ['sabbat.notes.ui/**/*.html', 'sabbat.notes.ui/**/*.css', 'sabbat.notes.ui/**/*.js'];
+var srcDirsUi = ['**/*.html', '**/*.css', '**/*.js'];
 
 gulp.task('reload', function () {
     gulp.src(srcDirsUi)
@@ -35,7 +35,7 @@ gulp.task('ts', function(cb) {
         .pipe(gfilemetadata({log: true}))
         .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));*/
 
-    exec("node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/dal.js sabbat.notes.ui/ts/UserRepository.ts", function (err, stdout, stderr) {
+    exec("node node_modules/typescript/bin/tsc -d -t ES5 --out dist/js/dal.js ts/UserRepository.ts ts/Models.ts ts/Repository.ts", function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);
@@ -57,7 +57,7 @@ gulp.task('serve', function() {
         {
             port: 8000,
             server: {
-                baseDir: "./sabbat.notes.ui",
+                baseDir: ".",
                 index: "index.html"
             },
             // Change the default weinre port

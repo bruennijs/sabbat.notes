@@ -2,8 +2,6 @@
  * Repository interfaces
  */
 
-/// <reference path="Models.ts" />
-
 module Sabbat.Notes.Repository {
 
     //import inheritance = require('./inheritance');

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="TypeScriptCompiler">
+    <option name="typeScriptServiceDirectory" value="$PROJECT_DIR$/src/main/node_modules/typescript/bin" />
+    <option name="hasOutDirectory" value="true" />
+    <option name="outDirectory" value="$PROJECT_DIR$/src/main/sabbat.notes.ui/dist/js" />
+    <option name="versionType" value="SERVICE_DIRECTORY" />
+  </component>
+</project>
