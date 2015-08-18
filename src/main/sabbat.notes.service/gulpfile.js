@@ -53,7 +53,7 @@ gulp.task('watch', function() {
 gulp.task('server', function(cb) {
   console.info('Serve started...');
 
-  var tsc = spawn('node', ['./dist/js/server']);
+  var tsc = spawn('node', ['./dist/js/server', '-c', './appconfig']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());

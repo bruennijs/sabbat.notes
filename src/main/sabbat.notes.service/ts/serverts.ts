@@ -4,6 +4,6 @@
 
 import Dal = require('./Dal');
 
-var repo = new Dal.Repository.FsObjectRepository();
+var repo = new Dal.Repository.FsObjectRepository('.');
 repo.Insert(new Dal.Models.IdObject("555"));
 
