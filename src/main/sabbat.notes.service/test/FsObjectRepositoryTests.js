@@ -4,6 +4,7 @@
 
 var suite = require('mocha').suite;
 var setup = require('mocha').setup;
+var teardown = require('mocha').teardown;
 var test = require('mocha').test;
 var assert = require('assert');
 
@@ -23,15 +24,31 @@ suite('Array', function() {
 });
 
 suite('FsObjectRepositoryTests', function () {
+
+    setup(function() {
+        this.path = 'dist/js/db/test';
+        this.sut = new Dal.Repository.FsObjectRepository(this.path);
+    });
+
+    teardown(function() {
+    });
+
     suite('#Crud', function() {
         test('should create dir', function() {
-            var expPath = 'dist/js/db/somedir';
-            var repo = new Dal.Repository.FsObjectRepository(expPath);
+            var repo = new Dal.Repository.FsObjectRepository(this.path);
             repo.Init();
-            assert.equal(true, fs.existsSync(expPath), "path does not exist Init()");
+            assert.equal(true, fs.existsSync(this.path), "path does not exist Init()");
         });
 
-        test('should insert file', function () {
+        test('should insert file', function (done) {
+            var obj = new Dal.Models.IdObject("3754");
+            this.sut.Insert(obj);
+
+            this.sut.Get(function(err, models) {
+                assert.equal(1, models.length);
+                assert.equal(obj.id, models[0].id);
+                done();
+            });
         });
     })
 })

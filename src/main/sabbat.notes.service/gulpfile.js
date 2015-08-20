@@ -83,9 +83,11 @@ gulp.task('test.run', function () {
 
     gulp.src('dist/js/test/**/*.js')
         .pipe(print())
-        .pipe(exec('node_modules/mocha/bin/mocha --reporter dot <%= file.path %>', opt));
+        .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt));
 });
 
 gulp.task('default', ['js.dist', 'ts.dist', 'test.dist', 'server']);
 
 gulp.task('test', ['test.dist', 'test.run']);
+
+gulp.task('dist', ['js.dist', 'ts.dist', 'test.dist']);

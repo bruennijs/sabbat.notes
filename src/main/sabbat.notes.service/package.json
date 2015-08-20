@@ -17,5 +17,10 @@
     "gulp-watch": "^4.3.4",
     "mocha": "^2.2.5",
     "typescript": "^1.5.3"
+  },
+  "dependencies": {
+    "DefinitelyTyped": "git://github.com/bruennijs/Definitelytyped.git#branch-1.8.3-iinheritance",
+    "rx": "^3.0.1",
+    "underscore": "^1.8.3"
   }
 }
