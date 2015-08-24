@@ -4,13 +4,13 @@
 
 /// <reference path="../node_modules/DefinitelyTyped/node/node-0.10.d.ts" />
 /// <reference path="../node_modules/DefinitelyTyped/underscore/underscore.d.ts" />
-/// /// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
 
 import util = require('util');
 import fs = require('fs');
 import path = require('path');
 import _ = require('underscore');
-//// import Rx = require('rx');
+import rx = require('rx');
 
 
 export module Models {
@@ -116,6 +116,15 @@ export module Repository {
                     cb(err1, null);
                 }
             });
+        }
+
+        /**
+         * Gets by async RX
+         * @returns {any}
+         * @constructor
+         */
+        GetRx(): rx.IObservable<Models.IdObject> {
+            return rx.Observable.from([new Models.IdObject("4711")]);
         }
 
         /**

@@ -23,6 +23,12 @@ suite('Array', function() {
     });
 });
 
+function InsertModels(ids) {
+  ids.forEach(function (id) {
+    this.sut.Insert(new Dal.Models.IdObject(id));
+  });
+};
+
 suite('FsObjectRepositoryTests', function () {
 
     setup(function() {
@@ -41,14 +47,22 @@ suite('FsObjectRepositoryTests', function () {
         });
 
         test('should insert file', function (done) {
-            var obj = new Dal.Models.IdObject("3754");
-            this.sut.Insert(obj);
+          var objs = InsertModels.call(suite, ['1', '2']);
+          this.sut.Get(function(err, models) {
+                assert.equal(2, models.length);
+                assert.equal(true, models.some(function(o) {
+                  return o.id === objs[0].id;
+                }));
 
-            this.sut.Get(function(err, models) {
-                assert.equal(1, models.length);
-                assert.equal(obj.id, models[0].id);
+                assert.equal(true, models.some(function(o) {
+                  return o.id === objs[1].id;
+                }));
+
                 done();
             });
         });
+
+      test('should observable fire inserted models', function () {
+      });
     })
 })
