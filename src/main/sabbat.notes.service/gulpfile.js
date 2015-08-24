@@ -86,8 +86,10 @@ gulp.task('test.run', function () {
         .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt));
 });
 
-gulp.task('default', ['js.dist', 'ts.dist', 'test.dist', 'server']);
-
-gulp.task('test', ['test.dist', 'test.run']);
-
 gulp.task('dist', ['js.dist', 'ts.dist', 'test.dist']);
+
+gulp.task('default', ['dist', 'server']);
+
+gulp.task('test', ['dist', 'test.run']);
+
+

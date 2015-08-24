@@ -19,7 +19,7 @@
     "typescript": "^1.5.3"
   },
   "dependencies": {
-    "DefinitelyTyped": "git://github.com/bruennijs/Definitelytyped.git#branch-1.8.3-iinheritance",
+    "DefinitelyTyped": "git://github.com/bruennijs/DefinitelyTyped#underscore-1.8.3",
     "rx": "^3.0.1",
     "underscore": "^1.8.3"
   }
