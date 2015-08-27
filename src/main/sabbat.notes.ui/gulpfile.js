@@ -9,13 +9,24 @@ var gfilemetadata = require('commonjs/gulp-file-metadata');
 //var exec = require('gulp-exec');
 var exec = require('child_process').exec;
 
-var srcDirsUi = ['**/*.html', '**/*.css', '**/*.js'];
+var srcDirsUi = ['html/**/*.html', 'css/**/*.css', 'js/**/*.js'];
 
 gulp.task('reload', function () {
     gulp.src(srcDirsUi)
         .pipe(print())
         .pipe(server.stream({once:true}));
         /*.pipe(server.notify('Hello this is a notification'));*/
+});
+
+gulp.task('dist', function () {
+    gulp.src(['html/**'])
+      .pipe(gulp.dest("./dist/html"));
+
+    gulp.src(['js/**'])
+      .pipe(gulp.dest("./dist/js"));
+
+    gulp.src(['css/**'])
+      .pipe(gulp.dest("./dist/css"));
 });
 
 gulp.task('notify', function() {
@@ -70,4 +81,4 @@ gulp.task('serve', function() {
         });
 });
 
-gulp.task('default', ['ts', 'serve', 'watch']);
+gulp.task('default', ['dist', 'ts', 'serve', 'watch']);
