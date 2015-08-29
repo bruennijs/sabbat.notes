@@ -1,24 +1,24 @@
-
-#container {
-width: 1024px;
-margin: 10px auto;
-background: #999;
-padding: 20px;
-    border-color: #dedede;
+#row-header {
+    height: 5%;
+    background-color: #E9DC51;
 }
 
-#header {
-    height: 100px;
+#row-footer {
+    height: 10%;
+    padding: 5px;
+    background-color: #E9DC51;
 }
 
-#footer {
-    height: 200px;
+#col-dashboard {
+    margin-left: 10px;
+    margin-right: auto;
+    background-color: lightcyan;
 }
 
-.content {
-width: 100px;
-padding-top: 100px;
-background: red;
+#col-nav-fixed {
+    width: 10px;
+    float:left;
+    background-color: lightgrey;
 }
 
 #leftregion {
@@ -36,10 +36,9 @@ background: red;
     background-color: #E9DC51;
 }
 
-.notelist {
-    background: aquamarine;
-}
-
 .noteeditor {
     background: white;
+}
+
+#row-middle {
 }
