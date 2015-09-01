@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style>
         #header {
-            display: inline;
+            display: block;
             background-color:black;
             color:green;
-            text-align:center;
-            padding:5px;
-            width: 50px;
+            text-align:left;
+            margin: 0px 0px 5px 0px;
+            padding:0px;
+            width: auto;
+            border: 10px solid lightgreen;
         }
         nav {
             line-height:30px;
@@ -29,6 +32,18 @@
             clear:both;
             text-align:center;
             padding:5px;
+        }
+
+        #REMheader {
+            position: relative;
+            top: -20px;
+            left: -20px;
+        }
+
+        #REMheader {
+            position: fixed;
+            top: 0px;
+            left: 0px;
         }
     </style>
 </head>

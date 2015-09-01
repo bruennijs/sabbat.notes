@@ -6,35 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+    <script src="../js/jquery.min.js" />
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script src="../js/bootstrap.js" />
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row" id="row-header" >
-        <div class="col-md-10">Some header text</div>
-        <div class="col-md-2">
-            <input type="text"/>
-        </div>
-    <div class="row" id="row-middle">
-        <div id="col-nav-fixed">
-            <!--<img src="http://www.psdgraphics.com/wp-content/uploads/2012/04/buttons-delete-accept-add-exclude.jpg"/>-->
-            <section>first</section>
-            <section>second</section>
-        </div>
-        <div id="col-dashboard">
-          <textarea class="noteeditor">Hello note content text OBR.</textarea>
+<div class="container">
+    <div class="row row-header">
+        <div class="col-sm-9"><span style="text-align: center">Some header text</span></div>
+        <div class="col-sm-3 login">
+            <div class="row">
+
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1"/>
+                    <input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1"/>
+                    <span class="input-group-btn" id="basic-addon1">
+                        <button type="button" class="btn btn-default">Login</button>
+                    </span>
+                </div><!-- /input-group -->
+
+
+<!--                <span>
+                    <input class="login-input" type="text" />
+                </span>
+                <input class="login-input" type="password login-input"/>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default">Login</button>
+                </div>-->
+            </div>
         </div>
     </div>
-    <div class="row" id="row-footer">
-        <section>footer</section>
-    </div>
+    <div class="row">
+      <div class="col-md-1">
+          <ul class="nav nav-tabs" role="tablist">
+                <ul class="active" role="presentation"><a href="#">Profile</a></ul>
+                <ul role="presentation">Chat</ul>
+            </ul>
+      </div>  <!-- end side navigation -->
+        <div class="col-md-11">
+
+          <span>hELLO THIS IS A TEXT</span>
+        </div>  <!-- end side navigation -->
+    </div>  <!-- end dashboard -->
 </div>
+</nav>
 </body>
 </html>

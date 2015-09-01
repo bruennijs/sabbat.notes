@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="./../../css/bootstrap.css">
+
+    <link rel="stylesheet" href="/css/lo_bs.css">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <style>
+        div {
+            text-align: center;
+            background-color: lightgray;
+            border: 1px solid black;
+        }
+
+        .fixed-width-nav {
+            text-align: center;
+            background-color: lightgray;
+            border: 1px solid green;
+            width: 50px;
+            height: 50px;
+        }
+
+        div.nav-container {
+            border: 2px solid yellow;
+            width: 50px;
+        }
+
+        div.nav-item {
+            text-align: center;
+            color: #00DD00;
+            background-color: #4a0263;
+            border: 1px solid green;
+            width: 100%;
+        }
+
+
+        div.dashboard {
+            width: auto;
+        }
+
+        div.dashboard.list {
+            float:left;
+        }
+
+        div.dashboard.editor {
+            float:left;
+        }
+
+        div.row {
+            border: 2px solid red;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">.col-xs-12 .col-sm-6 .col-md-8</div>
+    <div class="col-xs-12 col-md-4 ">.col-xs-12 .col-md-4</div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">md-10</div>
+    <div class="col-md-4 ">md-2</div>
+</div>
+
+    <div class="row">
+        <div class="fixed-width-nav">sec one</div>
+        <div class="fixed-width-nav">sec two</div>
+    </div>
+
+    <div class="row">
+        <div class="fixed-width-nav">fixed-width-nav</div>
+        <div class="clearfix" />
+        <div class=" fixed-width-nav">fixed-width-nav</div>
+        <div class="clearfix" />
+        <div class="fixed-width-nav">fixed-width-nav</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1 nav-container">
+            <div class="nav-item"><p>XX</p></div>
+            <div class="nav-item">Y Y</div>
+            <div class="nav-item"><img src="../icons/50x50.png" /></div>
+        </div>
+        <div class="col-md-11 dashboard">
+            <div class="row">
+                <div class="col-md-2">
+                    <ul>
+                        <li>hello</li>
+                        <li>world</li>
+                    </ul>
+                </div>
+                <div class="col-md-10">
+                    <section>text editor</section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-4">.col-xs-12</div>
+    </div>
+<div class="row">
+    <!-- Optional: clear the XS cols if their content doesn't match in height -->
+    <div class="clearfix"></div>
+    <div class="col-xs-6 col-sm-4">after clearfix</div>
+</div>
+</div>
+</body>
+</html>
