@@ -39,9 +39,14 @@
 
 }
 
+.text-header {
+    color: white;
+    font-size: 3em;
+}
+
 .row-header {
     height: 80px;
-    background-color: #dedede;
+    background-color: #444;
 }
 
 .login {
@@ -62,3 +67,58 @@
     display: block;
 }
 
+.col-navigation {
+    float: left;
+    width: auto;
+    background-color: #444;
+}
+
+.ul-navigation {
+    margin: 0px;
+    padding: 0px;
+}
+
+.ul-navigation li{
+    width: inherit;
+}
+
+.col-content {
+    float: left;
+    background-color: #FFF;
+    text-align: left;
+    width: auto;
+}
+
+.col-login {
+    padding: 2px;
+}
+
+#login-input {
+    width: 100%;
+}
+
+#login-control {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 1px 1px 1px 1px;
+}
+
+.notes-list {
+    list-style: none;
+    width: 360px;
+}
+
+.notes-list li {
+    height: 50px;
+    border: 1px solid red;
+    background-color: #006600
+}
+
+.col-footer {
+    background-color: #444;
+}
+
+.tab-icon {
+    width: 50px;
+    height: 100%;
+}

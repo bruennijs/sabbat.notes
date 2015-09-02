@@ -6,10 +6,12 @@ var console = require("console");
 var server = require("browser-sync").create("sabbat.notes static server");
 var glob = require('glob');
 var gfilemetadata = require('commonjs/gulp-file-metadata');
+var path = require('path');
+var util = require('util');
 //var exec = require('gulp-exec');
 var exec = require('child_process').exec;
 
-var srcDirsUi = ['html/**/*.html', 'css/**/*.css', 'js/**/*.js'];
+var srcDirsUi = ['html/**/*.html', 'html/*.html', 'css/**/*.css', 'js/**/*.js'];
 
 gulp.task('reload', function () {
     gulp.src(srcDirsUi)
@@ -64,12 +66,16 @@ gulp.task('serve', function() {
     //    console.info("Servicer initialized");
     //});
 
+    var baseDir = path.join(process.cwd(), "");
+
+    console.log(util.format('Server base dir [%s]', baseDir));
+
     server.init(
         {
             port: 8000,
             server: {
-                baseDir: ".",
-                index: "index.html"
+                baseDir: baseDir,
+                index: "html/index1.html"
             },
             // Change the default weinre port
             ui: {
@@ -81,4 +87,4 @@ gulp.task('serve', function() {
         });
 });
 
-gulp.task('default', ['dist', 'ts', 'serve', 'watch']);
+gulp.task('default', ['dist', 'serve', 'watch']);
