@@ -18,5 +18,9 @@
     "gulp-watch": "^4.3.4",
     "gulp-webserver": "^0.9.1",
     "typescript": "^1.5.3"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "jquery": "^1.11.3"
   }
 }

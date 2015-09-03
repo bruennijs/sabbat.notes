@@ -70,16 +70,11 @@
 .col-navigation {
     float: left;
     width: auto;
-    background-color: #444;
 }
 
 .ul-navigation {
     margin: 0px;
     padding: 0px;
-}
-
-.ul-navigation li{
-    width: inherit;
 }
 
 .col-content {
@@ -118,7 +113,11 @@
     background-color: #444;
 }
 
-.tab-icon {
-    width: 50px;
-    height: 100%;
+.nav-icon-container  {
+    text-align: center;
 }
+
+.nav-icon-container span {
+    font-size: 24pt;
+}
+

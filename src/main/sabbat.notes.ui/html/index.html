@@ -7,7 +7,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
-    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
 
 </head>
@@ -51,17 +51,22 @@
       <div class="col-navigation">
           <ul class="nav nav-pills nav-stacked ul-navigation" role="navigation">
               <li role="presentation" data-toggle="tab">
-                  <button type="button" class="btn btn-default" data-target="#notes">
-                      <span class="glyphicon glyphicon-pencil tab-icon"/>
-                  </button>
+                  <div class="nav-icon-container">
+                    <button type="button" class="btn btn-default" data-target="#notes">
+                          <span class="glyphicon glyphicon-pencil nav-glyphicon"/>
+                    </button>
+                  </div>
               </li>
               <li role="presentation" class="active" data-toggle="tab">
-                  <a href="#chat">
-                      <span class="glyphicon glyphicon-alert tab-icon"/>
-                  </a>
+                  <div class="nav-icon-container">
+                      <a href="#chat">
+                        <span class="glyphicon glyphicon-user"/>
+                      </a>
+                  </div>
               </li>
           </ul>
       </div>  <!-- end side navigation -->
+
         <div class="tab-content col-content">
             <div class="tab-pane active" id="notes">
               <ul class="notes-list">
@@ -88,11 +93,11 @@
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-<script src="../js/jquery.min.js" />
+<script src="../node_modules/jquery/dist/jquery.min.js" />
 
 <!-- Latest compiled and minified JavaScript -->
 <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-<script src="../js/bootstrap.js" />
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js" />
 
 </body>
 </html>
