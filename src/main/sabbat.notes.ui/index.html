@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="NotesApp">
+<html lang="en" ng-app="SabbatApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,12 +66,10 @@
       </div>  <!-- end side navigation -->
 
         <div class="tab-content col-content">  <!-- content -->
-            <div id="notes" class="tab-pane active" role="tabpanel">  <!-- notes view -->
-              <ul class="notes-list">
-                  <li>Webapp</li>
-                  <li>git</li>
-                  <li>docker</li>
-                  <li>.net</li>
+
+            <div id="notes" class="tab-pane active" role="tabpanel" ng-controller="NotesController">  <!-- notes view -->
+              <ul class="notes-list" ng-repeat="note in notes">
+                  <li>{{note.title}}</li>
               </ul>
             </div>  <!-- end notes View -->
 
@@ -103,6 +101,20 @@
 
 <!-- angular scripts -->
 <script type="text/javascript" src="node_modules/angular-route/angular-route.js"></script>
+
+<script type="text/javascript">
+    var notes = [
+        {title: "angular", content: "angular has to be explored"},
+        {title: "checkout html", content: "html is trickky. I need much more time"}
+    ];
+
+    var app = angular.module("SabbatApp", []);
+    app.controller("NotesController", function($scope) {
+        $scope.notes = notes;
+    })
+
+
+</script>
 
 </body>
 </html>
