@@ -101,12 +101,25 @@
 .notes-list {
     list-style: none;
     width: 360px;
+    padding: 0%;
 }
 
 .notes-list li {
+    width: 240px;
     height: 50px;
     border: 1px solid red;
-    background-color: #006600
+    background-color: lightgrey;
+}
+
+.notes-list li .title {
+    font-size: 14px;
+    border: 1px solid green;
+}
+
+.notes-list li .content {
+    font-size: 12px;
+    border: 1px solid green;
+    text-overflow: ellipsis;
 }
 
 .col-footer {

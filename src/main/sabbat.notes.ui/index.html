@@ -68,8 +68,11 @@
         <div class="tab-content col-content">  <!-- content -->
 
             <div id="notes" class="tab-pane active" role="tabpanel" ng-controller="NotesController">  <!-- notes view -->
-              <ul class="notes-list" ng-repeat="note in notes">
-                  <li>{{note.title}}</li>
+              <ul class="notes-list">
+                  <li ng-repeat="note in notes">
+                      <span class="title">{{note.title}}</span>
+                      <span class="content">{{note.content}}</span>
+                  </li>
               </ul>
             </div>  <!-- end notes View -->
 
@@ -102,19 +105,7 @@
 <!-- angular scripts -->
 <script type="text/javascript" src="node_modules/angular-route/angular-route.js"></script>
 
-<script type="text/javascript">
-    var notes = [
-        {title: "angular", content: "angular has to be explored"},
-        {title: "checkout html", content: "html is trickky. I need much more time"}
-    ];
-
-    var app = angular.module("SabbatApp", []);
-    app.controller("NotesController", function($scope) {
-        $scope.notes = notes;
-    })
-
-
-</script>
+<script type="text/javascript" src="js/controller/NotesController.js"></script>
 
 </body>
 </html>
