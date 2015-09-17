@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="NotesApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,19 +9,9 @@
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!--<script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js" />-->
-
-    <!-- Latest compiled and minified JavaScript -->
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-    <script src="node_modules/bootstrap/dist/js/bootstrap.js" />
-
 </head>
 <body>
 <div class="container-fluid">
-
     <div class="row row-header">
         <div class="col-sm-9">
             <span class="text-header">Some header text</span>
@@ -75,19 +65,20 @@
           </ul>
       </div>  <!-- end side navigation -->
 
-        <div class="tab-content col-content">
-            <div class="tab-pane active" id="notes" role="tabpanel">
+        <div class="tab-content col-content">  <!-- content -->
+            <div id="notes" class="tab-pane active" role="tabpanel">  <!-- notes view -->
               <ul class="notes-list">
                   <li>Webapp</li>
                   <li>git</li>
                   <li>docker</li>
                   <li>.net</li>
               </ul>
-            </div>
-            <div id="chat" class="tab-pane" role="tabpanel">
+            </div>  <!-- end notes View -->
+
+            <div id="chat" class="tab-pane" role="tabpanel">  <!-- chat view -->
                 <h2>text</h2>
-            </div>
-        </div>  <!-- end side navigation -->
+            </div>  <!-- notes view -->
+        </div>  <!-- end content -->
     </div>  <!-- end dashboard -->
 
     <div class="clearfix" />
@@ -98,6 +89,20 @@
         </div>
     </div>
 </div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!--<script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js" />-->
+
+<!-- Latest compiled and minified JavaScript -->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js" ></script>
+
+<!-- angular scripts -->
+<script type="text/javascript" src="node_modules/angular/angular.js" ></script>
+
+<!-- angular scripts -->
+<script type="text/javascript" src="node_modules/angular-route/angular-route.js"></script>
 
 </body>
 </html>
