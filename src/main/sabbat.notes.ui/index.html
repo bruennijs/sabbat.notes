@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="SabbatApp">
+<html lang="en" ng-app="sabbatApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -67,13 +67,16 @@
 
         <div class="tab-content col-content">  <!-- content -->
 
-            <div id="notes" class="tab-pane active" role="tabpanel" ng-controller="NotesController">  <!-- notes view -->
-              <ul class="notes-list">
-                  <li ng-repeat="note in notes">
-                      <span class="title">{{note.title}}</span>
-                      <span class="content">{{note.content}}</span>
-                  </li>
-              </ul>
+            <div id="notes" class="tab-pane active" role="tabpanel" ng-controller="NoteController">  <!-- notes view -->
+
+                <input ng-model="query" />
+
+                <ul class="notes-list">
+                    <li ng-repeat="note in notes">
+                          <span class="title">{{note.title}}</span>
+                          <span class="content">{{note.content}}</span>
+                      </li>
+                  </ul>
             </div>  <!-- end notes View -->
 
             <div id="chat" class="tab-pane" role="tabpanel">  <!-- chat view -->
@@ -101,11 +104,15 @@
 
 <!-- angular scripts -->
 <script type="text/javascript" src="node_modules/angular/angular.js" ></script>
-
-<!-- angular scripts -->
 <script type="text/javascript" src="node_modules/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="node_modules/angular-uuid/angular-uuid.js"></script>
 
-<script type="text/javascript" src="js/controller/NotesController.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+
+<!-- Note specific controller, services -->
+<script type="text/javascript" src="js/model/NoteModel.js"></script>
+<script type="text/javascript" src="js/service/NoteService.js"></script>
+<script type="text/javascript" src="js/controller/NoteController.js"></script>
 
 </body>
 </html>

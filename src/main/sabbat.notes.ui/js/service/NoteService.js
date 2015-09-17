@@ -1,0 +1,32 @@
+/**
+ * Created by bruenni on 17.09.15.
+ */
+
+var app = angular.module("sabbatApp");
+
+var notes = [
+  {id: "1", title: "angular", content: "angular has to be explored. what when the text is bigger than the line of the list item?"},
+  {id: "2", title: "checkout html", content: "html is trickky. I need much more time"}
+];
+
+app.factory("noteService", ["uuid", function(uuid) {
+  return new NoteService(uuid, notes);
+}]);
+
+function NoteService(uuid) {
+  this.uuidService = uuid;
+  this.notes = [];
+}
+
+function NoteService(uuid, notes) {
+  this.uuidService = uuid;
+  this.notes = notes;
+}
+
+NoteService.prototype.getNotes = function() {
+  return this.notes;
+};
+
+NoteService.prototype.create = function() {
+  this.notes.push(new NoteModel({id: this.uuidService.v4(), title: "Title text", content: "Content here"}));
+}
