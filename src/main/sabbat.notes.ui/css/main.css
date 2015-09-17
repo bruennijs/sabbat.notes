@@ -81,7 +81,7 @@
     float: left;
     background-color: #FFF;
     text-align: left;
-    width: auto;
+    border: 1px solid green;
 }
 
 .col-login {
@@ -119,7 +119,7 @@
 .notes-list li .content {
     font-size: 12px;
     border: 1px solid green;
-    text-overflow: ellipsis;
+    text-overflow: clip;
 }
 
 .col-footer {

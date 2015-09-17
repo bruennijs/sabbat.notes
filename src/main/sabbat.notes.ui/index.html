@@ -65,25 +65,38 @@
           </ul>
       </div>  <!-- end side navigation -->
 
-        <div class="tab-content col-content">  <!-- content -->
-
-            <div id="notes" class="tab-pane active" role="tabpanel" ng-controller="noteController">  <!-- notes view -->
-
-                <input ng-model="query" />
-
-                <ul class="notes-list">
-                    <li ng-repeat="note in notes">
-                          <span class="title">{{note.title}}</span>
-                          <span class="content">{{note.content}}</span>
-                      </li>
-                  </ul>
-            </div>  <!-- end notes View -->
-
-            <div id="chat" class="tab-pane" role="tabpanel">  <!-- chat view -->
-                <h2>text</h2>
-            </div>  <!-- notes view -->
-        </div>  <!-- end content -->
     </div>  <!-- end dashboard -->
+
+    <div class="tab-content col-content">  <!-- content -->
+
+        <div id="notes" class="tab-pane active" role="tabpanel" ng-controller="noteController">  <!-- notes view -->
+
+              <div class="row">
+                <div class="col-md-2">
+                    <input class="input" ng-model="query" />
+                </div>
+                <div class="col-md-10">
+                    <button class="btn btn-default" ng-click="create()">Add</button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                    <ul class="notes-list">
+                        <li ng-repeat="note in notes">
+                            <span class="title">{{note.id}}</span>
+                            <span class="title">{{note.title}}</span>
+                            <span class="content">{{note.content}}</span>
+                        </li>
+                    </ul>
+                </div>  <!-- end div col -->
+              </div>  <!-- end div row -->
+        </div>  <!-- end notes View -->
+
+        <div id="chat" class="tab-pane" role="tabpanel">  <!-- chat view -->
+            <h2>text</h2>
+        </div>  <!-- notes view -->
+    </div>  <!-- end content -->
 
     <div class="clearfix" />
 

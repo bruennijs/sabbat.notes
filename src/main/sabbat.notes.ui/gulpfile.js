@@ -11,7 +11,7 @@ var util = require('util');
 //var exec = require('gulp-exec');
 var exec = require('child_process').exec;
 
-var srcDirsUi = ['html/**/*.html', 'html/*.html', 'css/**/*.css', 'js/**/*.js'];
+var srcDirsUi = ['*.html', 'html/**/*.html', 'html/*.html', 'css/**/*.css', 'js/**/*.js'];
 
 gulp.task('reload', function () {
     gulp.src(srcDirsUi)
