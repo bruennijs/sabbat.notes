@@ -7,8 +7,16 @@
 
     <!-- Latest compiled and minified CSS -->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js" />-->
+
+    <!-- Latest compiled and minified JavaScript -->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js" />
 
 </head>
 <body>
@@ -49,17 +57,17 @@
     </div>
     <div class="row">
       <div class="col-navigation">
-          <ul class="nav nav-pills nav-stacked ul-navigation" role="navigation">
+          <ul class="nav nav-pills nav-stacked ul-navigation" role="tablist">
               <li role="presentation" data-toggle="tab">
                   <div class="nav-icon-container">
-                    <button type="button" class="btn btn-default" data-target="#notes">
+                    <button type="button" class="btn btn-default" data-target="#notes" data-toggle="tab" role="tab">
                           <span class="glyphicon glyphicon-pencil nav-glyphicon"/>
                     </button>
                   </div>
               </li>
-              <li role="presentation" class="active" data-toggle="tab">
+              <li role="presentation" class="active">
                   <div class="nav-icon-container">
-                      <a href="#chat">
+                      <a href="#chat" data-toggle="tab" role="tab">
                         <span class="glyphicon glyphicon-user"/>
                       </a>
                   </div>
@@ -68,7 +76,7 @@
       </div>  <!-- end side navigation -->
 
         <div class="tab-content col-content">
-            <div class="tab-pane active" id="notes">
+            <div class="tab-pane active" id="notes" role="tabpanel">
               <ul class="notes-list">
                   <li>Webapp</li>
                   <li>git</li>
@@ -76,7 +84,7 @@
                   <li>.net</li>
               </ul>
             </div>
-            <div class="tab-pane" id="chat">
+            <div id="chat" class="tab-pane" role="tabpanel">
                 <h2>text</h2>
             </div>
         </div>  <!-- end side navigation -->
@@ -90,14 +98,6 @@
         </div>
     </div>
 </div>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-<script src="../node_modules/jquery/dist/jquery.min.js" />
-
-<!-- Latest compiled and minified JavaScript -->
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-<script src="../node_modules/bootstrap/dist/js/bootstrap.js" />
 
 </body>
 </html>

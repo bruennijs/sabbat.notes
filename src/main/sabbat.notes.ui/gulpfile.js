@@ -21,6 +21,9 @@ gulp.task('reload', function () {
 });
 
 gulp.task('dist', function () {
+    gulp.src(['*.html'])
+      .pipe(gulp.dest("./dist"));
+
     gulp.src(['html/**'])
       .pipe(gulp.dest("./dist/html"));
 
