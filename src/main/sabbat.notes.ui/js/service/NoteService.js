@@ -11,7 +11,7 @@
   ];
 
   app.factory("noteService", ["uuid", function(uuid) {
-    return new NoteService(uuid, notes);
+    return new NoteService(uuid, []);
   }]);
 
   /**
@@ -23,6 +23,7 @@
     this.id = options.id;
     this.title = options.title;
     this.content = options.content;
+    this.checked = options.checked;
   };
 
   NoteModel.prototype.getTitle = function() {
@@ -38,11 +39,6 @@
    * @param uuid
    * @constructor
    */
-  function NoteService(uuid) {
-    this.uuidService = uuid;
-    this.notes = [];
-  };
-
   function NoteService(uuid, notes) {
     this.uuidService = uuid;
     this.notes = notes;
@@ -59,10 +55,17 @@
   };
 
   NoteService.prototype.delete = function(id) {
+    var checkCount = 0;
+    this.notes.forEach(function(e, idx, array) {
+      if (e.checked)
+        checkCount++;
+    });
+
+    console.log(checkCount);
   };
 
   NoteService.prototype.create = function() {
-    this.notes.push(new NoteModel({id: this.uuidService.v4(), title: "Title text", content: "Content here"}));
+    this.notes.push(new NoteModel({id: this.uuidService.v4(), title: "Title text", content: "Content here", checked: false}));
   };
 
 })();

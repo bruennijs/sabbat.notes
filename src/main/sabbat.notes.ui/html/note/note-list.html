@@ -21,6 +21,7 @@
             </div>
             <div class="col-md-10">
                 <button class="btn btn-default" ng-click="create()">Add</button>
+                <button class="btn btn-default" ng-click="delete()">Delete</button>
             </div>
         </div>
 
@@ -28,6 +29,7 @@
             <div class="col-md-3">
                 <ul class="notes-list">
                     <li ng-repeat="note in notes">
+                        <input type="checkbox" ng-model="note.checked">
                         <span class="title">{{note.id}}</span>
                         <a href="" class="title" ng-click="showContent(note.id)">{{note.title}}</a>
                     </li>
@@ -36,7 +38,7 @@
             <div class="col-md-9">
                 <textarea class="note-textarea" ng-model="selectednote.content"></textarea>
 
-                <button class="btn btn-default" ng-show="isSelected" ng-click="delete(selectednode.id)">Delete</button>
+                <!--<button class="btn btn-default" ng-show="isSelected" ng-click="delete(selectednode.id)">Delete</button>-->
             </div>
         </div>  <!-- end div row -->
         </div>  <!-- end tab notes -->
