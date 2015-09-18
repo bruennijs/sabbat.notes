@@ -1,28 +1,48 @@
 <!DOCTYPE html>
-<div>  <!-- notes view -->
-    <div class="row">
-        <div class="col-md-2">
-            <input class="input" ng-model="query" />
-        </div>
-        <div class="col-md-10">
-            <button class="btn btn-default" ng-click="create()">Add</button>
-            <a class="btn btn-default" href="#/notes/create">Create new</a>
-        </div>
-    </div>
+<div class="tab ">  <!-- notes view -->
 
     <div class="row">
-        <div class="col-md-3">
-            <ul class="notes-list">
-                <li ng-repeat="note in notes">
-                    <span class="title">{{note.id}}</span>
-                    <a href="" class="title" ng-click="showContent(note.id)">{{note.title}}</a>
+        <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation">
+                    <a href="#notes" data-toggle="tab">Notes</a>
+                </li>
+                <li role="presentation">
+                    <a href="#add" data-toggle="tab">New</a>
                 </li>
             </ul>
-        </div>  <!-- end div col -->
-        <div class="col-md-9">
-            <textarea class="note-textarea" ng-model="selectednote.content"></textarea>
+    </div>  <!-- end row -->
 
-            <button class="btn btn-default" ng-show="isSelected" ng-click="delete(selectednode.id)">Delete</button>
+    <div class="tab-content" >  <!-- content -->
+
+        <div id="notes" class="tab-pane active" role="tabpanel">  <!-- notes list -->
+        <div class="row">
+            <div class="col-md-2">
+                <input class="input" ng-model="query" />
+            </div>
+            <div class="col-md-10">
+                <button class="btn btn-default" ng-click="create()">Add</button>
+            </div>
         </div>
-    </div>  <!-- end div row -->
+
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="notes-list">
+                    <li ng-repeat="note in notes">
+                        <span class="title">{{note.id}}</span>
+                        <a href="" class="title" ng-click="showContent(note.id)">{{note.title}}</a>
+                    </li>
+                </ul>
+            </div>  <!-- end div col -->
+            <div class="col-md-9">
+                <textarea class="note-textarea" ng-model="selectednote.content"></textarea>
+
+                <button class="btn btn-default" ng-show="isSelected" ng-click="delete(selectednode.id)">Delete</button>
+            </div>
+        </div>  <!-- end div row -->
+        </div>  <!-- end tab notes -->
+
+        <div id="add" class="tab-pane" role="tabpanel">  <!-- notes add -->
+            <span>add some new create page</span>
+        </div> <!-- end tab add -->
+    </div>
 </div>  <!-- end notes View -->
