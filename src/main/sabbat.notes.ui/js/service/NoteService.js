@@ -58,6 +58,9 @@
     });
   };
 
+  NoteService.prototype.delete = function(id) {
+  };
+
   NoteService.prototype.create = function() {
     this.notes.push(new NoteModel({id: this.uuidService.v4(), title: "Title text", content: "Content here"}));
   };
