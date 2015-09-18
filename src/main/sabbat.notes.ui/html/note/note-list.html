@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<div>  <!-- notes view -->
+    <div class="row">
+        <div class="col-md-2">
+            <input class="input" ng-model="query" />
+        </div>
+        <div class="col-md-10">
+            <button class="btn btn-default" ng-click="create()">Add</button>
+            <a class="btn btn-default" href="#/notes/create">Create new</a>
+        </div>
+    </div>
 
-</body>
-</html>
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="notes-list">
+                <li ng-repeat="note in notes">
+                    <span class="title">{{note.id}}</span>
+                    <a href="" class="title" ng-click="showContent(note.id)">{{note.title}}</a>
+                </li>
+            </ul>
+        </div>  <!-- end div col -->
+        <div class="col-md-9">
+            <textarea class="note-textarea" ng-model="selectednote.content"></textarea>
+
+            <button class="btn btn-default" ng-show="isSelected" ng-click="delete(selectednode.id)">Delete</button>
+        </div>
+    </div>  <!-- end div row -->
+</div>  <!-- end notes View -->
