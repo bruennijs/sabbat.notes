@@ -3,5 +3,5 @@
  */
 
 (function() {
-  angular.module('sabbatApp', ['angular-uuid']);
+  angular.module('sabbatApp', ['sabbatApp.note', 'angular-uuid']);
 })();

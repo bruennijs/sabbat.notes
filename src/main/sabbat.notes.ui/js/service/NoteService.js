@@ -3,7 +3,7 @@
  */
 
 (function() {
-  var app = angular.module("sabbatApp");
+  var app = angular.module("sabbatApp.note");
 
   var notes = [
     {id: "1", title: "angular", content: "angular has to be explored. what when the text is bigger than the line of the list item?"},
@@ -14,6 +14,30 @@
     return new NoteService(uuid, notes);
   }]);
 
+  /**
+   * Note model constructor
+   * @param options
+   * @constructor
+   */
+  function NoteModel(options) {
+    this.id = options.id;
+    this.title = options.title;
+    this.content = options.content;
+  };
+
+  NoteModel.prototype.getTitle = function() {
+    return this.title;
+  };
+
+  NoteModel.prototype.getContent = function() {
+    return this.content;
+  };
+
+  /**
+   * NoteService constructor
+   * @param uuid
+   * @constructor
+   */
   function NoteService(uuid) {
     this.uuidService = uuid;
     this.notes = [];
@@ -36,6 +60,6 @@
 
   NoteService.prototype.create = function() {
     this.notes.push(new NoteModel({id: this.uuidService.v4(), title: "Title text", content: "Content here"}));
-  }
+  };
 
 })();

@@ -3,7 +3,7 @@
  */
 
 (function() {
-  var app = angular.module("sabbatApp");
+  var app = angular.module("sabbatApp.note");
 
   app.controller("noteController", ['$scope', 'noteService', function ($scope, noteService) {
     $scope.notes = noteService.getNotes();
@@ -14,7 +14,7 @@
     };
 
     $scope.showContent = function(id) {
-      console.log("showContent(" + id + ")");
+      /*console.log("showContent(" + id + ")");*/
       $scope.selectednote = noteService.getById(id);
     };
   }]);
