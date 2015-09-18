@@ -8,7 +8,7 @@
   app.controller("noteController", ['$scope', 'noteService', function ($scope, noteService) {
     $scope.notes = noteService.getNotes();
     $scope.query = 'search';
-    $scope.notecontent = 'select item in list';
+    $scope.notecontent = 'Please select one item in list';
     $scope.create = function () {
       noteService.create();
     };
