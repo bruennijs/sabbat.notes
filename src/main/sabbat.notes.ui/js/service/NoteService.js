@@ -28,6 +28,12 @@
     return this.notes;
   };
 
+  NoteService.prototype.getById = function(id) {
+    return this.notes.find(function(e, idx, array) {
+      return e.id === id;
+    });
+  };
+
   NoteService.prototype.create = function() {
     this.notes.push(new NoteModel({id: this.uuidService.v4(), title: "Title text", content: "Content here"}));
   }

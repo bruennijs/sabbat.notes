@@ -78,7 +78,6 @@
 }
 
 .col-content {
-    float: left;
     background-color: #FFF;
     text-align: left;
     border: 1px solid green;
@@ -100,7 +99,6 @@
 
 .notes-list {
     list-style: none;
-    width: 360px;
     padding: 0%;
 }
 
@@ -134,3 +132,6 @@
     font-size: 24pt;
 }
 
+.note-textarea {
+    width: 400px;
+}
