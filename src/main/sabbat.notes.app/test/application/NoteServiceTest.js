@@ -14,36 +14,14 @@ var fs = require('fs');
 suite('NoteServiceTest', function () {
 
   setup(function() {
-    this.sut = new ns.NoteService(this.path);
   });
 
   teardown(function() {
   });
 
-  suite('#Crud', function() {
-    test('should create dir', function() {
-      var repo = new Dal.Repository.FsObjectRepository(this.path);
-      repo.Init();
-      assert.equal(true, fs.existsSync(this.path), "path does not exist Init()");
-    });
-
     test('should insert file', function (done) {
-      var objs = InsertModels.call(suite, ['1', '2']);
-      this.sut.Get(function(err, models) {
-        assert.equal(2, models.length);
-        assert.equal(true, models.some(function(o) {
-          return o.id === objs[0].id;
-        }));
+      var sut = new ns.NoteService();
 
-        assert.equal(true, models.some(function(o) {
-          return o.id === objs[1].id;
-        }));
-
-        done();
-      });
+      done();
     });
-
-    test('should observable fire inserted models', function () {
-    });
-  })
 })

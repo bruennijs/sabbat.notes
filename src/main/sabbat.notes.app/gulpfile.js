@@ -24,6 +24,7 @@ gulp.task('ts.dist', function(cb) {
                           '--module', 'commonjs',
                           '-t', 'ES5',
                           '--outDir', './dist/js',
+                          './infrastructure/persistence/Dal.ts',
                           './domain/Model.ts',
                           './application/NoteService.ts',]);
 
@@ -59,7 +60,8 @@ gulp.task('ts.common.dist', function(cb) {
     '-t', 'ES5',
     '--outdir', './dist/js/common/ddd',
     './common/ddd/model.ts',
-    './common/ddd/persistence.ts',]);
+    './common/ddd/persistence.ts',
+    './common/infrastructure/service/IdGeneratorService.ts']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());

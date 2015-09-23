@@ -8,7 +8,8 @@ var teardown = require('mocha').teardown;
 var test = require('mocha').test;
 var assert = require('assert');
 
-var Dal = require('../Dal.js');
+var Dal = require('./../infrastructure/persistence/Dal');
+var model = require('./../common/ddd/model');
 var fs = require('fs');
 
 suite('Array', function() {
@@ -25,7 +26,7 @@ suite('Array', function() {
 
 function InsertModels(ids) {
   ids.forEach(function (id) {
-    this.sut.Insert(new Dal.Models.IdObject(id));
+    this.sut.Insert(new model.IdObject(id));
   });
 };
 
@@ -33,7 +34,7 @@ suite('FsObjectRepositoryTests', function () {
 
     setup(function() {
         this.path = 'dist/js/db/test';
-        this.sut = new Dal.Repository.FsObjectRepository(this.path);
+        this.sut = new Dal.FsObjectRepository(this.path);
     });
 
     teardown(function() {
@@ -41,7 +42,7 @@ suite('FsObjectRepositoryTests', function () {
 
     suite('#Crud', function() {
         test('should create dir', function() {
-            var repo = new Dal.Repository.FsObjectRepository(this.path);
+            var repo = new Dal.FsObjectRepository(this.path);
             repo.Init();
             assert.equal(true, fs.existsSync(this.path), "path does not exist Init()");
         });

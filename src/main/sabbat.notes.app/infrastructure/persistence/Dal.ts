@@ -2,9 +2,9 @@
  * Repository interfaces
  */
 
-/// <reference path="../node_modules/DefinitelyTyped/node/node-0.10.d.ts" />
-/// <reference path="../node_modules/DefinitelyTyped/underscore/underscore.d.ts" />
-/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="../../node_modules/DefinitelyTyped/node/node-0.10.d.ts" />
+/// <reference path="../../node_modules/DefinitelyTyped/underscore/underscore.d.ts" />
+/// <reference path="../../node_modules/rx/ts/rx.all.d.ts" />
 
 import util = require('util');
 import fs = require('fs');
@@ -12,10 +12,13 @@ import path = require('path');
 import _ = require('underscore');
 import rx = require('rx');
 
+import persistence = require('./../../common/ddd/persistence');
+import model = require('./../../common/ddd/model');
+
     /**
      * File based db
      */
-    export class FsObjectRepository implements IRepository {
+    export class FsObjectRepository implements persistence.IRepository<model.IdObject> {
         private dbDir;
 
         constructor(dbDir: string) {
@@ -33,7 +36,7 @@ import rx = require('rx');
          * @returns {any}
          * @constructor
          */
-        Get(cb?: Func2<Error, Models.IdObject[], void>): void {
+        Get(cb?: persistence.Func2<Error, model.IdObject[], void>): void {
             fs.readdir(this.dbDir, (err1, files) =>
             {
                 if ((err1 === null)) {
@@ -49,8 +52,8 @@ import rx = require('rx');
                         }
                     });
 
-                    var mappedModels = contentBuffers.map<Models.IdObject>((content) => {
-                        return Models.IdObject.Parse(content.toString());
+                    var mappedModels = contentBuffers.map<model.IdObject>((content) => {
+                        return model.IdObject.Parse(content.toString());
                     });
 
                     cb(null, mappedModels);
@@ -66,8 +69,8 @@ import rx = require('rx');
          * @returns {any}
          * @constructor
          */
-        GetRx(): rx.IObservable<Models.IdObject> {
-            return rx.Observable.from([new Models.IdObject("4711")]);
+        GetRx(): rx.IObservable<model.IdObject> {
+            return rx.Observable.from([new model.IdObject("4711")]);
         }
 
         /**
@@ -75,7 +78,7 @@ import rx = require('rx');
          * @param object
          * @constructor
          */
-        Insert(object:Models.IdObject) {
+        Insert(object:model.IdObject) {
             console.log(util.format('Insert object[id=%s]', object.id));
 
             fs.writeFileSync(path.join(this.dbDir, util.format('%s.js', object.id)), JSON.stringify(object), 'utf8');
@@ -93,4 +96,3 @@ import rx = require('rx');
             return readDirObs(this.dbDir);
         }*/
     }
-}
