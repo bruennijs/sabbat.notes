@@ -24,8 +24,42 @@ gulp.task('ts.dist', function(cb) {
                           '--module', 'commonjs',
                           '-t', 'ES5',
                           '--outDir', './dist/js',
-                          //'./ts/Models.ts',
-                          './ts/Dal.ts']);
+                          './domain/Model.ts',
+                          './application/NoteService.ts',]);
+
+  tsc.stdout.on('data', function(data) {
+    console.log(data.toString());
+  });
+
+  tsc.stderr.on('data', function(data) {
+    console.log(data.toString());
+    cb(data);
+  });
+
+  tsc.on('close', function(data) {
+    console.log('Typescript compilier exited');
+  });
+});
+
+gulp.task('ts.common.dist', function(cb) {
+  console.info("Typescript transpiling");
+
+  var options = {
+    continueOnError: false, // default = false, true means don't emit error event
+    pipeStdout: false,
+    customTemplateThing: 'some string to be templated'
+  };
+
+  /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
+   .pipe(gfilemetadata({log: true}))
+   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));*/
+
+  var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
+    '--module', 'commonjs',
+    '-t', 'ES5',
+    '--outdir', './dist/js/common/ddd',
+    './common/ddd/model.ts',
+    './common/ddd/persistence.ts',]);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
@@ -46,27 +80,12 @@ gulp.task('js.dist', function() {
       pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('watch', function() {
-  //gulp.watch(srcDirsUi, ['reload']);
-});
+gulp.task('watch.test', function() {
+  gulp.watch('./common/**/*.{ts,js}', ['dist']);
+  gulp.watch('./application/**/*.{ts,js}', ['dist']);
+  gulp.watch('./domain/**/*.{ts,js}', ['dist']);
+  gulp.watch('./infrastructure/**/*.{ts,js}', ['dist']);
 
-gulp.task('server', function(cb) {
-  console.info('Serve started...');
-
-  var tsc = spawn('node', ['./dist/js/server', '-c', './appconfig']);
-
-  tsc.stdout.on('data', function(data) {
-    console.log(data.toString());
-  });
-
-  tsc.stderr.on('data', function(data) {
-    console.log(data.toString());
-    cb(data.toString());
-  });
-
-  tsc.on('close', function(data) {
-    console.log('server exited');
-  });
 });
 
 gulp.task('test.dist', function () {
@@ -85,9 +104,7 @@ gulp.task('test.run', function () {
         .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt));
 });
 
-gulp.task('dist', ['js.dist', 'ts.dist', 'test.dist']);
-
-gulp.task('default', ['dist', 'server']);
+gulp.task('dist', ['js.dist', 'ts.common.dist', 'ts.dist', 'test.dist']);
 
 gulp.task('test', ['dist', 'test.run']);
 

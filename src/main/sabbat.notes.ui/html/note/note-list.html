@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<div class="tab ">  <!-- notes view -->
+<div class="container">  <!-- notes view -->
 
     <div class="row">
         <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation">
+                <li>
                     <a href="#notes" data-toggle="tab">Notes</a>
                 </li>
-                <li role="presentation">
-                    <a href="#add" data-toggle="tab">New</a>
-                </li>
-            </ul>
+            <li>
+                <a href="#new" data-toggle="tab">New</a>
+            </li>
+        </ul>
     </div>  <!-- end row -->
 
     <div class="tab-content" >  <!-- content -->
 
-        <div id="notes" class="tab-pane active" role="tabpanel">  <!-- notes list -->
+        <div id="notes" class="tab-pane active">  <!-- notes list -->
         <div class="row">
             <div class="col-md-2">
                 <input class="input" ng-model="query" />
@@ -43,7 +43,7 @@
         </div>  <!-- end div row -->
         </div>  <!-- end tab notes -->
 
-        <div id="add" class="tab-pane" role="tabpanel">  <!-- notes add -->
+        <div id="new" class="tab-pane">  <!-- notes new -->
             <span>add some new create page</span>
         </div> <!-- end tab add -->
     </div>

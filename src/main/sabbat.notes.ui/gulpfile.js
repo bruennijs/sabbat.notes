@@ -78,7 +78,7 @@ gulp.task('serve', function() {
             port: 8000,
             server: {
                 baseDir: baseDir,
-                index: "html/index1.html"
+                index: "html/index.html"
             },
             // Change the default weinre port
             ui: {

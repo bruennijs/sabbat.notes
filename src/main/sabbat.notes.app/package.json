@@ -1,8 +1,8 @@
 {
   "name": "sabbat.notes.service",
   "version": "1.0.0",
-  "description": "REST data web service storing sabbat notes",
-  "main": "index.js",
+  "description": "Sabbat notes application library",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +16,7 @@
     "gulp-print": "^1.1.0",
     "gulp-watch": "^4.3.4",
     "mocha": "^2.2.5",
-    "typescript": "^1.6.0-dev.20150824"
+    "typescript": "^1.6.2"
   },
   "dependencies": {
     "DefinitelyTyped": "git://github.com/bruennijs/DefinitelyTyped#underscore-1.8.3",

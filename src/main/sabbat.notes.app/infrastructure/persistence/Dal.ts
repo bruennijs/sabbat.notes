@@ -12,63 +12,6 @@ import path = require('path');
 import _ = require('underscore');
 import rx = require('rx');
 
-
-export module Models {
-
-        /**
-         * Created by bruenni on 16.08.15.
-         */
-        export class IdObject {
-            public get id() {
-                return this._id;
-            }
-
-            private _id:string;
-
-            constructor(id:string) {
-                this._id = id;
-            }
-
-            /**
-             * Parses json content to IdObject
-             * @param json
-             * @returns {*}
-             * @constructor
-             */
-            static Parse(json: string): Models.IdObject
-            {
-                var model = JSON.parse(json);
-                ///util.inherits(model, Models.IdObject); //// no, only copies prototype's function into a constructor's prototype
-                return _.create(Models.IdObject.prototype, model);
-            }
-        }
-}
-
-export module Repository {
-
-    export interface Func1<T1, TResult> {
-        (arg1?: T1): TResult;
-    }
-
-    export interface Func2<T1, T2, TResult> {
-        (arg1?: T1, arg2?: T2): TResult;
-    }
-
-    export interface IRepository {
-        /**
-         * Gets all users.
-         * @constructor
-         */
-        Get(cb?: Func2<Error, Models.IdObject[], void>): void;
-
-        /**clear
-         * Inserts row in database
-         * @param object
-         * @constructor
-         */
-        Insert(object:Models.IdObject): void;
-    }
-
     /**
      * File based db
      */
