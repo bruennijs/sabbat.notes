@@ -19,7 +19,7 @@ gulp.task('ts.dist', function() {
                           '-t', 'ES5',
                           '--outDir', './dist',
                           './infrastructure/persistence/Dal.ts',
-                          //'./infrastructure/persistence/MongoDbRepository.ts',
+                          './infrastructure/persistence/MongoDbRepository.ts',
                           './domain/Model.ts',
                           './application/NoteService.ts',]);
 
