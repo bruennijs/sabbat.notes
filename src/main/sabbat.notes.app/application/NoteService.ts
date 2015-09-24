@@ -19,8 +19,8 @@ export class NoteService {
   public createNote(title: string, cb: (err: Error, model: model.Note) => void) {
     var note = new model.Note(this._idGeneratorService.new(), title, "Add some content here");
 
-    this.repo.Insert(note, function(err, obj) {
-      cb(err, obj);
+    this.repo.Insert(note, function(err) {
+      cb(err, note);
     });
   }
 }

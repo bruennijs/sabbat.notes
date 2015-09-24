@@ -22,7 +22,7 @@ suite('NoteServiceTest', function () {
   teardown(function() {
   });
 
-    test('when create document expect document contains id', function () {
+    test('when create document expect document contains id', function (done) {
 
       var expectedId = "4711";
 
@@ -31,8 +31,10 @@ suite('NoteServiceTest', function () {
       var idGenMock = new idGenBuilder().withNewReturn(expectedId).BuildMocked();
 
       var sut = new ns.NoteService(repoMock, idGenMock);
-      var model = sut.createNote('my title');
-
-      assert.equal(model.id, expectedId);
+      var model = sut.createNote('my title', function(err, model) {
+        assert.equal(true, err === null, err);
+        assert.equal(model.id, expectedId);
+        done();
+      });
     });
 })

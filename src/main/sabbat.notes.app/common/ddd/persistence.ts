@@ -33,5 +33,5 @@ export interface IRepository<TModel extends model.IdObject>  {
    * @param object
    * @constructor
    */
-  Insert(object: TModel, cb: (err: Error, model: TModel) => void): void;
+  Insert(object: TModel, cb: (err: Error) => void): void;
 }

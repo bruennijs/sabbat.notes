@@ -20,7 +20,7 @@ suite("MongoDbRepositoryTest", function() {
     var repo = new repository.NoteRepository(suite.config);
     repo.Init(function(err) {
       console.log(err);
-      assert.equal(true, err === null);
+      assert.equal(true, err === null, err);
       done();
     });
   });
@@ -36,26 +36,26 @@ suite("MongoDbRepositoryTest", function() {
         assert.equal(0, notes.length);
         done();
       });
-    });
+    }, true);
   });
 
   test("#when insert expect collection contains this note", function(done) {
     var repo = new repository.NoteRepository(suite.config);
     repo.Init(function(err) {
-      assert.equal(true, err === null);
+      assert.equal(true, err === null, err);
 
       // insert
       repo.Insert(new model.Note('1', 'title text', 'content'), function(err, obj) {
 
-        assert.equal(true, err === null);
+        assert.equal(true, err === null, err);
 
         // get documents
         repo.Get(function(err, notes) {
-          assert.equal(true, err === null);
-          assert.equal(1, notes.length);
+          assert.equal(true, err === null, err);
+          assert.equal(notes.length, 1);
           done();
         })
       });;
-    });
+    }, true);
   });
 });

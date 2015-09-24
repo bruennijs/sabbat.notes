@@ -22,7 +22,7 @@ export class NoteRepository implements repo.IRepository<model.Note> {
     this._configuration = configuration;
   }
 
-  private Init(cb: (err: Error) => void): void {
+  private Init(cb: (err: Error) => void, dropCollections?: boolean): void {
 
     var that = this;
 
@@ -37,20 +37,29 @@ export class NoteRepository implements repo.IRepository<model.Note> {
       var col = that._db.collection(that._collectionName);
       if (!col)
       {
-        that._db.createCollection(that._collectionName, function(err, col) {
-          if (!err)
-          {
-            that._collection = col;
-          }
-
+        // create new collection
+        that.CreateCollection(function(err, col) {
           cb(err);
         });
       }
       else
       {
         // collection already exist
-        that._collection = col;
-        cb(err);
+
+        if (dropCollections)
+        {
+          /// drop collection
+          that._db.dropCollection(that._collectionName, function(err, col) {
+            // create new collection
+            that.CreateCollection(function(err, col) {
+              cb(err);
+            });
+          });
+        }
+        else {
+          that._collection = col;
+          cb(err);
+        }
       }
     });
   }
@@ -63,18 +72,38 @@ export class NoteRepository implements repo.IRepository<model.Note> {
 
     //// fidn all items
     this._collection.find({}).toArray(function(err, objs) {
+
+      var models = [];
+
       //model.Note.Parse
       objs.forEach(function(item, n, ar) {
-        console.log(typeof item);
+        //console.log(item);
+        models.push(new model.Note(item.id, item.title, item.content));
       });
 
-      cb(err, []);
+      cb(err, models);
     });
   }
 
-  Insert(object:model.Note, cb: (err: Error, model: model.Note) => void): void {
-    console.log(JSON.stringify(object));
-    cb(null, object);
+  Insert(object:model.Note, cb: (err: Error) => void): void {
+    //console.log(JSON.stringify(object));
+
+    this._collection.insertOne({_id: object.id, title: object.title}, function(err, result) {
+      console.log("result["  + result + "]");
+      cb(err);
+    });
+  }
+
+  private CreateCollection(cb: (err: Error, col: mongodb.Collection) => void) {
+    var that = this;
+    this._db.createCollection(this._collectionName, function(err, col) {
+      if (!err)
+      {
+        that._collection = col;
+      }
+
+      cb(err, col);
+    });
   }
 
 /*  GetRx(): rx.IObservable<model.Note> {

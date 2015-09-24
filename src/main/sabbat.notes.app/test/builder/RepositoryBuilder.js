@@ -8,8 +8,9 @@ function RepositoryBuilder() {
 
 RepositoryBuilder.prototype.BuildMocked = function () {
   return {
-    Insert: function(model) {
+    Insert: function(model, cb) {
       this.insertModel = model;
+      cb(null);
     }
   }
 };
