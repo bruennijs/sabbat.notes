@@ -7,14 +7,8 @@ var glob = require('glob');
 var spawn = require('child_process').spawn;
 var exec = require('gulp-exec');
 
-gulp.task('ts.dist', function(cb) {
+gulp.task('ts.dist', function() {
   console.info("Typescript transpiling");
-
-  var options = {
-    continueOnError: false, // default = false, true means don't emit error event
-    pipeStdout: false,
-    customTemplateThing: 'some string to be templated'
-  };
 
   /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
    .pipe(gfilemetadata({log: true}))
@@ -25,6 +19,7 @@ gulp.task('ts.dist', function(cb) {
                           '-t', 'ES5',
                           '--outDir', './dist',
                           './infrastructure/persistence/Dal.ts',
+                          //'./infrastructure/persistence/MongoDbRepository.ts',
                           './domain/Model.ts',
                           './application/NoteService.ts',]);
 
