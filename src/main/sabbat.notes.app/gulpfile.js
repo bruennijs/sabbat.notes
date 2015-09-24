@@ -34,7 +34,6 @@ gulp.task('ts.dist', function(cb) {
 
   tsc.stderr.on('data', function(data) {
     console.log(data.toString());
-    cb(data);
   });
 
   tsc.on('close', function(data) {
@@ -46,7 +45,7 @@ gulp.task('ts.common.dist', function(cb) {
   console.info("Typescript transpiling");
 
   var options = {
-    continueOnError: false, // default = false, true means don't emit error event
+    continueOnError: true, // default = false, true means don't emit error event
     pipeStdout: false,
     customTemplateThing: 'some string to be templated'
   };
@@ -97,13 +96,14 @@ gulp.task('test.dist', function () {
 
 gulp.task('test.run', function () {
     var opt = {
-        continueOnError: false, // default = false, true means don't emit error event
-        pipeStdout: true
+        continueOnError: true, // default = false, true means don't emit error event
+        pipeStdout: false
     };
 
     gulp.src('dist/js/test/**/*.js')
         .pipe(print())
-        .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt));
+        .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt))
+        .pipe(exec.reporter());
 });
 
 gulp.task('dist', ['js.dist', 'ts.common.dist', 'ts.dist', 'test.dist']);

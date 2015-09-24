@@ -11,6 +11,7 @@ var assert = require('assert');
 var Dal = require('./../infrastructure/persistence/Dal');
 var model = require('./../common/ddd/model');
 var fs = require('fs');
+var path = require('path');
 
 suite('Array', function() {
     setup(function() {
@@ -33,8 +34,9 @@ function InsertModels(ids) {
 suite('FsObjectRepositoryTests', function () {
 
     setup(function() {
-        this.path = 'dist/js/db/test';
-        this.sut = new Dal.FsObjectRepository(this.path);
+        this.path = path.join(process.cwd(), 'dist/js/db/test');
+        console.log("DB path [" + this.path + "]");
+        this.sut = new Dal.FsObjectRepository();
     });
 
     teardown(function() {
