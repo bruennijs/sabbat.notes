@@ -25,33 +25,40 @@ suite('Array', function() {
     });
 });
 
-function InsertModels(ids) {
+function InsertModels(repo, ids) {
+  var objArray = [];
   ids.forEach(function (id) {
-    this.sut.Insert(new model.IdObject(id));
+    var obj = new model.IdObject(id);
+    repo.Insert(obj);
+    objArray.push(obj);
   });
+
+  return objArray;
 };
 
 suite('FsObjectRepositoryTests', function () {
 
+    var that = this;
+
     setup(function() {
-        this.path = path.join(process.cwd(), 'dist/js/db/test');
-        console.log("DB path [" + this.path + "]");
-        this.sut = new Dal.FsObjectRepository();
+        that.path = path.join(process.cwd(), 'data');
+        console.log("DB path [" + that.path + "]");
     });
 
     teardown(function() {
     });
 
-    suite('#Crud', function() {
-        test('should create dir', function() {
-            var repo = new Dal.FsObjectRepository(this.path);
-            repo.Init();
-            assert.equal(true, fs.existsSync(this.path), "path does not exist Init()");
-        });
+    test('should create dir', function() {
+          var repo = new Dal.FsObjectRepository(that.path);
+          repo.Init();
+          assert.equal(true, fs.existsSync(that.path), "path does not exist Init()");
+    });
 
-        test('should insert file', function (done) {
-          var objs = InsertModels.call(suite, ['1', '2']);
-          this.sut.Get(function(err, models) {
+    test('should insert file', function (done) {
+          var repo = new Dal.FsObjectRepository(that.path);
+
+          var objs = InsertModels(repo, ['1', '2']);
+          repo.Get(function(err, models) {
                 assert.equal(2, models.length);
                 assert.equal(true, models.some(function(o) {
                   return o.id === objs[0].id;
@@ -63,9 +70,8 @@ suite('FsObjectRepositoryTests', function () {
 
                 done();
             });
-        });
+    });
 
-      test('should observable fire inserted models', function () {
-      });
-    })
+    test('should observable fire inserted models', function () {
+    });
 })

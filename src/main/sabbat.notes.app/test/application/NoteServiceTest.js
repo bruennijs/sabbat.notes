@@ -11,6 +11,9 @@ var assert = require('assert');
 var ns = require('./../../application/NoteService');
 var fs = require('fs');
 
+var repoBuilder = require('./../builder/RepositoryBuilder');
+var idGenBuilder = require('./../builder/IdGeneratorServiceBuilder');
+
 suite('NoteServiceTest', function () {
 
   setup(function() {
@@ -19,9 +22,17 @@ suite('NoteServiceTest', function () {
   teardown(function() {
   });
 
-    test('should insert file', function (done) {
-      var sut = new ns.NoteService();
+    test('when create document expect document contains id', function () {
 
-      done();
+      var expectedId = "4711";
+
+      var repoMock = new repoBuilder().BuildMocked();
+
+      var idGenMock = new idGenBuilder().withNewReturn(expectedId).BuildMocked();
+
+      var sut = new ns.NoteService(repoMock, idGenMock);
+      var model = sut.createNote('my title');
+
+      assert.equal(model.id, expectedId);
     });
 })

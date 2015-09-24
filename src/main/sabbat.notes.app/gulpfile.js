@@ -18,12 +18,12 @@ gulp.task('ts.dist', function(cb) {
 
   /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
    .pipe(gfilemetadata({log: true}))
-   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));*/
+   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/<%= file.name %> <%= file.path %>', options));*/
 
   var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
                           '--module', 'commonjs',
                           '-t', 'ES5',
-                          '--outDir', './dist/js',
+                          '--outDir', './dist',
                           './infrastructure/persistence/Dal.ts',
                           './domain/Model.ts',
                           './application/NoteService.ts',]);
@@ -52,12 +52,12 @@ gulp.task('ts.common.dist', function(cb) {
 
   /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
    .pipe(gfilemetadata({log: true}))
-   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));*/
+   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/<%= file.name %> <%= file.path %>', options));*/
 
   var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
     '--module', 'commonjs',
     '-t', 'ES5',
-    '--outdir', './dist/js/common/ddd',
+    '--outdir', './dist/common',
     './common/ddd/model.ts',
     './common/ddd/persistence.ts',
     './common/infrastructure/service/IdGeneratorService.ts']);
@@ -78,20 +78,20 @@ gulp.task('ts.common.dist', function(cb) {
 
 gulp.task('js.dist', function() {
   gulp.src('js/**/*.js').
-      pipe(gulp.dest('dist/js'));
+      pipe(gulp.dest('dist'));
 });
 
 gulp.task('watch.test', function() {
-  gulp.watch('./common/**/*.{ts,js}', ['dist']);
-  gulp.watch('./application/**/*.{ts,js}', ['dist']);
-  gulp.watch('./domain/**/*.{ts,js}', ['dist']);
-  gulp.watch('./infrastructure/**/*.{ts,js}', ['dist']);
-
+  gulp.watch('./common/**/*.{ts,js}', ['test']);
+  gulp.watch('./application/**/*.{ts,js}', ['test']);
+  gulp.watch('./domain/**/*.{ts,js}', ['test']);
+  gulp.watch('./infrastructure/**/*.{ts,js}', ['test']);
+  gulp.watch('./test/**/*.{ts,js}', ['test']);
 });
 
 gulp.task('test.dist', function () {
     gulp.src('test/**/*.js')
-       .pipe(gulp.dest('dist/js/test'));
+       .pipe(gulp.dest('dist/test'));
 });
 
 gulp.task('test.run', function () {
@@ -100,9 +100,9 @@ gulp.task('test.run', function () {
         pipeStdout: false
     };
 
-    gulp.src('dist/js/test/**/*.js')
+    gulp.src('dist/test/**/*Test.js')
         .pipe(print())
-        .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt))
+        .pipe(exec('node_modules/mocha/bin/mocha --ui tdd --reporter dot <%= file.path %>', opt))
         .pipe(exec.reporter());
 });
 
