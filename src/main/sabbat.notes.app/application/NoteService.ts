@@ -16,11 +16,11 @@ export class NoteService {
     this._idGeneratorService = idGeneratorService;
   }
 
-  public createNote(title: string): model.Note {
+  public createNote(title: string, cb: (err: Error, model: model.Note) => void) {
     var note = new model.Note(this._idGeneratorService.new(), title, "Add some content here");
 
-    this.repo.Insert(note);
-
-    return note;
+    this.repo.Insert(note, function(err, obj) {
+      cb(err, obj);
+    });
   }
 }
