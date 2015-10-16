@@ -19,7 +19,6 @@ suite("MongoDbRepositoryTest", function() {
   test("#when init expect collections created", function(done) {
     var repo = new repository.NoteRepository(suite.config);
     repo.Init(function(err) {
-      console.log(err);
       assert.equal(true, err === null, err);
       done();
     });
@@ -28,7 +27,7 @@ suite("MongoDbRepositoryTest", function() {
   test("#when get expect collection empty", function(done) {
     var repo = new repository.NoteRepository(suite.config);
     repo.Init(function(err) {
-      assert.equal(true, err === null);
+      assert.equal(true, err === null, err);
 
       // get documents
       repo.Get(function(err, notes) {

@@ -85,7 +85,7 @@ gulp.task('watch.test', function() {
 });
 
 gulp.task('test.dist', function () {
-    gulp.src('test/**/*.js')
+    gulp.src(['test/**/*.js', 'test/**/*.json'])
        .pipe(gulp.dest('dist/test'));
 });
 

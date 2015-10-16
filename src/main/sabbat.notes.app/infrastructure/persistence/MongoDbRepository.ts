@@ -28,10 +28,13 @@ export class NoteRepository implements repo.IRepository<model.Note> {
 
     mongodb.MongoClient.connect(this._configuration.mongodb_url, function(err, db) {
 
-      if (err == null) {
-        console.log("Mongo db connected...");
-        that._db = db;
+      if (err != null) {
+        cb(err);
+        return;
       }
+
+      console.log("Mongo db connected...");
+      that._db = db;
 
       // get collection users
       var col = that._db.collection(that._collectionName);

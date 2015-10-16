@@ -3,6 +3,7 @@
  */
 
 import model = require('./../common/ddd/model');
+import _ = require('underscore');
 
 export class Note extends model.IdObject {
   public get content() {
@@ -17,7 +18,7 @@ export class Note extends model.IdObject {
 
   private _title;
 
-  constructor(id: string, title: string, content: string)
+  constructor(id?: string, title?: string, content?: string)
   {
     super(id);
     this._title = title;

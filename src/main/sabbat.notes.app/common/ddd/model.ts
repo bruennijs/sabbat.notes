@@ -37,4 +37,12 @@ export class IdObject {
       ///util.inherits(model, Models.IdObject); //// no, only copies prototype's function into a constructor's prototype
       return _.create(IdObject.prototype, obj);
     }
+
+    /**
+     * loads properties from json to this instance.
+     */
+    loadFrom(json: string): void
+    {
+      _.extend(this, json);
+    }
   }
