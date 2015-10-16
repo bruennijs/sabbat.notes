@@ -41,8 +41,17 @@ export class IdObject {
     /**
      * loads properties from json to this instance.
      */
-    loadFrom(json: string): void
+    load(obj: any): void
     {
-      _.extend(this, json);
+      _.extend(this, obj);
+    }
+
+    /*
+     * loads from string.
+     */
+    loadFrom(json: string)
+    {
+      var obj = JSON.parse(json);
+      load(obj);
     }
   }

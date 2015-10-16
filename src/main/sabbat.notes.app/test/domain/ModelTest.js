@@ -23,4 +23,15 @@ suite("Note model test", function() {
     assert.equal("title text", sut.title);
     assert.equal("note document content", sut.content);
   });
+
+  test("#when load note json document expect loadFrom loads into properties", function () {
+    var sut = new model.Note();
+    sut.loadFrom(noteDocument);
+
+    console.info(noteDocument);
+
+    assert.equal("4711", sut.id);
+    assert.equal("title text", sut.title);
+    assert.equal("note document content", sut.content);
+  });
 });
