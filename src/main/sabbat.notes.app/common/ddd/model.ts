@@ -51,7 +51,6 @@ export class IdObject {
      */
     loadFrom(json: string)
     {
-      var obj = JSON.parse(json);
-      load(obj);
+      this.load(JSON.parse(json));
     }
   }

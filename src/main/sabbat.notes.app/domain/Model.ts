@@ -6,22 +6,22 @@ import model = require('./../common/ddd/model');
 import _ = require('underscore');
 
 export class Note extends model.IdObject {
-  public get content() {
-    return this._content;
+  public get Content() {
+    return this.content;
   }
 
-  private _content;
+  private content;
 
-  public get title() {
-    return this._title;
+  public get Title() {
+    return this.title;
   }
 
-  private _title;
+  private title;
 
   constructor(id?: string, title?: string, content?: string)
   {
     super(id);
-    this._title = title;
-    this._content = content;
+    this.title = title;
+    this.content = content;
   }
 }
