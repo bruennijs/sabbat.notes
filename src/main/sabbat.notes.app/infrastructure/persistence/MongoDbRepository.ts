@@ -13,8 +13,6 @@ import mongodb = require('mongodb');
 export class NoteRepository implements repo.IRepository<model.Note> {
   private _configuration:any;
 
-  private _collectionName: string = 'users';
-
   private _db: mongodb.Db = null;
   private _collection: mongodb.Collection = null;
 
@@ -26,18 +24,21 @@ export class NoteRepository implements repo.IRepository<model.Note> {
 
     var that = this;
 
-    mongodb.MongoClient.connect(this._configuration.mongodb_url, function(err, db) {
+    console.log("Mongo connecting [" + that._configuration.mongodb_url + "]");
+
+    mongodb.MongoClient.connect(that._configuration.mongodb_url, function(err, db) {
 
       if (err != null) {
+        console.log("Mongo connection failed[" + that._configuration.mongodb_url + "]");
         cb(err);
         return;
       }
 
-      console.log("Mongo db connected...");
+      console.log("Mongo connected [" + that._configuration.mongodb_url + "]");
       that._db = db;
 
       // get collection users
-      var col = that._db.collection(that._collectionName);
+      var col = that._db.collection(that._configuration.collectionName);
       if (!col)
       {
         // create new collection
@@ -52,7 +53,7 @@ export class NoteRepository implements repo.IRepository<model.Note> {
         if (dropCollections)
         {
           /// drop collection
-          that._db.dropCollection(that._collectionName, function(err, col) {
+          that._db.dropCollection(that._configuration.collectionName, function(err, col) {
             // create new collection
             that.CreateCollection(function(err, col) {
               cb(err);
@@ -91,7 +92,7 @@ export class NoteRepository implements repo.IRepository<model.Note> {
   Insert(object:model.Note, cb: (err: Error) => void): void {
     //console.log(JSON.stringify(object));
 
-    this._collection.insertOne({_id: object.id, title: object.title}, function(err, result) {
+    this._collection.insertOne(object, function(err, result) {
       console.log("result["  + result + "]");
       cb(err);
     });
@@ -99,7 +100,7 @@ export class NoteRepository implements repo.IRepository<model.Note> {
 
   private CreateCollection(cb: (err: Error, col: mongodb.Collection) => void) {
     var that = this;
-    this._db.createCollection(this._collectionName, function(err, col) {
+    this._db.createCollection(this._configuration.collectionName, function(err, col) {
       if (!err)
       {
         that._collection = col;

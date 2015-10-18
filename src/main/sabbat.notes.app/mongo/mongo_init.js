@@ -1,3 +1,3 @@
 db = db.getSiblingDB('sabbat')
 
-db.createCollection('users')
+db.createCollection('notes')

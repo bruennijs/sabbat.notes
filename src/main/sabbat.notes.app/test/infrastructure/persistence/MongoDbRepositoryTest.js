@@ -9,39 +9,56 @@ var assert = require('assert');
 
 var repository = require('./../../../infrastructure/persistence/MongoDbRepository');
 var model = require('./../../../domain/Model');
+var testConfig = require('./../../test.config');
+
+var _ = require('underscore');
 
 suite("MongoDbRepositoryTest", function() {
 
-  suite.config = {
-    mongodb_url: "mongodb://172.17.0.2:27017/sabbat"
-  };
+  suiteSetup(function() {
+    _.extend(testConfig, {collectionName: 'notes'});
+  });
 
   test("#when init expect collections created", function(done) {
-    var repo = new repository.NoteRepository(suite.config);
+    var repo = new repository.NoteRepository(testConfig);
     repo.Init(function(err) {
-      assert.equal(true, err === null, err);
+      if (err) {
+        done(err);
+        return;
+      }
+
       done();
-    });
+    }, true);
   });
 
   test("#when get expect collection empty", function(done) {
-    var repo = new repository.NoteRepository(suite.config);
+    var repo = new repository.NoteRepository(testConfig);
     repo.Init(function(err) {
-      assert.equal(true, err === null, err);
+      if (err) {
+        done(err);
+        return;
+      }
 
       // get documents
       repo.Get(function(err, notes) {
-        assert.equal(true, err === null);
-        assert.equal(0, notes.length);
-        done();
+        if (!err) {
+
+          assert.equal(0, notes.length);
+          done();
+        }
+
+
       });
     }, true);
   });
 
   test("#when insert expect collection contains this note", function(done) {
-    var repo = new repository.NoteRepository(suite.config);
+    var repo = new repository.NoteRepository(testConfig);
     repo.Init(function(err) {
-      assert.equal(true, err === null, err);
+      if (err) {
+        done(err);
+        return;
+      }
 
       // insert
       repo.Insert(new model.Note('1', 'title text', 'content'), function(err, obj) {
