@@ -4,7 +4,7 @@
 
 ///<reference path="./../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
 
-import repo = require('./MongoDbRepository');
+import repo = require('./../../common/infrastructure/persistence/MongoDbRepository');
 import model = require('./../../domain/Model');
 import fac = require('./../../common/ddd/factory');
 import dddModel = require('./../../common/ddd/model');
@@ -34,8 +34,4 @@ export class NoteRepository extends repo.MongoDbRepository<model.Note> {
       cb(err, models);
     });
   }
-
-/*  GetRx(): rx.IObservable<model.Note> {
-    return null;
-  }*/
 }

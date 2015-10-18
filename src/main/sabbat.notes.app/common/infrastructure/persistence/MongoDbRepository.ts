@@ -2,12 +2,11 @@
  * Created by bruenni on 24.09.15.
  */
 
-///<reference path="./../../node_modules/rx/ts/rx.all.d.ts"/>
-///<reference path="./../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
+///<reference path="./../../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
 
-import repo    = require('./../../common/ddd/persistence');
-import model    = require('./../../common/ddd/model');
-import factory = require('./../../common/ddd/factory');
+import repo    = require('./../../ddd/persistence');
+import model    = require('./../../ddd/model');
+import factory = require('./../../ddd/factory');
 
 //import rx = require('rx');
 import mongodb = require('mongodb');
