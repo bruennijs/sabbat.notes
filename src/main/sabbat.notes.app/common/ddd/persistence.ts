@@ -26,7 +26,7 @@ export interface IRepository<TModel extends model.IdObject>  {
    * Gets all users.
    * @constructor
    */
-  Get(cb?:Func2<Error, TModel[], void>): void;
+  Find(cb?:Func2<Error, TModel[], void>): void;
 
   /**clear
    * Inserts row in database

@@ -53,4 +53,9 @@ export class IdObject {
     {
       this.load(JSON.parse(json));
     }
+
+    toString(): string
+    {
+      return this._id;
+    }
   }

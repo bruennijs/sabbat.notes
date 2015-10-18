@@ -3,7 +3,6 @@
  */
 
 import model = require('./../common/ddd/model');
-import _ = require('underscore');
 
 export class Note extends model.IdObject {
   public get Content() {

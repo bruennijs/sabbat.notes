@@ -58,7 +58,7 @@ suite('FsObjectRepositoryTests', function () {
           var repo = new Dal.FsObjectRepository(that.path);
 
           var objs = InsertModels(repo, ['1', '2']);
-          repo.Get(function(err, models) {
+          repo.Find(function(err, models) {
                 assert.equal(2, models.length);
                 assert.equal(true, models.some(function(o) {
                   return o.id === objs[0].id;

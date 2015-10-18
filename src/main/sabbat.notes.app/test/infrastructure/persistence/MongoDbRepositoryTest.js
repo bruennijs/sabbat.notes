@@ -7,8 +7,9 @@ var setup = require('mocha').setup;
 var test = require('mocha').test;
 var assert = require('assert');
 
-var repository = require('./../../../infrastructure/persistence/MongoDbRepository');
+var repository = require('./../../../infrastructure/persistence/NoteRepository');
 var model = require('./../../../domain/Model');
+var factory = require('./../../../domain/factory/NoteFactory');
 var testConfig = require('./../../test.config');
 
 var _ = require('underscore');
@@ -16,11 +17,11 @@ var _ = require('underscore');
 suite("MongoDbRepositoryTest", function() {
 
   suiteSetup(function() {
-    _.extend(testConfig, {collectionName: 'notes'});
+    //_.extend(testConfig, {collectionName: 'notes'});
   });
 
   test("#when init expect collections created", function(done) {
-    var repo = new repository.NoteRepository(testConfig);
+    var repo = new repository.NoteRepository(testConfig, new factory.NoteFactory());
     repo.Init(function(err) {
       if (err) {
         done(err);
@@ -32,7 +33,7 @@ suite("MongoDbRepositoryTest", function() {
   });
 
   test("#when get expect collection empty", function(done) {
-    var repo = new repository.NoteRepository(testConfig);
+    var repo = new repository.NoteRepository(testConfig, new factory.NoteFactory());
     repo.Init(function(err) {
       if (err) {
         done(err);
@@ -40,20 +41,18 @@ suite("MongoDbRepositoryTest", function() {
       }
 
       // get documents
-      repo.Get(function(err, notes) {
+      repo.Find(function(err, notes) {
         if (!err) {
 
           assert.equal(0, notes.length);
           done();
         }
-
-
       });
     }, true);
   });
 
   test("#when insert expect collection contains this note", function(done) {
-    var repo = new repository.NoteRepository(testConfig);
+    var repo = new repository.NoteRepository(testConfig, new factory.NoteFactory());
     repo.Init(function(err) {
       if (err) {
         done(err);
@@ -66,7 +65,7 @@ suite("MongoDbRepositoryTest", function() {
         assert.equal(true, err === null, err);
 
         // get documents
-        repo.Get(function(err, notes) {
+        repo.Find(function(err, notes) {
           assert.equal(true, err === null, err);
           assert.equal(notes.length, 1);
           done();

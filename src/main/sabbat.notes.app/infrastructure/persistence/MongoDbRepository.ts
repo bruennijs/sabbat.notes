@@ -5,22 +5,43 @@
 ///<reference path="./../../node_modules/rx/ts/rx.all.d.ts"/>
 ///<reference path="./../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
 
-import repo = require('./../../common/ddd/persistence');
-import model = require('./../../domain/Model');
+import repo    = require('./../../common/ddd/persistence');
+import model    = require('./../../common/ddd/model');
+import factory = require('./../../common/ddd/factory');
+
 //import rx = require('rx');
 import mongodb = require('mongodb');
 
-export class NoteRepository implements repo.IRepository<model.Note> {
+export class MongoDbRepository<TModel extends model.IdObject> implements repo.IRepository<model.IdObject> {
+  /**
+   * INheriting classes can use collection to access db.
+   * @return {mongodb.Collection}
+   */
+  protected get collection():mongodb.Collection {
+    return this._collection;
+  }
+
+  protected get db():mongodb.Db {
+    return this._db;
+  }
+
+  protected get factory():factory.IFactory<TModel> {
+    return this._factory;
+  }
+
   private _configuration:any;
+  private _factory:factory.IFactory<TModel>;
 
   private _db: mongodb.Db = null;
   private _collection: mongodb.Collection = null;
 
-  constructor(configuration: any) {
+
+  constructor(configuration: any, factory: factory.IFactory<TModel>) {
     this._configuration = configuration;
+    this._factory = factory;
   }
 
-  private Init(cb: (err: Error) => void, dropCollections?: boolean): void {
+  public Init(cb: (err: Error) => void, dropCollections?: boolean): void {
 
     var that = this;
 
@@ -68,11 +89,13 @@ export class NoteRepository implements repo.IRepository<model.Note> {
     });
   }
 
-  Get(cb:repo.Func2<Error, model.Note[], void>):void {
+  public Find(cb:repo.Func2<Error, TModel[], void>):void {
   if (!this._collection)
     {
       throw new Error('Not initialized');
     }
+
+    var that = this;
 
     //// fidn all items
     this._collection.find({}).toArray(function(err, objs) {
@@ -82,17 +105,17 @@ export class NoteRepository implements repo.IRepository<model.Note> {
       //model.Note.Parse
       objs.forEach(function(item, n, ar) {
         //console.log(item);
-        models.push(new model.Note(item.id, item.title, item.content));
+        models.push(that._factory.CreateFromMongoDocument(item));
       });
 
       cb(err, models);
     });
   }
 
-  Insert(object:model.Note, cb: (err: Error) => void): void {
+  public Insert(object:TModel, cb: (err: Error) => void): void {
     //console.log(JSON.stringify(object));
 
-    this._collection.insertOne(object, function(err, result) {
+    this._collection.insertOne(this._factory.ToMongoDocument(object), function(err, result) {
       console.log("result["  + result + "]");
       cb(err);
     });

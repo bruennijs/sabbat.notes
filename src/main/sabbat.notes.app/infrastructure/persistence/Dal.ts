@@ -36,7 +36,7 @@ import model = require('./../../common/ddd/model');
          * @returns {any}
          * @constructor
          */
-        Get(cb?: persistence.Func2<Error, model.IdObject[], void>): void {
+        Find(cb?: persistence.Func2<Error, model.IdObject[], void>): void {
             fs.readdir(this.dbDir, (err1, files) =>
             {
                 if ((err1 === null)) {
