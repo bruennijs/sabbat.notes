@@ -22,6 +22,7 @@ gulp.task('ts.dist', function() {
                           './infrastructure/persistence/NoteRepository.ts',
                           './domain/Model.ts',
                           './domain/factory/NoteFactory.ts',
+                          './domain/factory/UserFactory.ts',
                           './application/NoteService.ts',]);
 
   tsc.stdout.on('data', function(data) {
