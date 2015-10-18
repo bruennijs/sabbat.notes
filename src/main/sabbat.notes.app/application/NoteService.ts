@@ -5,22 +5,29 @@
 import persistence = require('./../common/ddd/persistence');
 
 import model = require('./../domain/Model');
-import id = require('./../common/infrastructure/service/IdGeneratorService');
+
+import factory = require('./../domain/factory/NoteFactory');
 
 export class NoteService {
   private repo: persistence.IRepository<model.Note>;
-  private _idGeneratorService:id.IdGeneratorService;
+  private _noteFactory:factory.NoteFactory;
 
-  constructor(repo: persistence.IRepository<model.Note>, idGeneratorService: id.IdGeneratorService) {
+  constructor(repo: persistence.IRepository<model.Note>, noteFactory: factory.NoteFactory) {
     this.repo = repo;
-    this._idGeneratorService = idGeneratorService;
+    this._noteFactory = noteFactory;
   }
 
-  public createNote(title: string, cb: (err: Error, model: model.Note) => void) {
-    var note = new model.Note(this._idGeneratorService.new(), title, "Add some content here");
+  public createNote(ownerId: string, cb: (err: Error, model: model.Note) => void) {
+    var note = this._noteFactory.Create(ownerId)
 
     this.repo.Insert(note, function(err) {
       cb(err, note);
     });
   }
+
+/*  public findNotes(ownerId: string, cb: (err: Error, model: model.Note[]) => void) {
+    this.repo.FindByOwner(ownerId, (err, objs) => void {
+      cb(err, objs);
+    })
+  }*/
 }
