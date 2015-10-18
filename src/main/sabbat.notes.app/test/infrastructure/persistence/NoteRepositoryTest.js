@@ -14,7 +14,7 @@ var testConfig = require('./../../test.config');
 
 var _ = require('underscore');
 
-suite("MongoDbRepositoryTest", function() {
+suite("NoteRepositoryTest", function() {
 
   suiteSetup(function() {
     //_.extend(testConfig, {collectionName: 'notes'});
@@ -52,7 +52,8 @@ suite("MongoDbRepositoryTest", function() {
   });
 
   test("#when insert expect collection contains this note", function(done) {
-    var repo = new repository.NoteRepository(testConfig, new factory.NoteFactory());
+    var nf = new factory.NoteFactory();
+    var repo = new repository.NoteRepository(testConfig, nf);
     repo.Init(function(err) {
       if (err) {
         done(err);
@@ -60,7 +61,7 @@ suite("MongoDbRepositoryTest", function() {
       }
 
       // insert
-      repo.Insert(new model.Note('1', 'title text', 'content'), function(err, obj) {
+      repo.Insert(nf.Create('4711'), function(err, obj) {
 
         assert.equal(true, err === null, err);
 
@@ -72,5 +73,11 @@ suite("MongoDbRepositoryTest", function() {
         })
       });;
     }, true);
+  });
+
+  test("#when create note from factory", function() {
+    var nf = new factory.NoteFactory();
+    var obj = nf.Create("4711");
+    console.info(obj);
   });
 });

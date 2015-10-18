@@ -1,5 +1,5 @@
 {
   "_id": "4711",
-  "title":"title text",
-  "content": "note document content"
+  "_title":"title text",
+  "_content": "note document content"
 }

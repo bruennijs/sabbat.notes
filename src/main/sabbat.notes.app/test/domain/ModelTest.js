@@ -13,7 +13,7 @@ var noteDocument = require('./note_doc.json');
 suite("NoteModelTest", function() {
 
 
-  test("#when load note json document expect loadFrom loads into properties", function () {
+  test("#when load note document expect load loads into properties", function () {
     var sut = new model.Note();
     sut.load(noteDocument);
 
@@ -24,9 +24,9 @@ suite("NoteModelTest", function() {
     assert.equal("note document content", sut.content);
   });
 
-  test("#when load note json document expect loadFrom loads into properties", function () {
+  test("#when load note json string expect loadFrom loads into properties", function () {
     var sut = new model.Note();
-    sut.loadFrom('{"_id":"12", "title":"parsed title"}');
+    sut.loadFrom('{"_id":"12", "_title":"parsed title"}');
 
     console.info('loadFrom[' + sut + ']') ;
 

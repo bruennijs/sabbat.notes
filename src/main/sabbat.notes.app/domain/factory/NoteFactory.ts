@@ -30,7 +30,6 @@ export class NoteFactory implements factory.IFactory<model.Note> {
     }
   }
 
-
   CreateFromMongoDocument(document: any): model.Note {
     var obj = new model.Note(document._id, document.ownerId);
     //obj.load(document);
