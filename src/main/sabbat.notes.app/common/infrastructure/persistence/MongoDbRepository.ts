@@ -111,12 +111,12 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     });
   }
 
-  public Insert(object:TModel, cb: (err: Error) => void): void {
+  public Insert(object:TModel, cb: (err: Error, created: TModel) => void): void {
     //console.log(JSON.stringify(object));
 
     this._collection.insertOne(this._factory.ToMongoDocument(object), function(err, result) {
       console.log("result["  + result + "]");
-      cb(err);
+      cb(err, object);
     });
   }
 

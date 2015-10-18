@@ -13,6 +13,7 @@ var factory = require('./../../../domain/factory/NoteFactory');
 var testConfig = require('./../../test.config');
 
 var _ = require('underscore');
+var mongo = require('mongodb');
 
 suite("NoteRepositoryTest", function() {
 
@@ -61,7 +62,7 @@ suite("NoteRepositoryTest", function() {
       }
 
       // insert
-      repo.Insert(nf.Create('4711'), function(err, obj) {
+      repo.Insert(nf.Create(new mongo.ObjectID().toString()), function(err, obj) {
 
         assert.equal(true, err === null, err);
 
@@ -77,7 +78,38 @@ suite("NoteRepositoryTest", function() {
 
   test("#when create note from factory", function() {
     var nf = new factory.NoteFactory();
-    var obj = nf.Create("4711");
+    var obj = nf.Create(new mongo.ObjectID().toString());
     console.info(obj);
+  });
+
+  test("#when findByOwner expect returns only created one with expected ownerid", function(done) {
+    var expectedOwnerId = new mongo.ObjectID();
+
+    var nf = new factory.NoteFactory();
+    var sut = new repository.NoteRepository(testConfig, nf);
+
+    var created = nf.Create(expectedOwnerId.toString());
+
+    sut.Init(function(err) {
+      // insert note
+      sut.Insert(created, function (err, created) {
+        if (!err) {
+          // find note by owner
+          sut.FindByOwner(expectedOwnerId.toString(), function (err, models) {
+            // expect one model
+
+            console.info(models[0]);
+
+            assert.equal(1, models.length);
+            // with identity of created one
+            assert.equal(created.id, models[0].id);
+            done();
+          });
+        }
+        else {
+          done(err);
+        }
+      });
+    });
   });
 });

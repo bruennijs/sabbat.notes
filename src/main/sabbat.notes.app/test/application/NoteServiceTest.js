@@ -12,6 +12,7 @@ var ns = require('./../../application/NoteService');
 var factory = require('./../../domain/factory/NoteFactory');
 
 var fs = require('fs');
+var mongo = require('mongodb');
 
 var repoBuilder = require('./../builder/RepositoryBuilder');
 
@@ -26,7 +27,7 @@ suite('NoteServiceTest', function () {
 
     test('when create document expect document contains id', function (done) {
 
-      var expectedOwnerId = "0812";
+      var expectedOwnerId = new mongo.ObjectID();
 
       var repoMock = new repoBuilder().BuildMocked();
 

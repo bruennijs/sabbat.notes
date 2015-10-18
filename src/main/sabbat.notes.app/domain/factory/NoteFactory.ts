@@ -17,7 +17,7 @@ export class NoteFactory implements factory.IFactory<model.Note> {
    * @constructor
    */
   Create(ownerId: string): model.Note {
-    return new model.Note(new mongodb.ObjectID().toString(), ownerId);
+    return new model.Note(new mongodb.ObjectID().toString(), new mongodb.ObjectID(ownerId).toString());
   }
 
   ToMongoDocument(obj:model.Note): any
@@ -26,7 +26,7 @@ export class NoteFactory implements factory.IFactory<model.Note> {
       _id: new mongodb.ObjectID(obj.id),
       content: obj.content,
       title: obj.content,
-      ownerId: obj.ownerId
+      ownerId: new mongodb.ObjectID(obj.ownerId)
     }
   }
 

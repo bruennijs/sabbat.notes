@@ -2,17 +2,17 @@
  * Created by bruenni on 23.09.15.
  */
 
-import persistence = require('./../common/ddd/persistence');
+import persistence = require('./../infrastructure/persistence/NoteRepository');
 
 import model = require('./../domain/Model');
 
 import factory = require('./../domain/factory/NoteFactory');
 
 export class NoteService {
-  private repo: persistence.IRepository<model.Note>;
+  private repo: persistence.NoteRepository;
   private _noteFactory:factory.NoteFactory;
 
-  constructor(repo: persistence.IRepository<model.Note>, noteFactory: factory.NoteFactory) {
+  constructor(repo: persistence.NoteRepository, noteFactory: factory.NoteFactory) {
     this.repo = repo;
     this._noteFactory = noteFactory;
   }
@@ -25,9 +25,9 @@ export class NoteService {
     });
   }
 
-/*  public findNotes(ownerId: string, cb: (err: Error, model: model.Note[]) => void) {
-    this.repo.FindByOwner(ownerId, (err, objs) => void {
+  public findNotesByOwner(ownerId: string, cb: (err: Error, model: model.Note[]) => void) {
+    this.repo.FindByOwner(ownerId, function(err, objs) {
       cb(err, objs);
     })
-  }*/
+  }
 }

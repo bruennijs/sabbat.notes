@@ -19,16 +19,18 @@ export class NoteRepository extends repo.MongoDbRepository<model.Note> {
     super(configuration, factory);
   }
 
-  public FindByUser(userId: dddModel.IdObject, cb:(error: Error, obj: model.Note[]) => void):void {
+  public FindByOwner(userId: string, cb:(error: Error, obj: model.Note[]) => void):void {
+
+    var that = this;
+
     //// fidn all items
-    this.collection.find({userId: userId.toString()}).toArray(function(err, objs) {
+    this.collection.find({ownerId: new mongodb.ObjectID(userId)}).toArray(function(err, objs) {
 
       var models = [];
 
       //model.Note.Parse
       objs.forEach(function(item, n, ar) {
-        //console.log(item);
-        models.push(this.factory.CreateFromMongoDocument(item));
+        models.push(that.factory.CreateFromMongoDocument(item));
       });
 
       cb(err, models);
