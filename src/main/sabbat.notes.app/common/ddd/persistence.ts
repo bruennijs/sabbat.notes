@@ -34,4 +34,9 @@ export interface IRepository<TModel extends model.IdObject>  {
    * @constructor
    */
   Insert(object: TModel, cb: (err: Error, created: TModel) => void): void;
+
+  /**
+   * Generates next id.
+   */
+  nextId(): model.Id;
 }

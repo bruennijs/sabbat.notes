@@ -3,7 +3,7 @@
  */
 
 function RepositoryBuilder() {
-
+  this.nextId = 0;
 };
 
 RepositoryBuilder.prototype.BuildMocked = function () {
@@ -11,6 +11,10 @@ RepositoryBuilder.prototype.BuildMocked = function () {
     Insert: function(model, cb) {
       this.insertModel = model;
       cb(null);
+    },
+
+    nextId: function() {
+      return this.nextId++;
     }
   }
 };

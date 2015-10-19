@@ -5,7 +5,7 @@
 import model = require('./../common/ddd/model');
 
 export class Note extends model.IdObject {
-  public get ownerId():string {
+  public get ownerId(): model.Id {
     return this._ownerId;
   }
 
@@ -29,11 +29,11 @@ export class Note extends model.IdObject {
 
   private _title;
 
-  private _ownerId: string;
+  private _ownerId: model.Id;
 
   private _sharedUserIds: string[];
 
-  constructor(id: string, ownerId: string, title?: string, content?: string)
+  constructor(id: model.Id, ownerId: model.Id, title?: string, content?: string)
   {
     super(id);
     this._ownerId = ownerId;
@@ -63,9 +63,9 @@ export class User extends model.IdObject {
   }
   private _name;
 
-  constructor(id: string, name: string)
+  constructor(id: model.Id, name: string)
   {
-    super(id);
+    super(id)
     this._name = name;
   }
 }

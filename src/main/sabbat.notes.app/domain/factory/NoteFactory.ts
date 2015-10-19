@@ -3,35 +3,27 @@
  */
 
 import factory = require('./../../common/ddd/factory');
+import dddModel = require('./../../common/ddd/model');
 import model = require('./../../domain/Model');
+import repository = require('./../../domain/Model');
 
 import mongodb = require('mongodb');
 import _ = require('underscore');
 
 export class NoteFactory implements factory.IFactory<model.Note> {
 
-  /**
-   * Creates new note
-   * @param ownerId
-   * @return {Note}
-   * @constructor
-   */
-  Create(ownerId: string): model.Note {
-    return new model.Note(new mongodb.ObjectID().toString(), new mongodb.ObjectID(ownerId).toString());
-  }
-
-  ToMongoDocument(obj:model.Note): any
+  ToMongoDocument(obj: model.Note): any
   {
     return {
-      _id: new mongodb.ObjectID(obj.id),
+      _id: new mongodb.ObjectID(obj.id.value),
       content: obj.content,
       title: obj.content,
-      ownerId: new mongodb.ObjectID(obj.ownerId)
+      ownerId: new mongodb.ObjectID(obj.ownerId.value)
     }
   }
 
   CreateFromMongoDocument(document: any): model.Note {
-    var obj = new model.Note(document._id, document.ownerId);
+    var obj = new model.Note(new dddModel.Id(document._id), new dddModel.Id(document.ownerId));
     //obj.load(document);
     return obj;
   }

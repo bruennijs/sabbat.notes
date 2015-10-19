@@ -12,6 +12,21 @@ import path = require('path');
 import _ = require('underscore');
 import rx = require('rx');
 
+/**
+ * Entity id object
+ */
+export class Id {
+  public get value():string {
+    return this._value;
+  }
+
+  private _value:string;
+
+  constructor(value: string) {
+    this._value = value;
+  }
+}
+
   /**
    * Created by bruenni on 16.08.15.
    */
@@ -20,9 +35,9 @@ export class IdObject {
       return this._id;
     }
 
-    private _id:string;
+    private _id: Id;
 
-    constructor(id:string) {
+    constructor(id: Id) {
       this._id = id;
     }
 
@@ -56,6 +71,6 @@ export class IdObject {
 
     toString(): string
     {
-      return this._id;
+      return this._id.toString();
     }
   }

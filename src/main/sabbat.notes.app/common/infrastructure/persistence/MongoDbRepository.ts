@@ -5,13 +5,14 @@
 ///<reference path="./../../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
 
 import repo    = require('./../../ddd/persistence');
-import model    = require('./../../ddd/model');
+import model   = require('./../../ddd/model');
 import factory = require('./../../ddd/factory');
 
 //import rx = require('rx');
 import mongodb = require('mongodb');
 
 export class MongoDbRepository<TModel extends model.IdObject> implements repo.IRepository<model.IdObject> {
+
   /**
    * INheriting classes can use collection to access db.
    * @return {mongodb.Collection}
@@ -132,6 +133,9 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     });
   }
 
+  nextId():model.Id {
+    return new model.Id(new mongodb.ObjectID().toString());
+  }
 /*  GetRx(): rx.IObservable<model.Note> {
     return null;
   }*/

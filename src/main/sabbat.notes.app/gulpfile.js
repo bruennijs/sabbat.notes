@@ -20,10 +20,12 @@ gulp.task('ts.dist', function() {
                           '--outDir', './dist',
                           './infrastructure/persistence/Dal.ts',
                           './infrastructure/persistence/NoteRepository.ts',
+                          './infrastructure/persistence/UserRepository.ts',
                           './domain/Model.ts',
                           './domain/factory/NoteFactory.ts',
                           './domain/factory/UserFactory.ts',
-                          './application/NoteService.ts',]);
+                          './application/NoteService.ts',
+                          './application/UserService.ts']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());

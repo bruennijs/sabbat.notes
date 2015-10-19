@@ -19,6 +19,9 @@ import model = require('./../../common/ddd/model');
      * File based db
      */
     export class FsObjectRepository implements persistence.IRepository<model.IdObject> {
+        nextId():model.Id {
+            return undefined;
+        }
         private dbDir;
 
         constructor(dbDir: string) {
@@ -70,7 +73,7 @@ import model = require('./../../common/ddd/model');
          * @constructor
          */
         GetRx(): rx.IObservable<model.IdObject> {
-            return rx.Observable.from([new model.IdObject("4711")]);
+            return rx.Observable.from([new model.IdObject(new model.Id("4711"))]);
         }
 
         /**

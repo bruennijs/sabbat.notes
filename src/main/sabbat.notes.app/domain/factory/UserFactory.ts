@@ -10,14 +10,10 @@ import _ = require('underscore');
 
 export class UserFactory implements factory.IFactory<model.User> {
 
-  Create(name: string): model.User {
-    return new model.User(new mongodb.ObjectID().toString(), name);
-  }
-
   ToMongoDocument(obj: model.User): any
   {
     return {
-      _id: new mongodb.ObjectID(obj.id),
+      _id: new mongodb.ObjectID(obj.id.value),
       name: obj.name
     }
   }

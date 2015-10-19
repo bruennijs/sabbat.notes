@@ -7,8 +7,9 @@ var setup = require('mocha').setup;
 var test = require('mocha').test;
 var assert = require('assert');
 
+var model = require('./../../../common/ddd/model');
 var repository = require('./../../../infrastructure/persistence/NoteRepository');
-var model = require('./../../../domain/Model');
+var models = require('./../../../domain/Model');
 var factory = require('./../../../domain/factory/NoteFactory');
 var testConfig = require('./../../test.config');
 
@@ -62,7 +63,7 @@ suite("NoteRepositoryTest", function() {
       }
 
       // insert
-      repo.Insert(nf.Create(new mongo.ObjectID().toString()), function(err, obj) {
+      repo.Insert(new models.Note(repo.nextId(), new model.Id(new mongo.ObjectID().toString())), function(err, obj) {
 
         assert.equal(true, err === null, err);
 
@@ -72,14 +73,8 @@ suite("NoteRepositoryTest", function() {
           assert.equal(notes.length, 1);
           done();
         })
-      });;
+      });
     }, true);
-  });
-
-  test("#when create note from factory", function() {
-    var nf = new factory.NoteFactory();
-    var obj = nf.Create(new mongo.ObjectID().toString());
-    console.info(obj);
   });
 
   test("#when findByOwner expect returns only created one with expected ownerid", function(done) {
@@ -88,7 +83,7 @@ suite("NoteRepositoryTest", function() {
     var nf = new factory.NoteFactory();
     var sut = new repository.NoteRepository(testConfig, nf);
 
-    var created = nf.Create(expectedOwnerId.toString());
+    var created = new models.Note(sut.nextId(), new model.Id(expectedOwnerId));
 
     sut.Init(function(err) {
       // insert note
@@ -102,7 +97,7 @@ suite("NoteRepositoryTest", function() {
 
             assert.equal(1, models.length);
             // with identity of created one
-            assert.equal(created.id, models[0].id);
+            assert.equal(created.id.value, models[0].id.value);
             done();
           });
         }
