@@ -1,5 +1,5 @@
 {
-  "name": "sabbat.notes.service",
+  "name": "sabbat.notes.app",
   "version": "1.0.0",
   "description": "Sabbat notes application library",
   "main": "app.js",
@@ -19,7 +19,7 @@
     "typescript": "^1.6.2"
   },
   "dependencies": {
-    "DefinitelyTyped": "git://github.com/bruennijs/DefinitelyTyped#underscore-1.8.3",
+    "DefinitelyTyped": "https://github.com/borisyankov/DefinitelyTyped",
     "mongodb": "^2.0.43",
     "rx": "^3.0.1",
     "underscore": "^1.8.3",

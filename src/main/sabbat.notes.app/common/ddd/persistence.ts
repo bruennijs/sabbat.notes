@@ -6,10 +6,9 @@
  * Repository interfaces
  */
 
-/// <reference path="../../node_modules/DefinitelyTyped/node/node-0.10.d.ts" />
-/// <reference path="../../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="../../node_modules/DefinitelyTyped/node/node.d.ts" />
 
-import rx = require('rx');  /// this is a "declare module" section of a d.ts file where several modules are declared
+//import rx = require('rx');  /// this is a "declare module" section of a d.ts file where several modules are declared
 
 import model = require('./model');  /// this is a ts file where symbols are exported
 

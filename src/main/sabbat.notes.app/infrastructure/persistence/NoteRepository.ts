@@ -2,7 +2,7 @@
  * Created by bruenni on 24.09.15.
  */
 
-///<reference path="./../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
+///<reference path="../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
 
 import repo = require('./../../common/infrastructure/persistence/MongoDbRepository');
 import model = require('./../../domain/Model');

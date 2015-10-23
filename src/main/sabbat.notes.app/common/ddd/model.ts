@@ -2,15 +2,13 @@
  * Created by bruenni on 23.09.15.
  */
 
-/// <reference path="../../node_modules/DefinitelyTyped/node/node-0.10.d.ts" />
+/// <reference path="../../node_modules/DefinitelyTyped/node/node.d.ts" />
 /// <reference path="../../node_modules/DefinitelyTyped/underscore/underscore.d.ts" />
-/// <reference path="../../node_modules/rx/ts/rx.all.d.ts" />
 
 import util = require('util');
 import fs = require('fs');
 import path = require('path');
 import _ = require('underscore');
-import rx = require('rx');
 
 /**
  * Entity id object
@@ -50,7 +48,8 @@ export class IdObject {
     static Parse(json: string):IdObject {
       var obj = JSON.parse(json);
       ///util.inherits(model, Models.IdObject); //// no, only copies prototype's function into a constructor's prototype
-      return _.create(IdObject.prototype, obj);
+      //return _.create(IdObject.prototype, obj);
+        return null;
     }
 
     /**
