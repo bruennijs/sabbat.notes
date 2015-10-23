@@ -19,7 +19,7 @@ export class UserFactory implements factory.IFactory<model.User> {
   }
 
   CreateFromMongoDocument(document: any): model.User {
-    return new model.User(document._id, document.name);
+    return new model.User(document._id, document.name, document.email);
   }
 }
 
