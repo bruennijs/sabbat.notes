@@ -26,7 +26,7 @@ gulp.task('ts.dist', function() {
                           './domain/factory/NoteFactory.ts',
                           './domain/factory/UserFactory.ts',
                           './application/NoteService.ts',
-                          './application/UserService.ts']);
+                          './application/MembershipService.ts']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
@@ -62,6 +62,7 @@ gulp.task('ts.common.dist', function(cb) {
     './common/ddd/model.ts',
     './common/ddd/persistence.ts',
     './common/ddd/factory.ts',
+    './common/ddd/impl/DomainEventBusImpl.ts',
     './common/infrastructure/service/IdGeneratorService.ts',
     './common/infrastructure/persistence/MongoDbRepository.ts']);
 
