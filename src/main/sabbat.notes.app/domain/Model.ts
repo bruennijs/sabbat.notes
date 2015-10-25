@@ -5,6 +5,9 @@
 /// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
 
 import model = require('./../common/ddd/model');
+
+import msg = require('./message/Message');
+
 import rx = require('rx');
 import url = require('url');
 
@@ -84,86 +87,8 @@ import url = require('url');
      * @returns Async observable with result with the success of the
      * sending.
      */
-    sendMessage(toUser:User):rx.IObservable<SendMessageResult> {
+    sendMessage(toUser:User): msg.Message {
       return null;
-    }
-  }
-
-  /**
-   * A message can have the state 'Sent' when the user has sent a message to the to user.
-   * When the message was delivered to the to user (e.g. was not online when sent) the message
-   * will transition to the Delivered state
-   */
-  export enum MessageState {
-    Sent,
-    Delivered
-  }
-  ;
-
-  /**
-   * Message sent by users
-   */
-  export class Message extends model.IdObject {
-    public get currentState() {
-      return this._currentState;
-    }
-
-    /**
-     * Getter to-
-     * @returns {any}
-     */
-    public get to() {
-      return this._to;
-    }
-
-    private _to;
-
-    /**
-     * Getter from.
-     * @returns {any}
-     */
-    public get from() {
-      return this._from;
-    }
-
-    private _from;
-
-    private _currentState;
-
-    /**
-     * Constructor
-     * @param id
-     * @param fromUserId
-     * @param toUserId
-     */
-    constructor(id:model.Id, fromUserId:model.Id, toUserId:model.Id) {
-      super(id);
-      this._from = fromUserId;
-      this._to = toUserId;
-      this._currentState = MessageState.Sent;
-    }
-  }
-
-  /**
-   * Sent message result.
-   */
-  export class SendMessageResult {
-    /**
-     * Message sent or delivered
-     * @returns {any}
-     */
-    public get msg() {
-      return this._msg;
-    }
-
-    private _msg;
-
-    /**
-     * Constructor.
-     * @param msg
-     */
-    constructor(msg:Message) {
-      this._msg = msg;
     }
   }
 //} // end of ns 'sabbat'

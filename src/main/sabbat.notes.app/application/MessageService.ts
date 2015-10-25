@@ -7,13 +7,13 @@ import persistence = require('./../infrastructure/persistence/NoteRepository');
 import model = require('./../common/ddd/model');
 import models = require('./../domain/Model');
 
-import factory = require('./../domain/note/NoteFactory');
+import factory = require('./../domain/factory/NoteFactory');
 
-export class NoteService {
+export class MessageService {
   private _noteRepository: persistence.NoteRepository;
   private _noteFactory:factory.NoteFactory;
 
-  constructor(repo: persistence.NoteRepository, noteFactory: factory.NoteFactory) {
+  constructor(repo: persistence.MessageRepository, noteFactory: factory.NoteFactory) {
     this._noteRepository = repo;
     this._noteFactory = noteFactory;
   }

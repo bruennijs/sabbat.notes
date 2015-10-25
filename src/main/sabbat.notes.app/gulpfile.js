@@ -23,8 +23,10 @@ gulp.task('ts.dist', function() {
                           './infrastructure/persistence/NoteRepository.ts',
                           './infrastructure/persistence/UserRepository.ts',
                           './domain/Model.ts',
-                          './domain/factory/NoteFactory.ts',
-                          './domain/factory/UserFactory.ts',
+                          './domain/note/NoteFactory.ts',
+                            './domain/user/UserFactory.ts',
+                            './domain/message/MessageFactory.ts',
+                            './domain/message/Message.ts',
                           './application/NoteService.ts',
                           './application/MembershipService.ts']);
 
