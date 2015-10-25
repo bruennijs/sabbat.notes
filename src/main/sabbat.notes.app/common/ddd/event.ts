@@ -20,20 +20,20 @@ export interface IDomainEvent {
 /**
  * Event bus can be implemented by RabbitMQ e.g. to get distributed events.
  */
-export interface IDomainEventBus<TEvent extends IDomainEvent> {
+export interface IDomainEventBus {
     /**
      * Publishes event to the bus.
      * @param event to publish.
      * @constructor
      */
-    Publish(event: TEvent): void;
+    Publish(event: IDomainEvent): void;
 
     /**
      * Subcribes for asynchronous event
      * @group: name of the group to listen for events. See IDomainEvent for property 'group'
      * @constructor
      */
-    Subscribe(group: string): rx.IObservable<TEvent>;
+    Subscribe(group: string): rx.IObservable<IDomainEvent>;
 }
 
 /**

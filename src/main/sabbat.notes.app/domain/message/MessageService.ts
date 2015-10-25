@@ -5,28 +5,39 @@
 /// <reference path="../../node_modules/rx/ts/rx.all.d.ts" />
 import rx = require('rx');
 
-import puser = require('./../../infrastructure/persistence/UserRepository');
-import pmsg = require('./../../infrastructure/persistence/MessageRepository');
-
 import model = require('./../../common/ddd/model');
 import event = require('./../../common/ddd/event');
 
 import user = require('./../Model');
-import msg = require('./Message');
+import puser = require('./../../infrastructure/persistence/UserRepository');
 
+import pmsg = require('./../../infrastructure/persistence/MessageRepository');
+import msg = require('./Message');
 import factory = require('./MessageFactory');
+import msgEvents = require('./MessageEvents');
 
 export class MessageService implements event.IEventHandler<event.IDomainEvent> {
   private _msgRepo;
   private _factory;
   private _userRepo;
+  private _bus;
 
-  constructor(msgRepo: pmsg.MessageRepository, userRepo: puser.UserRepository, noteFactory: factory.MessageFactory) {
+  constructor(msgRepo: pmsg.MessageRepository, userRepo: puser.UserRepository, noteFactory: factory.MessageFactory, bus: event.IDomainEventBus) {
     this._msgRepo = msgRepo;
     this._userRepo = userRepo;
     this._factory = noteFactory;
+    this._bus = bus;
   }
 
+  /***
+   * sends a message to a user in the domain.
+   * 1) gets from and to user from UserRepo
+   * 2) sends message
+   * @param from
+   * @param to
+   * @param content
+   * @returns {Rx.ReplaySubject<T>}
+   */
   public sendMessage(from: model.Id, to: model.Id, content: string): rx.IObservable<msg.Message> {
     var nextId = this._msgRepo.nextId();
 
@@ -54,6 +65,7 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
     });
 
     // fire MessageSentEvent
+    this._bus.Publish(new msgEvents.MessageSentEvent(message.id));
 
     return subject;
   }
@@ -65,6 +77,14 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
    * @constructor
    */
   Handle(event:event.IDomainEvent): void {
-    return;
+    if (event instanceof msgEvents.MessageDeliveredEvent)
+    {
+      var message = this._msgRepo.GetById(event.id);
+
+       //// transition to delivered state and store to repo
+      //message.Delivered();
+
+      //this._msgRepo.Update(message);
+    }
   }
 }

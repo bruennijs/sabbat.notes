@@ -5,7 +5,7 @@
 import bus = require('./../event');
 import rx = require('rx');
 
-export class DomainEventBusImpl implements bus.IDomainEventBus<bus.IDomainEvent> {
+export class DomainEventBusImpl implements bus.IDomainEventBus {
 
     /**
      * js object where:
