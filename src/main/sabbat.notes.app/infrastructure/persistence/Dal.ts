@@ -19,6 +19,9 @@ import model = require('./../../common/ddd/model');
      * File based db
      */
     export class FsObjectRepository implements persistence.IRepository<model.IdObject> {
+        GetById(id:model.Id):Rx.IObservable<model.IdObject> {
+            return undefined;
+        }
         nextId():model.Id {
             return undefined;
         }

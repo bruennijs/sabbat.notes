@@ -35,3 +35,15 @@ export interface IDomainEventBus<TEvent extends IDomainEvent> {
      */
     Subscribe(group: string): rx.IObservable<TEvent>;
 }
+
+/**
+ * Handler for handling events
+ */
+export interface IEventHandler<TEvent extends IDomainEvent> {
+    /**
+     * Domain handler processing events.
+     * @param event
+     * @constructor
+     */
+    Handle(event: TEvent): void;
+}

@@ -75,20 +75,10 @@ import url = require('url');
 
     private _name;
 
-    constructor(id:model.Id, name:string, email:url.Url) {
+    constructor(id:model.Id, name: string, email:url.Url) {
       super(id)
       this._name = name;
       this._email = email;
-    }
-
-    /**
-     * Sends a message to the specified user.
-     * @param toUser
-     * @returns Async observable with result with the success of the
-     * sending.
-     */
-    sendMessage(toUser:User): msg.Message {
-      return null;
     }
   }
 //} // end of ns 'sabbat'

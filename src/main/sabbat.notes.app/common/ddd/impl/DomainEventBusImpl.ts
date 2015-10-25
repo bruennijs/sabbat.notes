@@ -2,7 +2,7 @@
  * Created by bruenni on 25.10.15.
  */
 
-import bus = require('./../IDomainEventBus');
+import bus = require('./../event');
 import rx = require('rx');
 
 export class DomainEventBusImpl implements bus.IDomainEventBus<bus.IDomainEvent> {

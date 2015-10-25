@@ -3,6 +3,7 @@
  */
 
 import model = require('./../../common/ddd/model');
+import user = require('./../Model');
 import rx = require('rx');
 import url = require('url');
 
@@ -22,6 +23,7 @@ import url = require('url');
    * Message sent by users
    */
   export class Message extends model.IdObject {
+
     public get content() {
       return this._content;
     }
@@ -58,13 +60,11 @@ import url = require('url');
      * Constructor
      * @param id
      * @param fromUserId
-     * @param toUserId
      * @param content
      */
-    constructor(id:model.Id, fromUserId:model.Id, toUserId:model.Id, content:string, state?: MessageState) {
+    constructor(id:model.Id, fromUserId:model.Id, toUserId?:model.Id, content?:string, state?: MessageState) {
       super(id);
       this._from = fromUserId;
-      this._to = toUserId;
       if (state === undefined) {
         this._currentState = MessageState.None;
       }
@@ -73,6 +73,17 @@ import url = require('url');
         this._currentState = state;
       }
       this._content = content;
+    }
+
+    /**
+     * Sends a message to the specified user.
+     * @param to user to send
+     * @param content content data.
+     */
+    public sendTo(to: user.User, content: string): void {
+      this._to = to.id;
+      this._content = content;
+      this._currentState = MessageState.Sent;
     }
   }
 

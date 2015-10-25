@@ -136,7 +136,28 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
   nextId():model.Id {
     return new model.Id(new mongodb.ObjectID().toString());
   }
-/*  GetRx(): rx.IObservable<model.Note> {
-    return null;
-  }*/
+
+  /**
+   * Gets document where _id === parameter.id
+   * @param id
+   * @returns {ReplaySubject<T>}
+   * @constructor
+   */
+  GetById(id: model.Id): Rx.IObservable<TModel> {
+    var subject = new Rx.ReplaySubject<TModel>();
+
+    this.collection
+        .find({_id: new mongodb.ObjectID(id.toString())})
+        .toArray(function(err, objs)
+        {
+          if(!err) {
+            subject.onNext(objs[0]);
+            subject.onCompleted();
+          }
+          else
+            subject.onError(err);
+        });
+
+    return subject;
+  }
 }

@@ -27,6 +27,7 @@ gulp.task('ts.dist', function() {
                             './domain/user/UserFactory.ts',
                             './domain/message/MessageFactory.ts',
                             './domain/message/Message.ts',
+                            './domain/message/MessageService.ts',
                           './application/NoteService.ts',
                           './application/MembershipService.ts']);
 

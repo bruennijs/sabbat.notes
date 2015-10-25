@@ -8,7 +8,8 @@
 
 /// <reference path="../../node_modules/DefinitelyTyped/node/node.d.ts" />
 
-//import rx = require('rx');  /// this is a "declare module" section of a d.ts file where several modules are declared
+/// <reference path="../../node_modules/rx/ts/rx.all.d.ts" />
+import rx = require('rx');  /// this is a "declare module" section of a d.ts file where several modules are declared
 
 import model = require('./model');  /// this is a ts file where symbols are exported
 
@@ -21,11 +22,17 @@ export interface Func2<T1, T2, TResult> {
 }
 
 export interface IRepository<TModel extends model.IdObject>  {
+
+  /**
+   * Get by id
+   */
+  GetById(id: model.Id): rx.IObservable<TModel>;
+
   /**
    * Gets all users.
    * @constructor
    */
-  Find(cb?:Func2<Error, TModel[], void>): void;
+  Find(cb:Func2<Error, TModel[], void>): void;
 
   /**clear
    * Inserts row in database
