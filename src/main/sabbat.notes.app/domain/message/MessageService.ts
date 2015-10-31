@@ -39,17 +39,20 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
    * @returns {Rx.ReplaySubject<T>}
    */
   public sendMessage(from: model.Id, to: model.Id, content: string): rx.IObservable<msg.Message> {
+    var that = this;
+
     var nextId = this._msgRepo.nextId();
 
-    var fromUser = this._userRepo.GetById(from);
-    var toUser = this._userRepo.GetById(from);
+    var subject = new rx.ReplaySubject<msg.Message>();
 
-    var message = new msg.Message(nextId, from);
+/*    var fromUser = this._userRepo.GetById(from);
+    var toUser = this._userRepo.GetById(to);*/
+
+/*    var message = new msg.Message(nextId, from);
 
     //// contains business logic
-    message.sendTo(toUser, content);
+    var events = message.create(fromUser.id, toUser.id, content);
 
-    var subject = new rx.ReplaySubject<msg.Message>();
 
     // insert to repo.
     this._msgRepo.Insert(message, function(err, createdMsg) {
@@ -65,7 +68,9 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
     });
 
     // fire MessageSentEvent
-    this._bus.Publish(new msgEvents.MessageSentEvent(message.id));
+    events.forforEeach((item, n, arr) => void {
+      that._bus.Publish(item);
+    });*/
 
     return subject;
   }

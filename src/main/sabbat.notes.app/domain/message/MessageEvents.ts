@@ -8,7 +8,13 @@ import model = require('./../../common/ddd/model');
 /**
  * Fired WHEN message was sent but not delivered
  */
-export class MessageSentEvent implements event.IDomainEvent {
+export class MessageCreatedEvent implements event.IDomainEvent {
+    public get to():model.Id {
+        return this._to;
+    }
+    public get from():model.Id {
+        return this._from;
+    }
     public get id() {
         return this._id;
     }
@@ -20,8 +26,14 @@ export class MessageSentEvent implements event.IDomainEvent {
 
     private _group:string = 'message';
 
-    constructor(id: model.Id) {
+    private _from:model.Id;
+
+    private _to:model.Id;
+
+    constructor(id:model.Id, from:model.Id, to:model.Id, content:string) {
         this._id = id;
+        this._from = from;
+        this._to = to;
     }
 }
 

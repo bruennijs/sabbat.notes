@@ -4,7 +4,7 @@
 
 var config = {
     db_path: "./dist/js/db",
-    mongodb_url: "mongodb://127.0.0.1:27017/sabbat"
+    mongodb_url: "mongodb://localhost:27017/sabbat"
 };
 
 module.exports = config;

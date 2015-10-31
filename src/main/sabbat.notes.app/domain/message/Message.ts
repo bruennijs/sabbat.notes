@@ -4,6 +4,8 @@
 
 import model = require('./../../common/ddd/model');
 import user = require('./../Model');
+import events = require('./MessageEvents');
+import dddEvents = require('./../../common/ddd/event');
 import rx = require('rx');
 import url = require('url');
 
@@ -13,8 +15,8 @@ import url = require('url');
    * will transition to the Delivered state
    */
   export enum MessageState {
-    None,
-    Sent,
+    Created,
+    Delivering,
     Delivered
   }
   ;
@@ -59,31 +61,35 @@ import url = require('url');
     /**
      * Constructor
      * @param id
-     * @param fromUserId
+     * @param fromId
+     * @param toId
+     * @param toId
      * @param content
+     * @param state
+     * @param state
      */
-    constructor(id:model.Id, fromUserId:model.Id, toUserId?:model.Id, content?:string, state?: MessageState) {
-      super(id);
-      this._from = fromUserId;
-      if (state === undefined) {
-        this._currentState = MessageState.None;
-      }
-      else
-      {
-        this._currentState = state;
-      }
+    constructor(id:model.Id, fromId:model.Id, toId:model.Id, content:string, state: MessageState) {
+      super(id);;
+
+      this._currentState = state;
       this._content = content;
+      this._from = fromId;
+      this._to = toId;
     }
 
     /**
      * Sends a message to the specified user.
+     * @param fromUserId
      * @param to user to send
      * @param content content data.
      */
-    public sendTo(to: user.User, content: string): void {
-      this._to = to.id;
+    public create(from: user.User, to: user.User, content: string): dddEvents.IDomainEvent[] {
+      this._to = to.id
+      this._from = from.id;
       this._content = content;
-      this._currentState = MessageState.Sent;
+      this._currentState = MessageState.Delivering;
+
+      return [new events.MessageCreatedEvent(this.id, from.id, to.id, content)];
     }
   }
 
