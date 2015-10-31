@@ -49,7 +49,9 @@ suite('MessageServiceTest', function () {
       var messageObs = sut.sendMessage(userFrom.id.toString(), userTo.id.toString(), "some content");
 
       messageObs.subscribe(function(msg) {
-        assert.equal("some content", msg.content);
+        assert.equal(msg.from.toString(), "1");
+        assert.equal(msg.to.toString(), "2");
+        assert.equal(msg.content, "some content");
         done();
       });
     });

@@ -23,6 +23,10 @@ export class Id {
   constructor(value: string) {
     this._value = value;
   }
+
+  public toString(): string {
+      return this._value;
+  }
 }
 
   /**
