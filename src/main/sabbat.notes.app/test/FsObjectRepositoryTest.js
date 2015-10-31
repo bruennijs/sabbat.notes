@@ -54,23 +54,23 @@ suite('FsObjectRepositoryTests', function () {
           assert.equal(true, fs.existsSync(that.path), "path does not exist Init()");
     });
 
-    test('should insert file', function (done) {
-          var repo = new Dal.FsObjectRepository(that.path);
-
-          var objs = InsertModels(repo, ['1', '2']);
-          repo.Find(function(err, models) {
-                assert.equal(2, models.length);
-                assert.equal(true, models.some(function(o) {
-                  return o.id === objs[0].id;
-                }));
-
-                assert.equal(true, models.some(function(o) {
-                  return o.id === objs[1].id;
-                }));
-
-                done();
-            });
-    });
+    //test('should insert file', function (done) {
+    //      var repo = new Dal.FsObjectRepository(that.path);
+    //
+    //      var objs = InsertModels(repo, ['1', '2']);
+    //      repo.Find(function(err, models) {
+    //            assert.equal(2, models.length);
+    //            assert.equal(true, models.some(function(o) {
+    //              return o.id === objs[0].id;
+    //            }));
+    //
+    //            assert.equal(true, models.some(function(o) {
+    //              return o.id === objs[1].id;
+    //            }));
+    //
+    //            done();
+    //        });
+    //});
 
     test('should observable fire inserted models', function () {
     });
