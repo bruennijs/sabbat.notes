@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="app unit test" type="mocha-javascript-test-runner" factoryName="Mocha" singleton="false">
+    <node-options />
+    <working-directory>$PROJECT_DIR$/src/main/sabbat.notes.app/dist</working-directory>
+    <pass-parent-env>true</pass-parent-env>
+    <envs />
+    <ui>tdd</ui>
+    <extra-mocha-options>--fgrep &quot;Test&quot;</extra-mocha-options>
+    <test-directory>$PROJECT_DIR$/src/main/sabbat.notes.app/dist/test</test-directory>
+    <recursive>true</recursive>
+    <method>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="ts.dist" run_configuration_type="js.build_tools.gulp" />
+    </method>
+  </configuration>
+</component>

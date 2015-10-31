@@ -2,19 +2,19 @@
  * Created by bruenni on 23.09.15.
  */
 
-/// <reference path="../../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
 import rx = require('rx');
 
-import model = require('./../../common/ddd/model');
-import event = require('./../../common/ddd/event');
+import model = require('./../common/ddd/model');
+import event = require('./../common/ddd/event');
 
-import user = require('./../Model');
-import puser = require('./../../infrastructure/persistence/UserRepository');
+import user = require('./../domain/Model');
+import puser = require('./../infrastructure/persistence/UserRepository');
 
-import pmsg = require('./../../infrastructure/persistence/MessageRepository');
-import msg = require('./Message');
-import factory = require('./MessageFactory');
-import msgEvents = require('./MessageEvents');
+import pmsg = require('./../infrastructure/persistence/MessageRepository');
+import msg = require('./../domain/message/Message');
+import factory = require('./../domain/message/MessageFactory');
+import msgEvents = require('./../domain/message/MessageEvents');
 
 export class MessageService implements event.IEventHandler<event.IDomainEvent> {
   private _msgRepo;
@@ -45,32 +45,34 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
 
     var subject = new rx.ReplaySubject<msg.Message>();
 
-/*    var fromUser = this._userRepo.GetById(from);
-    var toUser = this._userRepo.GetById(to);*/
+    var fromUserObs = this._userRepo.GetById(from).map(function(user) { return { from: user } });
+    var toUserObs = this._userRepo.GetById(to).map(function(user) { return { to: user } });
 
-/*    var message = new msg.Message(nextId, from);
+    // map id -> user instance
+    var map = fromUserObs.merge(toUserObs);
 
-    //// contains business logic
-    var events = message.create(fromUser.id, toUser.id, content);
+    //map.reduce((acc: ))
 
-
-    // insert to repo.
-    this._msgRepo.Insert(message, function(err, createdMsg) {
-      if (err === null)
-      {
-        subject.onNext(createdMsg);
-        subject.onCompleted();
-      }
-      else
-      {
-        subject.onError(err);
-      }
-    });
+    ////// contains business logic
+    //var events = message.create(fromUser.id, toUser.id, content);
+    //
+    //// insert to repo.
+    //this._msgRepo.Insert(message, function(err, createdMsg) {
+    //  if (err === null)
+    //  {
+    //    subject.onNext(createdMsg);
+    //    subject.onCompleted();
+    //  }
+    //  else
+    //  {
+    //    subject.onError(err);
+    //  }
+    //});
 
     // fire MessageSentEvent
-    events.forforEeach((item, n, arr) => void {
-      that._bus.Publish(item);
-    });*/
+    //events.forEach(function(item, n, arr)  {
+    //  that._bus.Publish(item);
+    //});
 
     return subject;
   }

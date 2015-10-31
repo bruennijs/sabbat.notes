@@ -11,11 +11,10 @@ var assert = require('assert');
 var ns = require('./../../application/NoteService');
 var factory = require('./../../domain/factory/NoteFactory');
 
-var fs = require('fs');
+var jsm = require('jsmockito')
 var mongo = require('mongodb');
 
 var repoBuilder = require('./../builder/RepositoryBuilder');
-
 
 suite('NoteServiceTest', function () {
 
@@ -25,18 +24,18 @@ suite('NoteServiceTest', function () {
   teardown(function() {
   });
 
-    test('when create document expect document contains id', function (done) {
+  test('when create document expect document contains id', function (done) {
 
-      var expectedOwnerId = new mongo.ObjectID();
+    var expectedOwnerId = new mongo.ObjectID();
 
-      var repoMock = new repoBuilder().BuildMocked();
+    var repoMock = (new repoBuilder()).BuildStubbed();
 
-      var sut = new ns.NoteService(repoMock, new factory.NoteFactory());
-      var model = sut.createNote(expectedOwnerId, function(err, model) {
-        assert.equal(true, err === null, err);
-        //console.info(model.id);
-        assert.equal(model.ownerId, expectedOwnerId);
-        done();
-      });
+    var sut = new ns.NoteService(repoMock, new factory.NoteFactory());
+    var model = sut.createNote(expectedOwnerId, function(err, model) {
+      assert.equal(true, err === null, err);
+      //console.info(model.id);
+      assert.equal(model.ownerId, expectedOwnerId);
+      done();
     });
+  });
 })

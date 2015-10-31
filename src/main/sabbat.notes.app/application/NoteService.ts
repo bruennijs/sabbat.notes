@@ -23,8 +23,8 @@ export class NoteService {
 
     var note = new models.Note(nextId, ownerId);
 
-    this._noteRepository.Insert(note, function(err) {
-      cb(err, note);
+    this._noteRepository.Insert(note, function(err, newItem) {
+      cb(err, newItem);
     });
   }
 

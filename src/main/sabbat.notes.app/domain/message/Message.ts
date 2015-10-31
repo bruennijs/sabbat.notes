@@ -68,7 +68,7 @@ import url = require('url');
      * @param state
      * @param state
      */
-    constructor(id:model.Id, fromId:model.Id, toId:model.Id, content:string, state: MessageState) {
+    constructor(id:model.Id, fromId?:model.Id, toId?:model.Id, content?:string, state?: MessageState) {
       super(id);;
 
       this._currentState = state;
