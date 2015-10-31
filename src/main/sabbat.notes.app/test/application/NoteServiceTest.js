@@ -14,7 +14,7 @@ var factory = require('./../../domain/factory/NoteFactory');
 var jsm = require('jsmockito')
 var mongo = require('mongodb');
 
-var repoBuilder = require('./../builder/RepositoryBuilder');
+var repoBuilder = require('./../builder/Builder').RepositoryBuilder;
 
 suite('NoteServiceTest', function () {
 
@@ -28,14 +28,20 @@ suite('NoteServiceTest', function () {
 
     var expectedOwnerId = new mongo.ObjectID();
 
-    var repoMock = (new repoBuilder()).BuildStubbed();
+    var repoMock = new repoBuilder().BuildStubbed();
 
     var sut = new ns.NoteService(repoMock, new factory.NoteFactory());
-    var model = sut.createNote(expectedOwnerId, function(err, model) {
-      assert.equal(true, err === null, err);
-      //console.info(model.id);
-      assert.equal(model.ownerId, expectedOwnerId);
-      done();
-    });
+    var obs = sut.createNote(expectedOwnerId);
+    obs.subscribe(
+        function(note) {
+          //console.info(model.id);
+          assert.equal(note.ownerId, expectedOwnerId);
+        },
+        function(err) {
+          done(err);
+        },
+        function() {
+          done();
+        });
   });
 })

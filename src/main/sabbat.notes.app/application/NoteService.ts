@@ -9,6 +9,9 @@ import models = require('./../domain/Model');
 
 import factory = require('./../domain/note/NoteFactory');
 
+/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+import rx = require('rx');
+
 export class NoteService {
   private _noteRepository: persistence.NoteRepository;
   private _noteFactory:factory.NoteFactory;
@@ -18,14 +21,12 @@ export class NoteService {
     this._noteFactory = noteFactory;
   }
 
-  public createNote(ownerId: model.Id, cb: (err: Error, model: models.Note) => void) {
+  public createNote(ownerId: model.Id): rx.IObservable<models.Note> {
     var nextId = this._noteRepository.nextId();
 
     var note = new models.Note(nextId, ownerId);
 
-    this._noteRepository.Insert(note, function(err, newItem) {
-      cb(err, newItem);
-    });
+    return this._noteRepository.Insert(note);
   }
 
   public findNotesByOwner(ownerId: string, cb: (err: Error, model: models.Note[]) => void) {

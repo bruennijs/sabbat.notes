@@ -20,8 +20,8 @@ var user = require('./../../domain/Model');
 var rx = require('rx');
 var _ = require('underscore');
 
-var repoBuilder = require('./../builder/RepositoryBuilder');
-var modelBuilder = require('./../builder/ModelBuilder');
+var userBuilder = require('./../builder/Builder').UserBuilder;
+var repoBuilder = require('./../builder/Builder').RepositoryBuilder;
 
 suite('MessageServiceTest', function () {
 
@@ -32,11 +32,11 @@ suite('MessageServiceTest', function () {
   });
 
     test('when create document expect document contains id', function (done) {
-      //var userRepoMock = new repoBuilder().BuildStubbed();
-      //var msgRepoMock = new repoBuilder().BuildStubbed();
+      //var userRepoMock = new builder().BuildStubbed();
+      //var msgRepoMock = new builder().BuildStubbed();
 
-      var userFrom = new modelBuilder.UserBuilder().Build(new dddModel.Id("1"));
-      var userTo   = new modelBuilder.UserBuilder().Build(new dddModel.Id("2"));
+      var userFrom = new userBuilder().Build(new dddModel.Id("1"));
+      var userTo   = new userBuilder().Build(new dddModel.Id("2"));
 
       var userRepoMock = new repoBuilder().BuildMock();
       jsm.JsMockito.when(userRepoMock).GetById(userFrom.id).thenReturn(rx.Observable.return(userFrom));

@@ -3,11 +3,13 @@
  */
 
 import repository = require('./../infrastructure/persistence/UserRepository');
-import models = require('./../domain/Model');
-import model = require('./../common/ddd/model');
+import user = require('./../domain/Model');
+import dddModel = require('./../common/ddd/model');
 
 /// <reference path="../node_modules/DefinitelyTyped/node/Node.d.ts" />
 import url = require('url');
+/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+import rx = require('rx');
 
 export class MembershipService {
   private _userRepository:repository.UserRepository;
@@ -17,13 +19,11 @@ export class MembershipService {
     this._userRepository = userRepository;
   }
 
-  createUser(name: string, email: url.Url, cb: (error: Error, id: model.Id) => void): void {
+  createUser(name: string, email: url.Url): rx.IObservable<user.User> {
     var newId = this._userRepository.nextId();
 
-    var user = new models.User(newId, name, email);
+    var user = new user.User(newId, name, email);
 
-    this._userRepository.Insert(user, function(err, model) {
-      cb(err, model.id);
-    });
+    return this._userRepository.Insert(user);
   }
 };

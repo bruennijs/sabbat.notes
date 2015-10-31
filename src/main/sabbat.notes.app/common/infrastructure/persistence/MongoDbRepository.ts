@@ -3,12 +3,13 @@
  */
 
 ///<reference path="../../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
+///<reference path="../../../node_modules/rx/ts/rx.all.d.ts" />
 
 import repo    = require('./../../ddd/persistence');
 import model   = require('./../../ddd/model');
 import factory = require('./../../ddd/factory');
 
-//import rx = require('rx');
+import rx = require('rx');
 import mongodb = require('mongodb');
 
 export class MongoDbRepository<TModel extends model.IdObject> implements repo.IRepository<model.IdObject> {
@@ -112,12 +113,13 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     });
   }
 
-  public Insert(object:TModel, cb: (err: Error, created: TModel) => void): void {
+  public Insert(object: TModel): rx.IObservable<TModel> {
     //console.log(JSON.stringify(object));
+    var insertOne = rx.Observable.fromNodeCallback(this._collection.insertOne, this._collection);
 
-    this._collection.insertOne(this._factory.ToMongoDocument(object), function(err, result) {
-      console.log("result["  + result + "]");
-      cb(err, object);
+    return insertOne(this._factory.ToMongoDocument(object)).select(function(mongoResult: any)
+    {
+      return object;
     });
   }
 
