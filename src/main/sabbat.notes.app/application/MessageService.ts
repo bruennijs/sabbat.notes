@@ -2,8 +2,10 @@
  * Created by bruenni on 23.09.15.
  */
 
+/// <reference path="../node_modules/DefinitelyTyped/underscore/underscore.d.ts" />
 /// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
 import rx = require('rx');
+import _ = require('underscore');
 
 import model = require('./../common/ddd/model');
 import event = require('./../common/ddd/event');
@@ -41,20 +43,25 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
   public sendMessage(from: model.Id, to: model.Id, content: string): rx.IObservable<msg.Message> {
     var that = this;
 
-    var nextId = this._msgRepo.nextId();
-
-    var subject = new rx.ReplaySubject<msg.Message>();
-
-    var fromUserObs = this._userRepo.GetById(from).map(function(user) { return { from: user } });
-    var toUserObs = this._userRepo.GetById(to).map(function(user) { return { to: user } });
+    var fromUserObs = this._userRepo.GetById(from).map(function(user: user.User) { return { from: user } });
+    var toUserObs = this._userRepo.GetById(to).map(function(user: user.User) { return { to: user } });
 
     // map id -> user instance
-    var map = fromUserObs.merge(toUserObs);
+    var mapped = fromUserObs.merge(toUserObs);
 
-    //map.reduce((acc: ))
+    // reduce to one object containing 'to' and 'from' property mapped to its user instance
+    var reduced = mapped.reduce(function(acc: any, val: any) { return _.extend(acc, val) });
+
+    //var subject = new rx.ReplaySubject<msg.Message>();
 
     ////// contains business logic
-    //var events = message.create(fromUser.id, toUser.id, content);
+    return reduced.select(function(usersMap, idx, obs) {
+          var nextId = this._msgRepo.nextId();
+          var newMsg = new msg.Message(nextId);
+          newMsg.create(usersMap.from, usersMap.to, content);
+          return newMsg;
+        }, this);
+
     //
     //// insert to repo.
     //this._msgRepo.Insert(message, function(err, createdMsg) {
@@ -74,7 +81,7 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
     //  that._bus.Publish(item);
     //});
 
-    return subject;
+    //return subject;
   }
 
   /**

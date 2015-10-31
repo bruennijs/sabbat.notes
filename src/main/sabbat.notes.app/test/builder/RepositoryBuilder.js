@@ -6,7 +6,7 @@ var jsm = require('jsmockito');
 var JsHamcrest = require('jshamcrest').JsHamcrest;
 var dddModel = require('./../../common/ddd/model');
 
-function RepositoryStub() {
+var RepositoryStub = function () {
   this.nextId = 0;
   this.nextId = function() {
     this.nextId++;
@@ -27,12 +27,12 @@ RepositoryStub.prototype.GetById = function(id) {
   return null;
 }
 
-var RepositoryBuilder = (function() {
+var Builder = (function() {
 
   function RepositoryBuilder() {
   };
 
-  RepositoryBuilder.prototype.BuildMocked = function () {
+  RepositoryBuilder.prototype.BuildMock = function () {
     var mock = jsm.JsMockito.mock(RepositoryStub);
 
     //jsm.JsMockito.when(mock).Insert(JsHamcrest.Matchers.anything(), JsHamcrest.Matchers.anything()).then(function(model, cb) {
@@ -50,4 +50,4 @@ var RepositoryBuilder = (function() {
   return RepositoryBuilder;
 })();
 
-module.exports = RepositoryBuilder;
+module.exports = Builder;
