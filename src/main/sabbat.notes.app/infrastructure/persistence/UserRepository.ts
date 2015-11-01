@@ -19,7 +19,7 @@ export class UserRepository extends repo.MongoDbRepository<model.User> {
     _.extend(configuration, {collectionName: 'notes'}); // extend collection name base shall use
     super(configuration, factory);
 
-    this.dependencies = "configuration,userFactory";
+    this.dependencies = "configuration,userFactory=factory";
   }
 
   public FindByName(name: string, cb:(error: Error, obj: model.User[]) => void):void {
