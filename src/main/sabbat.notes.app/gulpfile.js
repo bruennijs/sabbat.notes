@@ -30,7 +30,8 @@ gulp.task('ts.dist', function() {
                             './domain/message/MessageEvents.ts',
                           './application/NoteService.ts',
                             './application/MessageService.ts',
-                          './application/MembershipService.ts']);
+                          './application/MembershipService.ts',
+                            './ApplicationRegistry.ts',]);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());

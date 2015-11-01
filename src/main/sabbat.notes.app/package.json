@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "DefinitelyTyped": "https://github.com/borisyankov/DefinitelyTyped",
+    "di-lite": "^0.3.3",
     "mongodb": "^2.0.43",
     "rx": "^3.0.1",
     "underscore": "^1.8.3",
