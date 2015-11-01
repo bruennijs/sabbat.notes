@@ -26,8 +26,8 @@ gulp.task('ts.dist', function(cb) {
                           '--module', 'commonjs',
                           '-t', 'ES5',
                           '--outDir', '/js',
-                          //'./ts/Models.ts',
-                          './ts/Dal.ts']);
+                          /*'./ts/Models.ts',
+                          './ts/Dal.ts'*/]);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
@@ -52,10 +52,10 @@ gulp.task('watch', function() {
   //gulp.watch(srcDirsUi, ['reload']);
 });
 
-gulp.task('server', function(cb) {
+gulp.task('server.run', function(cb) {
   console.info('Serve started...');
 
-  var tsc = spawn('node', [path.join(distBaseDir, 'js/server'), '-c', './appconfig']);
+  var tsc = spawn('node', [path.join(distBaseDir, 'server'), '-c', './appconfig']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
@@ -89,12 +89,12 @@ gulp.task('test.run', function () {
 
     gulp.src(path.join(distBaseDir, 'js/test/**/*.js'))
         .pipe(print())
-        .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt));
+        .pipe(exec(path.join(distBaseDir, 'node_modules/mocha/bin/mocha') + ' --recursive --ui tdd --reporter dot <%= file.path %>', opt));
 });
 
 gulp.task('dist', ['modules.dist', 'js.dist', 'test.dist']);
 
-gulp.task('default', ['dist', 'server']);
+gulp.task('server', ['dist', 'server.run']);
 
 gulp.task('test', ['dist', 'test.run']);
 

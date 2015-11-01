@@ -7,6 +7,8 @@ var app = express();
 
 var di = require('./../sabbat.notes.app/ApplicationRegistry');
 
+var ctx = new di.ApplicationRegistry().Context;
+
 var myLogger = function (req, res, next) {
     console.log('LOGGED');
     next();
@@ -20,6 +22,10 @@ app.get('/', function (req, res) {
 
 app.post('/users/create', function (req, res) {
     res.send('Create user');
+});
+
+app.get('/appconfig', function(req, res) {
+   res.send(ctx.get("appConfig"));
 });
 
 console.log("listening...");

@@ -120,7 +120,7 @@ gulp.task('test.run', function () {
 
     gulp.src(path.join(distBaseDir, 'test/**/*Test.js'))
         .pipe(print())
-        .pipe(exec('node_modules/mocha/bin/mocha --ui tdd --reporter dot <%= file.path %>', opt))
+        .pipe(exec(path.join(distBaseDir, 'node_modules/mocha/bin/mocha') + ' --ui tdd --reporter dot <%= file.path %>', opt))
         .pipe(exec.reporter());
 });
 

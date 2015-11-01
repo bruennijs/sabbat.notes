@@ -13,7 +13,7 @@ var userRepo = require('./infrastructure/persistence/UserRepository.ts');
 var userModel = require('./domain/Model.ts');
 
 export class ApplicationRegistry {
-    public get ctx() {
+    public get Context() {
         return this._ctx;
     }
     private _ctx;
@@ -31,4 +31,4 @@ export class ApplicationRegistry {
     }
 }
 
-var Context: DiLite.CreateContext = new ApplicationRegistry().ctx;
+//var Context: DiLite.CreateContext = new ApplicationRegistry().Context;

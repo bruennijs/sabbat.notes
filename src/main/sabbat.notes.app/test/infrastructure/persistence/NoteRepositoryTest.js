@@ -73,7 +73,6 @@ suite("NoteRepositoryTest", function() {
           repo.Find(function(err, notes) {
             assert.equal(true, err === null, err);
             assert.equal(notes.length, 1);
-            done();
           });
         },
         function(exc) {
