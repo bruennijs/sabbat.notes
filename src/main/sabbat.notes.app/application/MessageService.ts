@@ -49,18 +49,37 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
     // map id -> user instance
     var mapped = fromUserObs.merge(toUserObs);
 
-    // reduce to one object containing 'to' and 'from' property mapped to its user instance
     var reduced = mapped.reduce(function(acc: any, val: any) { return _.extend(acc, val) });
+    // reduce to one object containing 'to' and 'from' property mapped to its user instance
 
     //var subject = new rx.ReplaySubject<msg.Message>();
 
     ////// contains business logic
-    return reduced.select(function(usersMap, idx, obs) {
-          var nextId = this._msgRepo.nextId();
-          var newMsg = new msg.Message(nextId);
-          newMsg.create(usersMap.from, usersMap.to, content);
-          return newMsg;
-        }, this);
+    return reduced
+        .select(function(usersMap, idx, obs)
+          {
+            var id = this._msgRepo.nextId();
+
+            var createdMsg = new msg.Message(id);
+
+            var createdEvents = createdMsg.create(usersMap.from, usersMap.to, content);
+
+            return this._msgRepo
+                      .Insert(createdMsg)
+                      .Select(function(next)
+                        {
+                          return { instance: createdEvents, events: createdEvents };
+                        });
+          }, this)
+        .do(function(msg)
+          {
+            // fire events
+            msg.events.forEach(function(event, idx, arr) {
+              that._bus.Publish(event);
+            });
+
+            return msg.instance;
+          }, this);
 
     //
     //// insert to repo.
@@ -93,12 +112,17 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
   Handle(event:event.IDomainEvent): void {
     if (event instanceof msgEvents.MessageDeliveredEvent)
     {
-      var message = this._msgRepo.GetById(event.id);
+      var msgGet = this._msgRepo.GetById(event.id);
 
-       //// transition to delivered state and store to repo
-      //message.Delivered();
+      msgGet.subscribe(function(msg) {
+        //// transition to delivered state and store to repo
+        msg.delivered(event as msgEvents.MessageDeliveredEvent);
 
-      //this._msgRepo.Update(message);
+        this._msgRepo.Update(msg).subscribe(function() {
+          // log that msg was updated
+          console.log("message updated[" + msg.id.toString() + "]");
+        });
+      });
     }
   }
 }

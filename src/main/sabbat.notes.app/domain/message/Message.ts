@@ -18,13 +18,16 @@ import url = require('url');
     Created,
     Delivering,
     Delivered
-  }
-  ;
+  };
 
   /**
    * Message sent by users
    */
   export class Message extends model.IdObject {
+    public get deliveryUsers():model.Id[] {
+      return this._deliveryUsers;
+    }
+    private _deliveryUsers: model.Id[];
 
     public get content() {
       return this._content;
@@ -90,6 +93,15 @@ import url = require('url');
       this._currentState = MessageState.Delivering;
 
       return [new events.MessageCreatedEvent(this.id, from.id, to.id, content)];
+    }
+
+    /**
+     * Handler for MessageDeliveredEvent
+     * @param event
+     */
+    public delivered(event: events.MessageDeliveredEvent): void {
+      this._deliveryUsers.push(event.toUserId);
+      this._currentState = MessageState.Delivered;
     }
   }
 

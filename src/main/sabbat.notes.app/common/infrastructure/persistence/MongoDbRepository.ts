@@ -123,6 +123,22 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     });
   }
 
+  /**
+   * Updates document in db by primary id.
+   * @param object
+   * @returns {any}
+   * @constructor
+   */
+  public Update(object: TModel): rx.IObservable<TModel> {
+    //console.log(JSON.stringify(object));
+    var updateOne = rx.Observable.fromNodeCallback(this._collection.updateOne, this._collection);
+
+    return updateOne({_id: new mongodb.ObjectID(object.toString())}, this._factory.ToMongoDocument(object)).select(function(mongoResult: any)
+    {
+      return object;
+    });
+  }
+
   private CreateCollection(cb: (err: Error, col: mongodb.Collection) => void) {
     var that = this;
     this._db.createCollection(this._configuration.collectionName, function(err, col) {

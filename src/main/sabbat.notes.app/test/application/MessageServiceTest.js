@@ -46,15 +46,21 @@ suite('MessageServiceTest', function () {
 
       // create sut
       var sut = new ns.MessageService(msgRepoMock, userRepoMock, new factory.MessageFactory(), new eventbus.DomainEventBusImpl());
-      var messageObs = sut.sendMessage(userFrom.id.toString(), userTo.id.toString(), "some content");
+      var messageObs = sut.sendMessage(userFrom.id.toString(), userTo.id.toString(), 'some content');
 
-      messageObs.subscribe(function(msg) {
-        assert.equal(msg.from.toString(), "1");
-        assert.equal(msg.to.toString(), "2");
-        assert.equal(msg.content, "some content");
-        done();
-      });
-    });
+      messageObs.subscribe(
+          function(msg) {
+            assert.equal(msg.from.toString(), '1');
+            assert.equal(msg.to.toString(), '2');
+            assert.equal(msg.content, 'some content');
+          },
+          function(error) {
+            done(error);
+          },
+          function() {
+            done();
+          });
+    })
 
   test('when extend document expect properties are copyied', function () {
     var o1 = {to: "hello"}

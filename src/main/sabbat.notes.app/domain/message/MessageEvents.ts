@@ -41,6 +41,13 @@ export class MessageCreatedEvent implements event.IDomainEvent {
  * Fired WHEN message was delivered to a client
  */
 export class MessageDeliveredEvent implements event.IDomainEvent {
+    public get toUserId():model.Id {
+        return this._toUserId;
+    }
+
+    public set toUserId(value: model.Id) {
+        this._toUserId = value;
+    }
     public get deliveredOn() {
         return this._deliveredOn;
     }
@@ -56,9 +63,11 @@ export class MessageDeliveredEvent implements event.IDomainEvent {
     }
 
     private _group:string = 'message';
+    private _toUserId: model.Id;
 
-    constructor(id: model.Id, deliveredOn: Date) {
+    constructor(id: model.Id, deliveredOn: Date, toUserId: model.Id) {
         this._id = id;
         this._deliveredOn = deliveredOn;
+        this._toUserId = toUserId;
     }
 }

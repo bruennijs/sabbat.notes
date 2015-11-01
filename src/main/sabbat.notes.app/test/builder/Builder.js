@@ -49,10 +49,11 @@ var rx = require('rx');
   Builder.prototype.BuildMock = function () {
     var mock = jsm.JsMockito.mock(RepositoryStub);
 
-    //jsm.JsMockito.when(mock).Insert(JsHamcrest.Matchers.anything(), JsHamcrest.Matchers.anything()).then(function(model, cb) {
-    //  //fire callback with model to be inserted
-    //  cb(null, model);
-    //});
+    jsm.JsMockito.when(mock).Insert(JsHamcrest.Matchers.anything()).then(function(model) {
+      //console.log(model);
+      //fire callback with model to be inserted
+      return rx.Observable.return(model)
+    });
 
     return mock;
   };
