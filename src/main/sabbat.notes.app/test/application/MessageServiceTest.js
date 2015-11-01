@@ -17,6 +17,8 @@ var eventbus = require('./../../common/ddd/impl/DomainEventBusImpl');
 var dddModel = require('./../../common/ddd/model');
 var user = require('./../../domain/Model');
 
+var msgEvents = require('./../../domain/message/MessageEvents');
+
 var rx = require('rx');
 var _ = require('underscore');
 
@@ -61,6 +63,33 @@ suite('MessageServiceTest', function () {
             done();
           });
     })
+
+  test('when create document expect message created event fired', function (done) {
+    //var userRepoMock = new builder().BuildStubbed();
+    //var msgRepoMock = new builder().BuildStubbed();
+
+    var bus = new eventbus.DomainEventBusImpl();
+
+    var userFrom = new userBuilder().Build(new dddModel.Id("1"));
+    var userTo   = new userBuilder().Build(new dddModel.Id("2"));
+
+    var userRepoMock = new repoBuilder().BuildMock();
+    jsm.JsMockito.when(userRepoMock).GetById(userFrom.id).thenReturn(rx.Observable.return(userFrom));
+    jsm.JsMockito.when(userRepoMock).GetById(userTo.id).thenReturn(rx.Observable.return(userTo));
+
+    var msgRepoMock = new repoBuilder().BuildMock();
+
+    // create sut
+    var sut = new ns.MessageService(msgRepoMock, userRepoMock, new factory.MessageFactory(), bus);
+    var message = sut.sendMessage(userFrom.id.toString(), userTo.id.toString(), 'some content');
+
+    var combined = rx.Observable.when(message.and(bus).thenDo(function(msg, ev) { return {message: msg, event: ev }})).timeout(500);
+
+    // check whether message and event are correct
+    combined.subscribe(function(c) {
+        assert.equal(c.event instanceof msgEvents.MessageCreatedEvent);
+      })
+  })
 
   test('when extend document expect properties are copyied', function () {
     var o1 = {to: "hello"}
