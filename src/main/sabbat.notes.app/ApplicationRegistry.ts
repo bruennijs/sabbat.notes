@@ -26,8 +26,8 @@ export class ApplicationRegistry {
 
         this._ctx.register("appConfig").object(appConfig);
         this._ctx.register("userFactory", userFactory.UserFactory).strategy(di.strategy.singleton);
-        this._ctx.register("userRepository", userRepo.UserRepository, appConfig).strategy(di.strategy.singleton);
-        this._ctx.register("MembershipService", membership.MembershipService).strategy(di.strategy.singleton);
+        this._ctx.register("userRepository", userRepo.UserRepository).strategy(di.strategy.singleton);
+        this._ctx.register("membershipService", membership.MembershipService).strategy(di.strategy.singleton);
     }
 }
 

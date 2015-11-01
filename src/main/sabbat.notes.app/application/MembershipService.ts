@@ -12,11 +12,19 @@ import url = require('url');
 import rx = require('rx');
 
 export class MembershipService {
+  private dependencies;
+  public get userRepository():repository.UserRepository {
+    return this._userRepository;
+  }
+
+  public set userRepository(value:repository.UserRepository) {
+    this._userRepository = value;
+  }
   private _userRepository:repository.UserRepository;
 
-  constructor(userRepository: repository.UserRepository)
+  constructor()
   {
-    this._userRepository = userRepository;
+    this.dependencies = "userRepository";
   }
 
   /**

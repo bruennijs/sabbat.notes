@@ -7,6 +7,9 @@ var app = express();
 
 var di = require('./../sabbat.notes.app/ApplicationRegistry');
 
+var url = require('url');
+
+// DI container
 var ctx = new di.ApplicationRegistry().Context;
 
 var myLogger = function (req, res, next) {
@@ -21,7 +24,14 @@ app.get('/', function (req, res) {
 });
 
 app.post('/users/create', function (req, res) {
-    res.send('Create user');
+    var memberShipService = ctx.get('membershipService');
+
+    memberShipService
+        .createUser('bruenni', url.parse('bruenni@volloeko.de'))
+        .subscribe(function(user)
+            {
+                res.send(user);
+            });
 });
 
 app.get('/appconfig', function(req, res) {
