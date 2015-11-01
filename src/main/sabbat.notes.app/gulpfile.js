@@ -90,7 +90,7 @@ gulp.task('ts.common.dist', function(cb) {
 });
 
 gulp.task('js.dist', function() {
-  gulp.src('js/**/*.js').
+  gulp.src('**/*.js').
       pipe(gulp.dest(distBaseDir));
 });
 
