@@ -13,6 +13,20 @@ import rx = require('rx');
 import mongodb = require('mongodb');
 
 export class MongoDbRepository<TModel extends model.IdObject> implements repo.IRepository<model.IdObject> {
+  public set configuration(value:any) {
+    this._configuration = value;
+  }
+  public get configuration():any {
+    return this._configuration;
+  }
+
+  public set factory(value:factory.IFactory<TModel>) {
+    this._factory = value;
+  }
+
+  public get factory():factory.IFactory<TModel> {
+    return this._factory;
+  }
 
   /**
    * INheriting classes can use collection to access db.
@@ -26,20 +40,17 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     return this._db;
   }
 
-  protected get factory():factory.IFactory<TModel> {
-    return this._factory;
-  }
-
   private _configuration:any;
   private _factory:factory.IFactory<TModel>;
 
   private _db: mongodb.Db = null;
   private _collection: mongodb.Collection = null;
+  private _collectionName:string;
 
-
-  constructor(configuration: any, factory: factory.IFactory<TModel>) {
+  constructor(configuration: any, factory: factory.IFactory<TModel>, collectionName: string) {
     this._configuration = configuration;
     this._factory = factory;
+    this._collectionName = collectionName;
   }
 
   public Init(cb: (err: Error) => void, dropCollections?: boolean): void {
@@ -60,7 +71,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
       that._db = db;
 
       // get collection users
-      var col = that._db.collection(that._configuration.collectionName);
+      var col = that._db.collection(that._collectionName);
       if (!col)
       {
         // create new collection
@@ -75,7 +86,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
         if (dropCollections)
         {
           /// drop collection
-          that._db.dropCollection(that._configuration.collectionName, function(err, col) {
+          that._db.dropCollection(that._collectionName, function(err, col) {
             // create new collection
             that.CreateCollection(function(err, col) {
               cb(err);
@@ -141,7 +152,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
 
   private CreateCollection(cb: (err: Error, col: mongodb.Collection) => void) {
     var that = this;
-    this._db.createCollection(this._configuration.collectionName, function(err, col) {
+    this._db.createCollection(this._collectionName, function(err, col) {
       if (!err)
       {
         that._collection = col;

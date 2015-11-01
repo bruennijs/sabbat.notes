@@ -3,9 +3,11 @@
 var gulp = require("gulp");
 var print = require("gulp-print");
 var console = require("console");
-var glob = require('glob');
 var spawn = require('child_process').spawn;
 var exec = require('gulp-exec');
+var path = require('path');
+
+var distBaseDir = './../dist/sabbat.notes.service';
 
 gulp.task('ts.dist', function(cb) {
   console.info("Typescript transpiling");
@@ -23,7 +25,7 @@ gulp.task('ts.dist', function(cb) {
   var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
                           '--module', 'commonjs',
                           '-t', 'ES5',
-                          '--outDir', './dist/js',
+                          '--outDir', '/js',
                           //'./ts/Models.ts',
                           './ts/Dal.ts']);
 
@@ -42,8 +44,8 @@ gulp.task('ts.dist', function(cb) {
 });
 
 gulp.task('js.dist', function() {
-  gulp.src('js/**/*.js').
-      pipe(gulp.dest('dist/js'));
+  gulp.src('**/*.js').
+      pipe(gulp.dest(distBaseDir));
 });
 
 gulp.task('watch', function() {
@@ -53,7 +55,7 @@ gulp.task('watch', function() {
 gulp.task('server', function(cb) {
   console.info('Serve started...');
 
-  var tsc = spawn('node', ['./dist/js/server', '-c', './appconfig']);
+  var tsc = spawn('node', [path.join(distBaseDir, 'js/server'), '-c', './appconfig']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
@@ -71,7 +73,12 @@ gulp.task('server', function(cb) {
 
 gulp.task('test.dist', function () {
     gulp.src('test/**/*.js')
-       .pipe(gulp.dest('dist/js/test'));
+       .pipe(gulp.dest(path.join(distBaseDir, 'js/test')));
+});
+
+gulp.task('modules.dist', function() {
+    gulp.src('node_modules/**/*').
+        pipe(gulp.dest(path.join(distBaseDir, 'node_modules')));
 });
 
 gulp.task('test.run', function () {
@@ -80,12 +87,12 @@ gulp.task('test.run', function () {
         pipeStdout: true
     };
 
-    gulp.src('dist/js/test/**/*.js')
+    gulp.src(path.join(distBaseDir, 'js/test/**/*.js'))
         .pipe(print())
         .pipe(exec('node_modules/mocha/bin/mocha --recursive --ui tdd --reporter dot <%= file.path %>', opt));
 });
 
-gulp.task('dist', ['js.dist', 'ts.dist', 'test.dist']);
+gulp.task('dist', ['modules.dist', 'js.dist', 'test.dist']);
 
 gulp.task('default', ['dist', 'server']);
 

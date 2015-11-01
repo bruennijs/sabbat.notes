@@ -19,6 +19,12 @@ export class MembershipService {
     this._userRepository = userRepository;
   }
 
+  /**
+   * Creates a user stores to repo and publishes domain events.
+   * @param name
+   * @param email
+   * @returns {rx.IObservable<User>}
+   */
   createUser(name: string, email: url.Url): rx.IObservable<user.User> {
     var newId = this._userRepository.nextId();
 

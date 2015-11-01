@@ -6,7 +6,11 @@ var _ = require('underscore');
 require('./../../node_modules/di-lite/di-lite');    // no commonjs module exported file
 
 var B = function() {
+    var that = this;
     this.value = 'B';
+    this.toString = function() {
+        console.log("hello");
+    }
 }
 
 var A = function(arg1) {
@@ -17,22 +21,29 @@ var A = function(arg1) {
     }
 }
 
-A.prototype.log = function() {
-    this.funcObj
-}
-
 var FuncObject = function(spec) {
     var that = {
         value: 'fromFuncObject'
     };
 
     return _.extend(that, spec);
-};
+}
+
+var C = function() {
+    var that = this;
+    this.dependencies = "_b=b";
+    this._b = "dummy";
+    this.toString = function() {
+        console.log('C.b=' + that._b.toString());
+        console.log(that);
+    }
+}
 
 var ctx = di.createContext();
 ctx.register("b", B).strategy(di.strategy.proto);
 ctx.register("a", A).strategy(di.strategy.proto);
 ctx.register("aWithArgs", A, 'some args').strategy(di.strategy.proto);
+ctx.register("c", C).strategy(di.strategy.proto);
 
 ctx.register("funcObjSingleton", FuncObject, {arg: "argSingleton"}).factory(di.factory.func);
 
@@ -51,5 +62,4 @@ console.log(fop);
 
 ctx.get('a').toString();
 ctx.get('aWithArgs').toString();
-ctx.get('aWithArgs').b.toString();
-
+ctx.get('c').toString();

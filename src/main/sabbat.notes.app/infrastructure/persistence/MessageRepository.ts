@@ -15,8 +15,7 @@ import mongodb = require('mongodb');
 export class MessageRepository extends repo.MongoDbRepository<msg.Message> {
 
   constructor(configuration: any, factory: fac.IFactory<msg.Message>) {
-    _.extend(configuration, {collectionName: 'notes'}); // extend collection name base shall use
-    super(configuration, factory);
+    super(configuration, factory, "messages");
   }
 
 /*  public FindBy(userId: string, cb:(error: Error, obj: model.Message[]) => void):void {

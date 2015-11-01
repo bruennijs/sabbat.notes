@@ -1,7 +1,7 @@
 {
   "name": "sabbat.notes.service",
   "version": "1.0.0",
-  "description": "",
+  "description": "REST service for sabbat.notes.app",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,14 @@
   "author": "Oliver Bruentje",
   "license": "ISC",
   "dependencies": {
+    "di-lite": "^0.3.3",
     "express": "^4.13.3",
     "ws": "^0.8.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-exec": "^2.1.2",
+    "gulp-print": "^2.0.1",
+    "typescript": "^1.6.2"
   }
 }

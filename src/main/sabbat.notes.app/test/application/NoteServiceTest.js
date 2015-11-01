@@ -9,7 +9,7 @@ var test = require('mocha').test;
 var assert = require('assert');
 
 var ns = require('./../../application/NoteService');
-var factory = require('./../../domain/factory/NoteFactory');
+var factory = require('./../../domain/note/NoteFactory');
 
 var jsm = require('jsmockito')
 var mongo = require('mongodb');

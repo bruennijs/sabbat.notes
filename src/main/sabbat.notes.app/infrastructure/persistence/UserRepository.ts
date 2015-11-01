@@ -15,11 +15,9 @@ import mongodb = require('mongodb');
 export class UserRepository extends repo.MongoDbRepository<model.User> {
   private dependencies;
 
-  constructor(configuration: any, factory: fac.IFactory<model.User>) {
-    _.extend(configuration, {collectionName: 'notes'}); // extend collection name base shall use
-    super(configuration, factory);
-
-    this.dependencies = "configuration,userFactory=factory";
+  constructor() {
+    super(null, null, "users");
+    this.dependencies = "configuration=appConfig,factory=userFactory";
   }
 
   public FindByName(name: string, cb:(error: Error, obj: model.User[]) => void):void {

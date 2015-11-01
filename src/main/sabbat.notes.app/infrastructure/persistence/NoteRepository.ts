@@ -15,8 +15,7 @@ import mongodb = require('mongodb');
 export class NoteRepository extends repo.MongoDbRepository<model.Note> {
 
   constructor(configuration: any, factory: fac.IFactory<model.Note>) {
-    _.extend(configuration, {collectionName: 'notes'}); // extend collection name base shall use
-    super(configuration, factory);
+    super(configuration, factory, "notes");
   }
 
   public FindByOwner(userId: string, cb:(error: Error, obj: model.Note[]) => void):void {

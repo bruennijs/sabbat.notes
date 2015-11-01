@@ -10,7 +10,7 @@ var assert = require('assert');
 var model = require('./../../../common/ddd/model');
 var repository = require('./../../../infrastructure/persistence/NoteRepository');
 var models = require('./../../../domain/Model');
-var factory = require('./../../../domain/factory/NoteFactory');
+var factory = require('./../../../domain/note/NoteFactory');
 var testConfig = require('./../../test.config');
 
 var _ = require('underscore');

@@ -5,6 +5,8 @@
 var express = require('express');
 var app = express();
 
+var di = require('./../sabbat.notes.app/ApplicationRegistry');
+
 var myLogger = function (req, res, next) {
     console.log('LOGGED');
     next();
