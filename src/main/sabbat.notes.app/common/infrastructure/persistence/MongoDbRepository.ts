@@ -53,9 +53,11 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     this._collectionName = collectionName;
   }
 
-  public Init(cb: (err: Error) => void, dropCollections?: boolean): void {
+  public Init(dropCollections?: boolean): rx.IObservable<void> {
 
     var that = this;
+
+    var subject = new rx.ReplaySubject<void>();
 
     console.log("Mongo connecting [" + that._configuration.mongodb_url + "]");
 
@@ -63,7 +65,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
 
       if (err != null) {
         console.log("Mongo connection failed[" + that._configuration.mongodb_url + "]");
-        cb(err);
+        subject.onError(err)
         return;
       }
 
@@ -76,7 +78,14 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
       {
         // create new collection
         that.CreateCollection(function(err, col) {
-          cb(err);
+          if (!err)
+          {
+            subject.onCompleted();
+          }
+          else
+          {
+            subject.onError(err);
+          }
         });
       }
       else
@@ -89,16 +98,25 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
           that._db.dropCollection(that._collectionName, function(err, col) {
             // create new collection
             that.CreateCollection(function(err, col) {
-              cb(err);
+              if (!err)
+              {
+                subject.onCompleted();
+              }
+              else
+              {
+                subject.onError(err);
+              }
             });
           });
         }
         else {
           that._collection = col;
-          cb(err);
+          subject.onCompleted();
         }
       }
     });
+
+    return subject;
   }
 
   public Find(cb:repo.Func2<Error, TModel[], void>):void {
@@ -173,7 +191,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
    * @constructor
    */
   GetById(id: model.Id): Rx.IObservable<TModel> {
-    var subject = new Rx.ReplaySubject<TModel>();
+    var subject = new rx.ReplaySubject<TModel>();
 
     this.collection
         .find({_id: new mongodb.ObjectID(id.toString())})

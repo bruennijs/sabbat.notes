@@ -2,29 +2,32 @@
  * Created by bruenni on 19.10.15.
  */
 
+/// <reference path="./../node_modules/rx/ts/rx.all.d.ts" />
+import url = require('url');
+import rx = require('rx');
+
 import repository = require('./../infrastructure/persistence/UserRepository');
 import user = require('./../domain/Model');
 import dddModel = require('./../common/ddd/model');
 
-/// <reference path="../node_modules/DefinitelyTyped/node/Node.d.ts" />
-import url = require('url');
-/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
-import rx = require('rx');
-
 export class MembershipService {
   private dependencies;
-  public get userRepository():repository.UserRepository {
-    return this._userRepository;
+
+  public get Repository():repository.UserRepository {
+    return this._repository;
   }
 
-  public set userRepository(value:repository.UserRepository) {
-    this._userRepository = value;
+  public set Repository(value:repository.UserRepository) {
+    this._repository = value;
   }
-  private _userRepository:repository.UserRepository;
+  private _repository: repository.UserRepository;
 
+  /**
+   * Constructor
+   */
   constructor()
   {
-    this.dependencies = "userRepository";
+    this.dependencies = "Repository=userRepository";
   }
 
   /**
@@ -34,10 +37,10 @@ export class MembershipService {
    * @returns {rx.IObservable<User>}
    */
   createUser(name: string, email: url.Url): rx.IObservable<user.User> {
-    var newId = this._userRepository.nextId();
+    var newId = this._repository.nextId();
 
-    var user = new user.User(newId, name, email);
+    var newUser = new user.User(newId, name, email);
 
-    return this._userRepository.Insert(user);
+    return this._repository.Insert(newUser);
   }
 };

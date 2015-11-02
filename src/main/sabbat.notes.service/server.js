@@ -25,13 +25,16 @@ app.get('/', function (req, res) {
 
 app.post('/users/create', function (req, res) {
     var memberShipService = ctx.get('membershipService');
-
     memberShipService
         .createUser('bruenni', url.parse('bruenni@volloeko.de'))
         .subscribe(function(user)
-            {
-                res.send(user);
-            });
+                    {
+                        res.send(user);
+                    },
+                    function(err) {
+                      res.status(500);
+                      res.send("User could not be created [" + err + "]");
+                    });
 });
 
 app.get('/appconfig', function(req, res) {
