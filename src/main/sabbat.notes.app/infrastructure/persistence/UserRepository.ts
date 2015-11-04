@@ -4,13 +4,13 @@
 
 ///<reference path="./../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
 
-import repo = require('./../../common/infrastructure/persistence/MongoDbRepository');
-import model = require('./../../domain/Model');
-import fac = require('./../../common/ddd/factory');
-import dddModel = require('./../../common/ddd/model');
-import _ = require('underscore');
+import repo = require("./../../common/infrastructure/persistence/MongoDbRepository");
+import model = require("./../../domain/Model");
+import fac = require("./../../common/ddd/factory");
+// import dddModel = require("./../../common/ddd/model");
+//import _ = require("underscore");
 
-import mongodb = require('mongodb');
+import mongodb = require("mongodb");
 
 export class UserRepository extends repo.MongoDbRepository<model.User> {
   private dependencies;

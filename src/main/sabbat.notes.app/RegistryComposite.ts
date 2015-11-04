@@ -37,6 +37,7 @@ export class RegistryComposite implements IApplicationRegistry
         this._registries = registries;
         this._ctx = di.createContext();
         this.Register(this._ctx);
+        this._ctx.initialize();
     }
 
     /**

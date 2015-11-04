@@ -9,6 +9,7 @@ var exec = require('gulp-exec');
 var path = require('path');
 
 var distBaseDir = './../dist/sabbat.notes.app';
+//var distBaseDir = './dist';
 
 
 gulp.task('ts.dist', function() {

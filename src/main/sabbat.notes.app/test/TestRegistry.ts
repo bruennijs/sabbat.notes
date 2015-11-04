@@ -9,10 +9,11 @@ var appConfig = require('./test.config.json');
 /**
  * Register all test specific dependencies
  */
-class TestRegistry implements regComp.IApplicationRegistry
+export class TestRegistry implements regComp.IApplicationRegistry
 {
   Register(context: any):void {
     console.log("Register Test");
+    //context.register("appConfig", ).strategy(di.strategy.singleton);
     context.register("appConfig", function () {
       console.log("appConfig creator");
       return appConfig;
@@ -20,6 +21,6 @@ class TestRegistry implements regComp.IApplicationRegistry
   }
 }
 
-export var Registry: regComp.RegistryComposite = new regComp.RegistryComposite([new regApp.ApplicationRegistry(), new TestRegistry()]);
+export var Registry: regComp.RegistryComposite = new regComp.RegistryComposite([new TestRegistry(), new regApp.ApplicationRegistry()]);
 
 

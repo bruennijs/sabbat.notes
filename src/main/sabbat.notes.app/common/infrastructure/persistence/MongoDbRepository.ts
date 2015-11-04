@@ -13,20 +13,6 @@ import rx = require('rx');
 import mongodb = require('mongodb');
 
 export class MongoDbRepository<TModel extends model.IdObject> implements repo.IRepository<model.IdObject> {
-  public set configuration(value:any) {
-    this._configuration = value;
-  }
-  public get configuration():any {
-    return this._configuration;
-  }
-
-  public set factory(value:factory.IFactory<TModel>) {
-    this._factory = value;
-  }
-
-  public get factory():factory.IFactory<TModel> {
-    return this._factory;
-  }
 
   /**
    * INheriting classes can use collection to access db.
@@ -40,16 +26,16 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     return this._db;
   }
 
-  private _configuration:any;
-  private _factory:factory.IFactory<TModel>;
+  public  configuration:any;
+  public factory:factory.IFactory<TModel>;
 
   private _db: mongodb.Db = null;
   private _collection: mongodb.Collection = null;
   private _collectionName:string;
 
   constructor(configuration: any, factory: factory.IFactory<TModel>, collectionName: string) {
-    this._configuration = configuration;
-    this._factory = factory;
+    this.configuration = configuration;
+    this.factory = factory;
     this._collectionName = collectionName;
   }
 
@@ -59,17 +45,17 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
 
     var subject = new rx.ReplaySubject<void>();
 
-    console.log("Mongo connecting [" + that._configuration.mongodb_url + "]");
+    console.log("Mongo connecting [" + that.configuration.mongodb_url + "]");
 
-    mongodb.MongoClient.connect(that._configuration.mongodb_url, function(err, db) {
+    mongodb.MongoClient.connect(that.configuration.mongodb_url, function(err, db) {
 
       if (err != null) {
-        console.log("Mongo connection failed[" + that._configuration.mongodb_url + "]");
+        console.log("Mongo connection failed[" + that.configuration.mongodb_url + "]");
         subject.onError(err)
         return;
       }
 
-      console.log("Mongo connected [" + that._configuration.mongodb_url + "]");
+      console.log("Mongo connected [" + that.configuration.mongodb_url + "]");
       that._db = db;
 
       // get collection users
@@ -135,7 +121,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
       //model.Note.Parse
       objs.forEach(function(item, n, ar) {
         //console.log(item);
-        models.push(that._factory.CreateFromMongoDocument(item));
+        models.push(that.factory.CreateFromMongoDocument(item));
       });
 
       cb(err, models);
@@ -146,7 +132,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     //console.log(JSON.stringify(object));
     var insertOne = rx.Observable.fromNodeCallback(this._collection.insertOne, this._collection);
 
-    return insertOne(this._factory.ToMongoDocument(object)).select(function(mongoResult: any)
+    return insertOne(this.factory.ToMongoDocument(object)).select(function(mongoResult: any)
     {
       return object;
     });
@@ -162,7 +148,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     //console.log(JSON.stringify(object));
     var updateOne = rx.Observable.fromNodeCallback(this._collection.updateOne, this._collection);
 
-    return updateOne({_id: new mongodb.ObjectID(object.toString())}, this._factory.ToMongoDocument(object)).select(function(mongoResult: any)
+    return updateOne({_id: new mongodb.ObjectID(object.toString())}, this.factory.ToMongoDocument(object)).select(function(mongoResult: any)
     {
       return object;
     });
