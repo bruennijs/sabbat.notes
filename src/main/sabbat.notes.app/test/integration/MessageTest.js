@@ -14,12 +14,12 @@ var testReg = require('./../TestRegistry');
 
 var url = require('url');
 
-suite("UserTest", function() {
+suite("MessageTest", function() {
 
   suiteSetup(function(done) {
     suite.ctx = testReg.Registry.Context;
     // init database
-    var repo = suite.ctx.get('userRepository');
+    var repo = suite.ctx.get('messageRepository');
     var init = repo.Init(true);
     init.subscribeOnCompleted(done);
     init.subscribeOnError(done);
@@ -29,18 +29,18 @@ suite("UserTest", function() {
 
   });
 
-  test("#when get membershipservice expect user inserted", function(done) {
-    var sut = suite.ctx.get('membershipService');
-    sut.createUser('olli', url.parse("oliver.bruentje@gmx.de"))
+  test("#when get messageservice expect message inserted", function(done) {
+    var sut = suite.ctx.get('messageService');
+/*    sut.createUser('olli', url.parse("oliver.bruentje@gmx.de"))
         .subscribe(function (next) {
           assert.equal(next.name, "olli");
-          //assert.equal(next.email, "oliver.bruentje@gmx.de");
+          assert.equal(next.email, "oliver.bruentje@gmx.de");
         },
         function (error) {
           done(error);
         },
         function() {
           done();
-        })
+        })*/
   });
 });

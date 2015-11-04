@@ -19,16 +19,14 @@ import factory = require('./../domain/message/MessageFactory');
 import msgEvents = require('./../domain/message/MessageEvents');
 
 export class MessageService implements event.IEventHandler<event.IDomainEvent> {
-  private _msgRepo;
-  private _factory;
-  private _userRepo;
-  private _bus;
+  public messageRepository;
+  public messageFactory;
+  public userRepository;
+  public eventBus;
+  public dependencies;
 
-  constructor(msgRepo: pmsg.MessageRepository, userRepo: puser.UserRepository, noteFactory: factory.MessageFactory, bus: event.IDomainEventBus) {
-    this._msgRepo = msgRepo;
-    this._userRepo = userRepo;
-    this._factory = noteFactory;
-    this._bus = bus;
+  constructor() {
+    this.dependencies = "eventBus, messageFactory=messageFactory, userRepository, messageFactory";
   }
 
   /***
@@ -43,8 +41,8 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
   public sendMessage(from: model.Id, to: model.Id, content: string): rx.IObservable<msg.Message> {
     var that = this;
 
-    var fromUserObs = this._userRepo.GetById(from).map(function(user: user.User) { return { from: user } });
-    var toUserObs = this._userRepo.GetById(to).map(function(user: user.User) { return { to: user } });
+    var fromUserObs = this.userRepository.GetById(from).map(function(user: user.User) { return { from: user } });
+    var toUserObs = this.userRepository.GetById(to).map(function(user: user.User) { return { to: user } });
 
     // map id -> user instance
     var mapped = fromUserObs.merge(toUserObs);
@@ -58,13 +56,13 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
     return reduced
         .select(function(usersMap, idx, obs)
           {
-            var id = this._msgRepo.nextId();
+            var id = this.messageRepository.nextId();
 
             var createdMsg = new msg.Message(id);
 
             var createdEvents = createdMsg.create(usersMap.from, usersMap.to, content);
 
-            return this._msgRepo
+            return this.messageRepository
                       .Insert(createdMsg)
                       .Select(function(next)
                         {
@@ -75,7 +73,7 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
           {
             // fire events
             msg.events.forEach(function(event, idx, arr) {
-              that._bus.Publish(event);
+              that.eventBus.Publish(event);
             });
 
             return msg.instance;
@@ -112,13 +110,13 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
   Handle(event:event.IDomainEvent): void {
     if (event instanceof msgEvents.MessageDeliveredEvent)
     {
-      var msgGet = this._msgRepo.GetById(event.id);
+      var msgGet = this.messageRepository.GetById(event.id);
 
       msgGet.subscribe(function(msg) {
         //// transition to delivered state and store to repo
         msg.delivered(event as msgEvents.MessageDeliveredEvent);
 
-        this._msgRepo.Update(msg).subscribe(function() {
+        this.messageRepository.Update(msg).subscribe(function() {
           // log that msg was updated
           console.log("message updated[" + msg.id.toString() + "]");
         });

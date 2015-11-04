@@ -13,9 +13,11 @@ import _ = require('underscore');
 import mongodb = require('mongodb');
 
 export class MessageRepository extends repo.MongoDbRepository<msg.Message> {
+  public dependencies;
 
-  constructor(configuration: any, factory: fac.IFactory<msg.Message>) {
-    super(configuration, factory, "messages");
+  constructor() {
+    super(null, null, "messages");
+    this.dependencies = "configuration=appConfig,factory=messageFactory";
   }
 
 /*  public FindBy(userId: string, cb:(error: Error, obj: model.Message[]) => void):void {
