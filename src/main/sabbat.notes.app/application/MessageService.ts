@@ -26,7 +26,7 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
   public dependencies;
 
   constructor() {
-    this.dependencies = "eventBus, messageFactory=messageFactory, userRepository, messageFactory";
+    this.dependencies = "eventBus, messageFactory, userRepository, messageRepository";
   }
 
   /***
@@ -78,27 +78,6 @@ export class MessageService implements event.IEventHandler<event.IDomainEvent> {
 
             return msg.instance;
           }, this);
-
-    //
-    //// insert to repo.
-    //this._msgRepo.Insert(message, function(err, createdMsg) {
-    //  if (err === null)
-    //  {
-    //    subject.onNext(createdMsg);
-    //    subject.onCompleted();
-    //  }
-    //  else
-    //  {
-    //    subject.onError(err);
-    //  }
-    //});
-
-    // fire MessageSentEvent
-    //events.forEach(function(item, n, arr)  {
-    //  that._bus.Publish(item);
-    //});
-
-    //return subject;
   }
 
   /**

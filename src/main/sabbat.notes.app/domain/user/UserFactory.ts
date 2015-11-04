@@ -10,6 +10,10 @@ import _ = require('underscore');
 
 export class UserFactory implements factory.IFactory<model.User> {
 
+  public create() {
+
+  }
+
   ToMongoDocument(obj: model.User): any
   {
     return {

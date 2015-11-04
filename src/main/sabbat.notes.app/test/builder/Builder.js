@@ -73,9 +73,14 @@ var rx = require('rx');
   function Builder() {
   };
 
-  Builder.prototype.Build = function (id) {
-    return new user.User(id, "name", url.parse("test@sabbat.de"));
+  Builder.prototype.Build = function () {
+    return new user.User(this.id, "name", url.parse("test@sabbat.de"));
   };
+
+  Builder.prototype.withId = function (id) {
+    this.id = id;
+    return this;
+  }
 
   module.UserBuilder = Builder;
 })(module.exports);

@@ -45,7 +45,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
 
     var subject = new rx.ReplaySubject<void>();
 
-    console.log("Mongo connecting [" + that.configuration.mongodb_url + "]");
+    //console.log("Mongo connecting [" + that.configuration.mongodb_url + "]");
 
     mongodb.MongoClient.connect(that.configuration.mongodb_url, function(err, db) {
 
@@ -55,7 +55,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
         return;
       }
 
-      console.log("Mongo connected [" + that.configuration.mongodb_url + "]");
+      //console.log("Mongo connected [" + that.configuration.mongodb_url + "]");
       that._db = db;
 
       // get collection users

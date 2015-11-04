@@ -70,8 +70,8 @@ suite('MessageServiceTest', function () {
 
     var bus = new eventbus.DomainEventBusImpl();
 
-    var userFrom = new userBuilder().Build(new dddModel.Id("1"));
-    var userTo   = new userBuilder().Build(new dddModel.Id("2"));
+    var userFrom = new userBuilder().withId(new dddModel.Id("1")).Build();
+    var userTo   = new userBuilder().withId(new dddModel.Id("2")).Build();
 
     var userRepoMock = new repoBuilder().BuildMock();
     jsm.JsMockito.when(userRepoMock).GetById(userFrom.id).thenReturn(rx.Observable.return(userFrom));
