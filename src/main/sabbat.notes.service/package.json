@@ -20,6 +20,7 @@
     "ws": "^0.8.0"
   },
   "devDependencies": {
+    "DefinitelyTyped": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git",
     "gulp": "^3.9.0",
     "gulp-exec": "^2.1.2",
     "gulp-print": "^2.0.1",
