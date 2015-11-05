@@ -29,7 +29,8 @@ app.post('/users/create', function (req, res) {
         .createUser('bruenni', url.parse('bruenni@volloeko.de'))
         .subscribe(function(user)
                     {
-                        res.send(user);
+                      res.writeHead(200);
+                      res.send(user);
                     },
                     function(err) {
                       res.status(500);
@@ -43,5 +44,12 @@ app.get('/appconfig', function(req, res) {
 
 console.log("listening...");
 
-app.listen(3000);
+var httpServer = app.listen(3000);
+
+process.on('SIGTERM', function () {
+  console.log('Handling SIGTERM');
+  httpServer.close(function () {
+    process.exit(0);
+  });
+});
 
