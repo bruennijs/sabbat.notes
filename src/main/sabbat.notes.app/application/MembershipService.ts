@@ -2,7 +2,8 @@
  * Created by bruenni on 19.10.15.
  */
 
-/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="./../typings/tsd.d.ts" />
+
 import url = require('url');
 import rx = require('rx');
 

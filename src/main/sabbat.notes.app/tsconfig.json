@@ -4,7 +4,7 @@
         "target": "es5",
         "noImplicitAny": false,
         "removeComments": true,
-        "outDir": "./../dist/sabbat.notes.app",
+        "outDir": "./../dist/sabbat.notes.app.merge",
         "rootDir": ".",
         "sourceMap": false,
         "noResolve": false

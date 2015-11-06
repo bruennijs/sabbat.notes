@@ -2,7 +2,7 @@
  * Created by bruenni on 23.09.15.
  */
 
-/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="./../typings/tsd.d.ts" />
 
 import model = require('./../common/ddd/model');
 

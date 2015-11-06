@@ -2,8 +2,8 @@
  * Created by bruenni on 23.09.15.
  */
 
-/// <reference path="../node_modules/DefinitelyTyped/underscore/underscore.d.ts" />
-/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="./../typings/tsd.d.ts" />
+
 import rx = require('rx');
 import _ = require('underscore');
 

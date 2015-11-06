@@ -2,8 +2,7 @@
  * Created by bruenni on 24.09.15.
  */
 
-///<reference path="../../../node_modules/DefinitelyTyped/mongodb/mongodb.d.ts"/>
-///<reference path="../../../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="./../../../typings/tsd.d.ts" />
 
 import repo    = require('./../../ddd/persistence');
 import model   = require('./../../ddd/model');

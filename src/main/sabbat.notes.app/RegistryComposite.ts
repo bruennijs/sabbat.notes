@@ -2,7 +2,8 @@
  * Created by bruenni on 01.11.15.
  */
 
-/// <reference path="node_modules/DefinitelyTyped/di-lite/di-lite.d.ts" />
+/// <reference path="typings/tsd.d.ts" />
+
 require('./node_modules/di-lite/di-lite');    // no commonjs module exported file
 
 var membership = require('./application/MembershipService');

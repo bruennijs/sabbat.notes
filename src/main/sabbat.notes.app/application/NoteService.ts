@@ -9,7 +9,8 @@ import models = require('./../domain/Model');
 
 import factory = require('./../domain/note/NoteFactory');
 
-/// <reference path="../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="./../typings/tsd.d.ts" />
+
 import rx = require('rx');
 
 export class NoteService {

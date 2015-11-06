@@ -2,9 +2,7 @@
  * Repository interfaces
  */
 
-/// <reference path="../../node_modules/DefinitelyTyped/node/node.d.ts" />
-/// <reference path="../../node_modules/DefinitelyTyped/underscore/underscore.d.ts" />
-/// <reference path="../../node_modules/rx/ts/rx.all.d.ts" />
+/// <reference path="./../../typings/tsd.d.ts" />
 
 import util = require('util');
 import fs = require('fs');

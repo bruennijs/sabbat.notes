@@ -18,11 +18,11 @@
     "gulp-watch": "^4.3.4",
     "jshamcrest": "^0.6.7",
     "mocha": "^2.2.5",
+    "tsd": "^0.6.5",
     "tslint": "^2.5.1",
     "typescript": "^1.6.2"
   },
   "dependencies": {
-    "DefinitelyTyped": "https://github.com/borisyankov/DefinitelyTyped",
     "di-lite": "^0.3.3",
     "mongodb": "^2.0.43",
     "rx": "^4.0.6",
