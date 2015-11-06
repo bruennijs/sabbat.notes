@@ -44,7 +44,7 @@ gulp.task('dist.ts', function() {
    .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/<%= file.name %> <%= file.path %>', options));*/
 
   var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
-                          '-project', '.']);
+                          '-project', '.']);   //// using tsconfig.json
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());

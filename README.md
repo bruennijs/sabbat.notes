@@ -7,6 +7,7 @@ Installation
 * cd src/main/sabbat.notes.app
 ** npm install
 ** node_modules/.bin/tsd reinstall
+** install additional packages (will extend typings/tsd.d.ts file):node_modules/.bin/tsd install rx --save
 
 
 Documentation

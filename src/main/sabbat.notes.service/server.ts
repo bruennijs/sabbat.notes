@@ -2,8 +2,9 @@
  * Created by bruenni on 05.11.15.
  */
 
-/// <reference path="./node_modules/DefinitelyTyped/node/node.d.ts" />
-/// <reference path="./node_modules/DefinitelyTyped/express/express.d.ts" />
+/// <reference path="./../dist/sabbat.notes.app/sabbat-app-all.d.ts" />
+/// <reference path="./typings/tsd.d.ts" />
+
 import express = require("express");
 
 var userRouter = require("./middleware/UserRouter");

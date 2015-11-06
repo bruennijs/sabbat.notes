@@ -23,14 +23,7 @@ gulp.task('ts.dist', function(cb) {
    .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/js/<%= file.name %> <%= file.path %>', options));*/
 
   var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
-                          '--module', 'commonjs',
-                          '-t', 'ES5',
-                          '--outDir', distBaseDir,
-                          './middleware/UserRouter.ts',
-                          //'./middleware/ApiKeyRouter.ts',
-                          'server.ts'
-                          /*'./ts/Models.ts',
-                          './ts/Dal.ts'*/]);
+                          '-project', '.']);  //// using tsconfig.json
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
