@@ -11,7 +11,7 @@ var app = express();
 
 app.use("/user", userRouter);
 
-app.get("/test", function(req: express.Request, res: express.Response, next: Function) {
+app.get("/test", function(req: express.Request, res: express.Response, next) {
   res.status(200).json({id: "1234", value: "test"});
 });
 

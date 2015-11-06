@@ -27,7 +27,7 @@ gulp.task('ts.dist', function(cb) {
                           '-t', 'ES5',
                           '--outDir', distBaseDir,
                           './middleware/UserRouter.ts',
-                          './middleware/ApiKeyRouter.ts',
+                          //'./middleware/ApiKeyRouter.ts',
                           'server.ts'
                           /*'./ts/Models.ts',
                           './ts/Dal.ts'*/]);
@@ -95,7 +95,7 @@ gulp.task('test.run', function () {
         .pipe(exec(path.join(distBaseDir, 'node_modules/mocha/bin/mocha') + ' --recursive --ui tdd --reporter dot <%= file.path %>', opt));
 });
 
-gulp.task('dist', ['modules.dist', 'js.dist', 'test.dist', 'ts.dist']);
+gulp.task('dist', ['js.dist', 'test.dist', 'ts.dist']);
 
 gulp.task('server', ['dist', 'server.run']);
 

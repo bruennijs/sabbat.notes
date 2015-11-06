@@ -10,7 +10,7 @@
     <test-directory>$PROJECT_DIR$/src/main/dist/sabbat.notes.app/test</test-directory>
     <recursive>true</recursive>
     <method>
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="ts.dist" run_configuration_type="js.build_tools.gulp" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="dist" run_configuration_type="js.build_tools.gulp" />
     </method>
   </configuration>
 </component>

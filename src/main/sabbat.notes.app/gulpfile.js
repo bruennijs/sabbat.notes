@@ -11,8 +11,32 @@ var path = require('path');
 var distBaseDir = './../dist/sabbat.notes.app';
 //var distBaseDir = './dist';
 
+gulp.task('dts.generator', function() {
+  console.info("Typescript transpiling");
 
-gulp.task('ts.dist', function() {
+  /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
+   .pipe(gfilemetadata({log: true}))
+   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/<%= file.name %> <%= file.path %>', options));*/
+
+  var tsc = spawn('node', ['node_modules/dts-generator/bin/dts-generator',
+    '--name', 'sabbat-app-all',
+    '--project', '.',
+    '--out', path.join(distBaseDir, "sabbat-app-all.d.ts")]);
+
+  tsc.stdout.on('data', function(data) {
+    console.log(data.toString());
+  });
+
+  tsc.stderr.on('data', function(data) {
+    console.log(data.toString());
+  });
+
+  tsc.on('close', function(data) {
+    console.log('Typescript compilier exited');
+  });
+});
+
+gulp.task('dist.ts', function() {
   console.info("Typescript transpiling");
 
   /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
@@ -20,24 +44,7 @@ gulp.task('ts.dist', function() {
    .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/<%= file.name %> <%= file.path %>', options));*/
 
   var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
-                          '--module', 'commonjs',
-                          '-t', 'ES5',
-                            //'--noLib',
-                          '--outDir', distBaseDir,
-                          './infrastructure/persistence/Dal.ts',
-                          './infrastructure/persistence/NoteRepository.ts',
-                          './infrastructure/persistence/UserRepository.ts',
-                          './domain/Model.ts',
-                          './domain/note/NoteFactory.ts',
-                            './domain/user/UserFactory.ts',
-                            './domain/message/MessageFactory.ts',
-                            './domain/message/Message.ts',
-                            './domain/message/MessageEvents.ts',
-                          './application/NoteService.ts',
-                            './application/MessageService.ts',
-                          './application/MembershipService.ts',
-                            './ApplicationRegistry.ts',
-                            './RegistryComposite.ts']);
+                          '-project', '.']);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());
@@ -52,78 +59,12 @@ gulp.task('ts.dist', function() {
   });
 });
 
-gulp.task('ts.test.dist', function() {
-  console.info("Typescript test transpiling");
-
-  /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
-   .pipe(gfilemetadata({log: true}))
-   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/<%= file.name %> <%= file.path %>', options));*/
-
-  var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
-    '--module', 'commonjs',
-    '-t', 'ES5',
-    //'--noLib',
-    '--outDir', distBaseDir,
-    './test/TestRegistry.ts']);
-
-  tsc.stdout.on('data', function(data) {
-    console.log(data.toString());
-  });
-
-  tsc.stderr.on('data', function(data) {
-    console.log(data.toString());
-  });
-
-  tsc.on('close', function(data) {
-    console.log('Typescript compilier exited');
-  });
-});
-
-gulp.task('ts.common.dist', function(cb) {
-  console.info("Typescript transpiling");
-
-  var options = {
-    continueOnError: true, // default = false, true means don't emit error event
-    pipeStdout: false,
-    customTemplateThing: 'some string to be templated'
-  };
-
-  /*    gulp.src(['sabbat.notes.ui/ts/!**!/!*.ts'])
-   .pipe(gfilemetadata({log: true}))
-   .pipe(exec('node node_modules/typescript/bin/tsc -d -t ES5 --out sabbat.notes.ui/dist/<%= file.name %> <%= file.path %>', options));*/
-
-  var tsc = spawn('node', ['node_modules/typescript/bin/tsc',
-    '--module', 'commonjs',
-    '-t', 'ES5',
-    //'--noLib',
-    '--outdir', path.join(distBaseDir, 'common'),
-    './common/ddd/model.ts',
-    './common/ddd/persistence.ts',
-    './common/ddd/factory.ts',
-    './common/ddd/impl/DomainEventBusImpl.ts',
-    './common/infrastructure/service/IdGeneratorService.ts',
-    './common/infrastructure/persistence/MongoDbRepository.ts']);
-
-  tsc.stdout.on('data', function(data) {
-    console.log(data.toString());
-  });
-
-  tsc.stderr.on('data', function(data) {
-    console.log(data.toString());
-    cb(data);
-  });
-
-  tsc.on('close', function(data) {
-    console.log('Typescript compilier exited');
-  });
-});
-
-gulp.task('js.dist', function() {
+gulp.task('dist.js', function() {
   gulp.src('**/*.js').
       pipe(gulp.dest(distBaseDir));
 });
 
-gulp.task('modules.dist', function() {
+gulp.task('dist.modules', function() {
     gulp.src('node_modules/**/*').
         pipe(gulp.dest(path.join(distBaseDir, 'node_modules')));
 });
@@ -136,7 +77,7 @@ gulp.task('watch.test', function() {
   gulp.watch('./test/**/*.{ts,js}', ['test']);
 });
 
-gulp.task('test.dist', function () {
+gulp.task('dist.test', function () {
     gulp.src(['test/**/*.js', 'test/**/*.json'])
        .pipe(gulp.dest(path.join(distBaseDir, 'test')));
 });
@@ -153,7 +94,7 @@ gulp.task('test.run', function () {
         .pipe(exec.reporter());
 });
 
-gulp.task('dist', ['js.dist', 'ts.common.dist', 'ts.dist', 'ts.test.dist', 'test.dist']);
+gulp.task('dist', ['dist.js', 'dist.ts', 'dist.test']);
 
 gulp.task('test', ['dist', 'test.run']);
 
