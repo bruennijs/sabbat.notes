@@ -2,19 +2,18 @@
  * Created by bruenni on 24.09.15.
  */
 
-import factory = require('./../../common/ddd/factory');
-import model = require('./../../domain/Model');
-
 import mongodb = require('mongodb');
 import _ = require('underscore');
+import {IFactory} from "../../common/ddd/factory";
+import {User} from "../Model";
 
-export class UserFactory implements factory.IFactory<model.User> {
+export class UserFactory implements IFactory<User> {
 
   public create() {
 
   }
 
-  ToMongoDocument(obj: model.User): any
+  ToMongoDocument(obj: User): any
   {
     return {
       _id: new mongodb.ObjectID(obj.id.value),
@@ -22,8 +21,8 @@ export class UserFactory implements factory.IFactory<model.User> {
     }
   }
 
-  CreateFromMongoDocument(document: any): model.User {
-    return new model.User(document._id, document.name, document.email);
+  CreateFromMongoDocument(document: any): User {
+    return new User(document._id, document.name, document.email);
   }
 }
 

@@ -21,7 +21,7 @@ gulp.task('dts.generator', function() {
   var tsc = spawn('node', ['node_modules/dts-generator/bin/dts-generator',
     '--name', 'sabbat-app-all',
     '--project', '.',
-    '--out', path.join(distBaseDir, "sabbat-app-all.d.ts")]);
+    '--out', path.join(distBaseDir, "sabbat-app-all.dtsgen.d.ts")]);
 
   tsc.stdout.on('data', function(data) {
     console.log(data.toString());

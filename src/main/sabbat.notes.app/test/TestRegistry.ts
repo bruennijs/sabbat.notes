@@ -1,15 +1,16 @@
+import {IApplicationRegistry} from "../RegistryComposite";
+import {RegistryComposite} from "../RegistryComposite";
+import {ApplicationRegistry} from "../ApplicationRegistry";
 /**
  * Created by bruenni on 02.11.15.
  */
 
-import regComp = require('./../RegistryComposite');
-import regApp  = require('./../ApplicationRegistry');
 var appConfig = require('./test.config.json');
 
 /**
  * Register all test specific dependencies
  */
-export class TestRegistry implements regComp.IApplicationRegistry
+export class TestRegistry implements IApplicationRegistry
 {
   Register(context: any):void {
     console.log("Register Test");
@@ -21,6 +22,6 @@ export class TestRegistry implements regComp.IApplicationRegistry
   }
 }
 
-export var Registry: regComp.RegistryComposite = new regComp.RegistryComposite([new TestRegistry(), new regApp.ApplicationRegistry()]);
+export var Registry: RegistryComposite = new RegistryComposite([new TestRegistry(), new ApplicationRegistry()]);
 
 

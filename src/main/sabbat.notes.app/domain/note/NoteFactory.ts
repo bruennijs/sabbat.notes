@@ -2,17 +2,15 @@
  * Created by bruenni on 24.09.15.
  */
 
-import factory = require('./../../common/ddd/factory');
-import dddModel = require('./../../common/ddd/model');
-import model = require('./../../domain/Model');
-import repository = require('./../../domain/Model');
-
 import mongodb = require('mongodb');
 import _ = require('underscore');
+import {Id} from "../../common/ddd/model";
+import {Note} from "../Model";
+import {IFactory} from "../../common/ddd/factory";
 
-export class NoteFactory implements factory.IFactory<model.Note> {
+export class NoteFactory implements IFactory<Note> {
 
-  ToMongoDocument(obj: model.Note): any
+  ToMongoDocument(obj: Note): any
   {
     return {
       _id: new mongodb.ObjectID(obj.id.value),
@@ -22,8 +20,8 @@ export class NoteFactory implements factory.IFactory<model.Note> {
     }
   }
 
-  CreateFromMongoDocument(document: any): model.Note {
-    var obj = new model.Note(new dddModel.Id(document._id), new dddModel.Id(document.ownerId));
+  CreateFromMongoDocument(document: any): Note {
+    var obj = new Note(new Id(document._id), new Id(document.ownerId));
     //obj.load(document);
     return obj;
   }

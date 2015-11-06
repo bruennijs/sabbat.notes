@@ -4,14 +4,15 @@
 
 /// <reference path="./../../../typings/tsd.d.ts" />
 
-import repo    = require('./../../ddd/persistence');
-import model   = require('./../../ddd/model');
-import factory = require('./../../ddd/factory');
-
 import rx = require('rx');
 import mongodb = require('mongodb');
 
-export class MongoDbRepository<TModel extends model.IdObject> implements repo.IRepository<model.IdObject> {
+import {IFactory} from "../../ddd/factory";
+import {IdObject} from "../../ddd/model";
+import {IRepository, Func1, Func2} from "../../ddd/persistence";
+import {Id} from "../../ddd/model";
+
+export class MongoDbRepository<TModel extends IdObject> implements IRepository<IdObject> {
 
   /**
    * INheriting classes can use collection to access db.
@@ -26,13 +27,13 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
   }
 
   public  configuration:any;
-  public factory:factory.IFactory<TModel>;
+  public factory:IFactory<TModel>;
 
   private _db: mongodb.Db = null;
   private _collection: mongodb.Collection = null;
   private _collectionName:string;
 
-  constructor(configuration: any, factory: factory.IFactory<TModel>, collectionName: string) {
+  constructor(configuration: any, factory: IFactory<TModel>, collectionName: string) {
     this.configuration = configuration;
     this.factory = factory;
     this._collectionName = collectionName;
@@ -104,7 +105,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     return subject;
   }
 
-  public Find(cb:repo.Func2<Error, TModel[], void>):void {
+  public Find(cb: Func2<Error, TModel[], void>):void {
   if (!this._collection)
     {
       throw new Error('Not initialized');
@@ -165,8 +166,8 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
     });
   }
 
-  nextId():model.Id {
-    return new model.Id(new mongodb.ObjectID().toString());
+  nextId():Id {
+    return new Id(new mongodb.ObjectID().toString());
   }
 
   /**
@@ -175,7 +176,7 @@ export class MongoDbRepository<TModel extends model.IdObject> implements repo.IR
    * @returns {ReplaySubject<T>}
    * @constructor
    */
-  GetById(id: model.Id): Rx.IObservable<TModel> {
+  GetById(id: Id): Rx.IObservable<TModel> {
     var subject = new rx.ReplaySubject<TModel>();
 
     this.collection

@@ -7,21 +7,20 @@
 import url = require('url');
 import rx = require('rx');
 
-import repository = require('./../infrastructure/persistence/UserRepository');
-import user = require('./../domain/Model');
-import dddModel = require('./../common/ddd/model');
+import {User} from "../domain/Model";
+import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
 export class MembershipService {
   private dependencies;
 
-  public get Repository():repository.UserRepository {
+  public get Repository(): UserRepository {
     return this._repository;
   }
 
-  public set Repository(value:repository.UserRepository) {
+  public set Repository(value:UserRepository) {
     this._repository = value;
   }
-  private _repository: repository.UserRepository;
+  private _repository: UserRepository;
 
   /**
    * Constructor
@@ -37,10 +36,10 @@ export class MembershipService {
    * @param email
    * @returns {rx.IObservable<User>}
    */
-  createUser(name: string, email: url.Url): rx.IObservable<user.User> {
+  createUser(name: string, email: url.Url): rx.IObservable<User> {
     var newId = this._repository.nextId();
 
-    var newUser = new user.User(newId, name, email);
+    var newUser = new User(newId, name, email);
 
     return this._repository.Insert(newUser);
   }

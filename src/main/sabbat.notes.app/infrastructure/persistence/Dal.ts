@@ -9,18 +9,20 @@ import fs = require('fs');
 import path = require('path');
 import _ = require('underscore');
 import rx = require('rx');
+import {Id} from "../../common/ddd/model";
+import {IdObject} from "../../common/ddd/model";
+import {IRepository} from "../../common/ddd/persistence";
+import {Func2} from "../../common/ddd/persistence";
 
-import persistence = require('./../../common/ddd/persistence');
-import model = require('./../../common/ddd/model');
 
     /**
      * File based db
      */
-    export class FsObjectRepository implements persistence.IRepository<model.IdObject> {
-        GetById(id:model.Id):Rx.IObservable<model.IdObject> {
+    export class FsObjectRepository implements IRepository<IdObject> {
+        GetById(id:Id):Rx.IObservable<IdObject> {
             return undefined;
         }
-        nextId():model.Id {
+        nextId():Id {
             return undefined;
         }
         private dbDir;
@@ -40,7 +42,7 @@ import model = require('./../../common/ddd/model');
          * @returns {any}
          * @constructor
          */
-        Find(cb?: persistence.Func2<Error, model.IdObject[], void>): void {
+        Find(cb?: Func2<Error, IdObject[], void>): void {
             fs.readdir(this.dbDir, (err1, files) =>
             {
                 if ((err1 === null)) {
@@ -56,8 +58,8 @@ import model = require('./../../common/ddd/model');
                         }
                     });
 
-                    var mappedModels = contentBuffers.map<model.IdObject>((content) => {
-                        return model.IdObject.Parse(content.toString());
+                    var mappedModels = contentBuffers.map<IdObject>((content) => {
+                        return IdObject.Parse(content.toString());
                     });
 
                     cb(null, mappedModels);
@@ -73,8 +75,8 @@ import model = require('./../../common/ddd/model');
          * @returns {any}
          * @constructor
          */
-        GetRx(): rx.IObservable<model.IdObject> {
-            return rx.Observable.from([new model.IdObject(new model.Id("4711"))]);
+        GetRx(): rx.IObservable<IdObject> {
+            return rx.Observable.from([new IdObject(new Id("4711"))]);
         }
 
         /**
@@ -82,7 +84,7 @@ import model = require('./../../common/ddd/model');
          * @param object
          * @constructor
          */
-        Insert(object:model.IdObject): rx.IObservable<model.IdObject> {
+        Insert(object:IdObject): rx.IObservable<IdObject> {
             console.log(util.format('Insert object[id=%s]', object.id));
 
             fs.writeFileSync(path.join(this.dbDir, util.format('%s.js', object.id)), JSON.stringify(object), 'utf8');

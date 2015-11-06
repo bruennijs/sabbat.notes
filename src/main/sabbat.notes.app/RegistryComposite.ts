@@ -6,10 +6,6 @@
 
 require('./node_modules/di-lite/di-lite');    // no commonjs module exported file
 
-var membership = require('./application/MembershipService');
-var userFactory = require('./domain/user/UserFactory');
-var userRepo = require('./infrastructure/persistence/UserRepository');
-var userModel = require('./domain/Model');
 
 /**
  * All registries must implement this.

@@ -2,35 +2,33 @@
  * Created by bruenni on 23.09.15.
  */
 
-import persistence = require('./../infrastructure/persistence/NoteRepository');
-
-import model = require('./../common/ddd/model');
-import models = require('./../domain/Model');
-
-import factory = require('./../domain/note/NoteFactory');
 
 /// <reference path="./../typings/tsd.d.ts" />
 
 import rx = require('rx');
+import {Note} from "../domain/Model";
+import {Id} from "../common/ddd/model";
+import {NoteFactory} from "../domain/note/NoteFactory";
+import {NoteRepository} from "../infrastructure/persistence/NoteRepository";
 
 export class NoteService {
-  private _noteRepository: persistence.NoteRepository;
-  private _noteFactory:factory.NoteFactory;
+  private _noteRepository: NoteRepository;
+  private _noteFactory:NoteFactory;
 
-  constructor(repo: persistence.NoteRepository, noteFactory: factory.NoteFactory) {
+  constructor(repo: NoteRepository, noteFactory: NoteFactory) {
     this._noteRepository = repo;
     this._noteFactory = noteFactory;
   }
 
-  public createNote(ownerId: model.Id): rx.IObservable<models.Note> {
+  public createNote(ownerId: Id): rx.IObservable<Note> {
     var nextId = this._noteRepository.nextId();
 
-    var note = new models.Note(nextId, ownerId);
+    var note = new Note(nextId, ownerId);
 
     return this._noteRepository.Insert(note);
   }
 
-  public findNotesByOwner(ownerId: string, cb: (err: Error, model: models.Note[]) => void) {
+  public findNotesByOwner(ownerId: string, cb: (err: Error, model: Note[]) => void) {
     this._noteRepository.FindByOwner(ownerId, function(err, objs) {
       cb(err, objs);
     })

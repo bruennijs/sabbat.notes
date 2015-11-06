@@ -4,21 +4,20 @@
 
 /// <reference path="./../../typings/tsd.d.ts" />
 
-import repo = require('./../../common/infrastructure/persistence/MongoDbRepository');
-import model = require('./../../domain/Model');
-import fac = require('./../../common/ddd/factory');
-import dddModel = require('./../../common/ddd/model');
 import _ = require('underscore');
 
 import mongodb = require('mongodb');
+import {Note} from "../../domain/Model";
+import {IFactory} from "../../common/ddd/factory";
+import {MongoDbRepository} from "../../common/infrastructure/persistence/MongoDbRepository";
 
-export class NoteRepository extends repo.MongoDbRepository<model.Note> {
+export class NoteRepository extends MongoDbRepository<Note> {
 
-  constructor(configuration: any, factory: fac.IFactory<model.Note>) {
+  constructor(configuration: any, factory: IFactory<Note>) {
     super(configuration, factory, "notes");
   }
 
-  public FindByOwner(userId: string, cb:(error: Error, obj: model.Note[]) => void):void {
+  public FindByOwner(userId: string, cb:(error: Error, obj: Note[]) => void):void {
 
     var that = this;
 

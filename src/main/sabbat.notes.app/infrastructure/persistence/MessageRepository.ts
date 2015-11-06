@@ -4,15 +4,14 @@
 
 /// <reference path="./../../typings/tsd.d.ts" />
 
-import repo = require('./../../common/infrastructure/persistence/MongoDbRepository');
-import msg = require('./../../domain/message/Message');
-import fac = require('./../../common/ddd/factory');
-import dddModel = require('./../../common/ddd/model');
 import _ = require('underscore');
 
 import mongodb = require('mongodb');
 
-export class MessageRepository extends repo.MongoDbRepository<msg.Message> {
+import {Message} from "../../domain/message/Message";
+import {MongoDbRepository} from "../../common/infrastructure/persistence/MongoDbRepository";
+
+export class MessageRepository extends MongoDbRepository<Message> {
   public dependencies;
 
   constructor() {

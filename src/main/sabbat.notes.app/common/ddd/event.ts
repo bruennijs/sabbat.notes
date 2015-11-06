@@ -6,44 +6,44 @@
 
 import rx = require('rx');
 
-/**
- * All domain events inherits IDomainEvent
- */
-export interface IDomainEvent {
     /**
-     * Name of group a event contains to, can be an aggregate root name (e.g. can be mapped to specific channels in rabbitmq)
-     * Contains values like "message", "user"
+     * All domain events inherits IDomainEvent
      */
-    group: string;
-}
-
-/**
- * Event bus can be implemented by RabbitMQ e.g. to get distributed events.
- */
-export interface IDomainEventBus {
-    /**
-     * Publishes event to the bus.
-     * @param event to publish.
-     * @constructor
-     */
-    Publish(event: IDomainEvent): void;
+    export interface IDomainEvent {
+        /**
+         * Name of group a event contains to, can be an aggregate root name (e.g. can be mapped to specific channels in rabbitmq)
+         * Contains values like "message", "user"
+         */
+        group: string;
+    }
 
     /**
-     * Subcribes for asynchronous event
-     * @group: name of the group to listen for events. See IDomainEvent for property 'group'
-     * @constructor
+     * Event bus can be implemented by RabbitMQ e.g. to get distributed events.
      */
-    Subscribe(group: string): rx.IObservable<IDomainEvent>;
-}
+    export interface IDomainEventBus {
+        /**
+         * Publishes event to the bus.
+         * @param event to publish.
+         * @constructor
+         */
+        Publish(event: IDomainEvent): void;
 
-/**
- * Handler for handling events
- */
-export interface IEventHandler<TEvent extends IDomainEvent> {
+        /**
+         * Subcribes for asynchronous event
+         * @group: name of the group to listen for events. See IDomainEvent for property 'group'
+         * @constructor
+         */
+        Subscribe(group:string): rx.IObservable<IDomainEvent>;
+    }
+
     /**
-     * Domain handler processing events.
-     * @param event
-     * @constructor
+     * Handler for handling events
      */
-    Handle(event: TEvent): void;
-}
+    export interface IEventHandler<TEvent extends IDomainEvent> {
+        /**
+         * Domain handler processing events.
+         * @param event
+         * @constructor
+         */
+        Handle(event:TEvent): void;
+    }

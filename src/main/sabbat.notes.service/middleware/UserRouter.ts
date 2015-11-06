@@ -2,13 +2,13 @@
  * Created by bruenni on 05.11.15.
  */
 
-/// <reference path="./../../dist/sabbat.notes.app/application/MembershipService.d.ts" />
+/// <reference path="./../node_modules/sabbat.notes.app/application/MembershipService.d.ts" />
 /// <reference path="./../typings/tsd.d.ts" />
 
 import express = require("express");
 import di = require("di-lite");
 
-import msg = require("MembershipService");
+import msg = require("./application/MembershipService");
 
 var router = express.Router();
 

@@ -2,9 +2,9 @@
  * Created by bruenni on 18.10.15.
  */
 
-import model = require("./model");
+import {IdObject} from "./model";
 
-export interface IFactory<TModel extends model.IdObject> {
+export interface IFactory<TModel extends IdObject> {
   /**
    * Creates a domain model from persistence document.
    * @param document

@@ -2,10 +2,12 @@
  * Created by bruenni on 25.10.15.
  */
 
-import bus = require('./../event');
 import rx = require('rx');
 
-export class DomainEventBusImpl implements bus.IDomainEventBus {
+import {IDomainEventBus} from "../event";
+import {IDomainEvent} from "../event";
+
+export class DomainEventBusImpl implements IDomainEventBus {
 
     /**
      * js object where:
@@ -25,7 +27,7 @@ export class DomainEventBusImpl implements bus.IDomainEventBus {
      * @param event
      * @constructor
      */
-    Publish(event: bus.IDomainEvent):void {
+    Publish(event: IDomainEvent):void {
         console.log(event);
         var observables = this.map[event.group];
         if (observables !== undefined) {
@@ -41,13 +43,13 @@ export class DomainEventBusImpl implements bus.IDomainEventBus {
      * @returns {null}
      * @constructor
      */
-    Subscribe(groupName: string): rx.IObservable<bus.IDomainEvent> {
+    Subscribe(groupName: string): rx.IObservable<IDomainEvent> {
         if (groupName === undefined)
         {
             throw new Error("groupName undefined");
         }
 
-        var subject = new rx.ReplaySubject<bus.IDomainEvent>();
+        var subject = new rx.ReplaySubject<IDomainEvent>();
 
         //// add when not already existing
         var observableList = this.map[groupName];

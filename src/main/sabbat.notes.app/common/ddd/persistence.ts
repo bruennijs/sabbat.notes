@@ -2,17 +2,12 @@
  * Created by bruenni on 23.09.15.
  */
 
-/**
- * Repository interfaces
- */
-
 /// <reference path="./../../typings/tsd.d.ts" />
 
-/// <reference path="./../../typings/tsd.d.ts" />
 
-import rx = require('rx');  /// this is a "declare module" section of a d.ts file where several modules are declared
+import rx = require('rx');
 
-import model = require('./model');  /// this is a ts file where symbols are exported
+import {IdObject, Id} from "./model";
 
 export interface Func1<T1, TResult> {
   (arg1?:T1): TResult;
@@ -22,12 +17,12 @@ export interface Func2<T1, T2, TResult> {
   (arg1?:T1, arg2?:T2): TResult;
 }
 
-export interface IRepository<TModel extends model.IdObject>  {
+export interface IRepository<TModel extends IdObject>  {
 
   /**
    * Get by id
    */
-  GetById(id: model.Id): rx.IObservable<TModel>;
+  GetById(id: Id): rx.IObservable<TModel>;
 
   /**
    * Gets all users.
@@ -45,5 +40,5 @@ export interface IRepository<TModel extends model.IdObject>  {
   /**
    * Generates next id.
    */
-  nextId(): model.Id;
+  nextId(): Id;
 }

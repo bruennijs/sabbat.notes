@@ -4,24 +4,23 @@
 
 /// <reference path="./../typings/tsd.d.ts" />
 
-import model = require('./../common/ddd/model');
-
-import msg = require('./message/Message');
-
 import rx = require('rx');
 import url = require('url');
 
+import {IdObject} from "../common/ddd/model";
+import {Id} from "../common/ddd/model";
+
 //namespace sabbat {
-  export class Note extends model.IdObject {
-    public get ownerId():model.Id {
+  export class Note extends IdObject {
+    public get ownerId(): Id {
       return this._ownerId;
     }
 
-    public get sharedUserIds():string[] {
+    public get sharedUserIds(): string[] {
       return this._sharedUserIds;
     }
 
-    public set sharedUserIds(value:string[]) {
+    public set sharedUserIds(value: string[]) {
       this._sharedUserIds = value;
     }
 
@@ -37,11 +36,11 @@ import url = require('url');
 
     private _title;
 
-    private _ownerId:model.Id;
+    private _ownerId:Id;
 
-    private _sharedUserIds:string[];
+    private _sharedUserIds: string[];
 
-    constructor(id:model.Id, ownerId:model.Id, title?:string, content?:string) {
+    constructor(id: Id, ownerId: Id, title?:string, content?:string) {
       super(id);
       this._ownerId = ownerId;
       this._title = title;
@@ -52,7 +51,7 @@ import url = require('url');
      * Adds shared users to existing shared user ids.
      * @param userIds ids to add to collection.
      */
-    addSharedUsers(userIds:string[]):void {
+    addSharedUsers(userIds: string[]):void {
       userIds.forEach((item, n, items) => {
         items.push(item);
       });
@@ -62,7 +61,7 @@ import url = require('url');
   /**
    * User entity
    */
-  export class User extends model.IdObject {
+  export class User extends IdObject {
     public get email() {
       return this._email;
     }
@@ -75,7 +74,7 @@ import url = require('url');
 
     private _name;
 
-    constructor(id:model.Id, name: string, email:url.Url) {
+    constructor(id: Id, name: string, email: url.Url) {
       super(id)
       this._name = name;
       this._email = email;

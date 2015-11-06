@@ -2,15 +2,15 @@
  * Created by bruenni on 24.09.15.
  */
 
-import factory = require('./../../common/ddd/factory');
-import model = require('./Message');
-
 import mongodb = require('mongodb');
 import _ = require('underscore');
 
-export class MessageFactory implements factory.IFactory<model.Message> {
+import {Message, MessageState} from "./Message";
+import {IFactory} from "../../common/ddd/factory";
 
-  ToMongoDocument(obj: model.Message): any
+export class MessageFactory implements IFactory<Message> {
+
+  ToMongoDocument(obj: Message): any
   {
     return {
       _id: new mongodb.ObjectID(obj.id.value),
@@ -21,8 +21,8 @@ export class MessageFactory implements factory.IFactory<model.Message> {
     }
   }
 
-  CreateFromMongoDocument(document: any): model.Message {
-    return new model.Message(document._id, document.fromUserId, document.toUserId, document.content, model.MessageState[<string>document.state]);
+  CreateFromMongoDocument(document: any): Message {
+    return new Message(document._id, document.fromUserId, document.toUserId, document.content, MessageState[<string>document.state]);
   }
 }
 
