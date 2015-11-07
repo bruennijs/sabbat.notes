@@ -37,7 +37,7 @@ export class MembershipService {
    * @param email
    * @returns {rx.IObservable<User>}
    */
-  createUser(name: string, email: Url): rx.IObservable<User> {
+  createUser(name: string, email: Url): rx.Observable<User> {
     var newId = this._repository.nextId();
 
     var newUser = new User(newId, name, email);

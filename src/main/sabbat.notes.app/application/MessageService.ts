@@ -34,7 +34,7 @@ import {User} from "../domain/Model";
      * @param content
      * @returns {Rx.ReplaySubject<T>}
      */
-    public sendMessage(from: Id, to: Id, content:string):rx.IObservable<Message> {
+    public sendMessage(from: Id, to: Id, content:string):rx.Observable<Message> {
       var that = this;
 
       var fromUserObs = this.userRepository.GetById(from).map(function (user:User) {

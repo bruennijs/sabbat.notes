@@ -20,7 +20,7 @@ export class NoteService {
     this._noteFactory = noteFactory;
   }
 
-  public createNote(ownerId: Id): rx.IObservable<Note> {
+  public createNote(ownerId: Id): rx.Observable<Note> {
     var nextId = this._noteRepository.nextId();
 
     var note = new Note(nextId, ownerId);

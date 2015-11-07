@@ -4,6 +4,7 @@
 
 /// <reference path="./../../typings/tsd.d.ts" />
 
+import rx = require("rx");
 import url = require("url");
 import express = require("express");
 import di = require("di-lite");
@@ -12,6 +13,15 @@ import {MembershipService} from "../../application/MembershipService";
 import {RequestHandler, Request, Response} from "express";
 import {Router} from "express";
 import {User} from "../../domain/Model";
+
+// ********** Serializer **************
+var serializeToDto = function(user: User): any {
+  return {
+    id: user.id.toString(),
+    name: user.name,
+    email: user.email.host
+  };
+};
 
 var routerInit = function(router: Router, di: DiLite.CreateContext) {
 
@@ -27,11 +37,12 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
     {
       memberShipService
           .createUser(name, url.parse(email))
-          .subscribe(function(user: User)
+          .select(function(user: User) { return serializeToDto(user); })
+          .subscribe(function(dto: any)
               {
-                res.status(200).json(user);
+                res.status(200).json(dto);
               },
-              function(err) {
+              function (err) {
                 res.send(500, "Could not create user [" + err + "]");
               });
     }

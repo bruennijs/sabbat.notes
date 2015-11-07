@@ -22,7 +22,7 @@ export interface IRepository<TModel extends IdObject>  {
   /**
    * Get by id
    */
-  GetById(id: Id): rx.IObservable<TModel>;
+  GetById(id: Id): rx.Observable<TModel>;
 
   /**
    * Gets all users.
@@ -35,7 +35,7 @@ export interface IRepository<TModel extends IdObject>  {
    * @param object
    * @constructor
    */
-  Insert(object: TModel): rx.IObservable<TModel>;
+  Insert(object: TModel): rx.Observable<TModel>;
 
   /**
    * Generates next id.

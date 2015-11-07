@@ -33,7 +33,7 @@ import rx = require('rx');
          * @group: name of the group to listen for events. See IDomainEvent for property 'group'
          * @constructor
          */
-        Subscribe(group:string): rx.IObservable<IDomainEvent>;
+        Subscribe(group:string): rx.Observable<IDomainEvent>;
     }
 
     /**

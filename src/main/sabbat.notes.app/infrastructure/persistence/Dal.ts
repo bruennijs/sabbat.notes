@@ -19,7 +19,7 @@ import {Func2} from "../../common/ddd/persistence";
      * File based db
      */
     export class FsObjectRepository implements IRepository<IdObject> {
-        GetById(id:Id):Rx.IObservable<IdObject> {
+        GetById(id:Id):Rx.Observable<IdObject> {
             return undefined;
         }
         nextId():Id {
@@ -75,7 +75,7 @@ import {Func2} from "../../common/ddd/persistence";
          * @returns {any}
          * @constructor
          */
-        GetRx(): rx.IObservable<IdObject> {
+        GetRx(): rx.Observable<IdObject> {
             return rx.Observable.from([new IdObject(new Id("4711"))]);
         }
 
@@ -84,7 +84,7 @@ import {Func2} from "../../common/ddd/persistence";
          * @param object
          * @constructor
          */
-        Insert(object:IdObject): rx.IObservable<IdObject> {
+        Insert(object:IdObject): rx.Observable<IdObject> {
             console.log(util.format('Insert object[id=%s]', object.id));
 
             fs.writeFileSync(path.join(this.dbDir, util.format('%s.js', object.id)), JSON.stringify(object), 'utf8');

@@ -12,7 +12,7 @@ export class DomainEventBusImpl implements IDomainEventBus {
     /**
      * js object where:
      * property: type
-     * value: IObservable<IDomainEvent>[]
+     * value: Observable<IDomainEvent>[]
      */
     private map: any = {}
 
@@ -43,7 +43,7 @@ export class DomainEventBusImpl implements IDomainEventBus {
      * @returns {null}
      * @constructor
      */
-    Subscribe(groupName: string): rx.IObservable<IDomainEvent> {
+    Subscribe(groupName: string): rx.Observable<IDomainEvent> {
         if (groupName === undefined)
         {
             throw new Error("groupName undefined");

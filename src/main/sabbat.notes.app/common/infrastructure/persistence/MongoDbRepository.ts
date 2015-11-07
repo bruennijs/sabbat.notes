@@ -39,7 +39,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
     this._collectionName = collectionName;
   }
 
-  public Init(dropCollections?: boolean): rx.IObservable<void> {
+  public Init(dropCollections?: boolean): rx.Observable<void> {
 
     var that = this;
 
@@ -128,7 +128,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
     });
   }
 
-  public Insert(object: TModel): rx.IObservable<TModel> {
+  public Insert(object: TModel): rx.Observable<TModel> {
     //console.log(JSON.stringify(object));
     var insertOne = rx.Observable.fromNodeCallback(this._collection.insertOne, this._collection);
 
@@ -144,7 +144,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
    * @returns {any}
    * @constructor
    */
-  public Update(object: TModel): rx.IObservable<TModel> {
+  public Update(object: TModel): rx.Observable<TModel> {
     //console.log(JSON.stringify(object));
     var updateOne = rx.Observable.fromNodeCallback(this._collection.updateOne, this._collection);
 
@@ -176,7 +176,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
    * @returns {ReplaySubject<T>}
    * @constructor
    */
-  GetById(id: Id): Rx.IObservable<TModel> {
+  GetById(id: Id): Rx.Observable<TModel> {
     var subject = new rx.ReplaySubject<TModel>();
 
     this.collection
