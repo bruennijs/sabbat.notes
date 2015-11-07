@@ -94,7 +94,7 @@ gulp.task('test.run', function () {
         .pipe(exec.reporter());
 });
 
-gulp.task('dist', ['dist.js', 'dist.ts', 'dist.test', 'dts.generator']);
+gulp.task('dist', ['dist.js', 'dist.ts', 'dist.test']);
 
 gulp.task('test', ['dist', 'test.run']);
 

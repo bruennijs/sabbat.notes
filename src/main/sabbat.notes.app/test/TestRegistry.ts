@@ -10,7 +10,7 @@ var appConfig = require('./test.config.json');
 /**
  * Register all test specific dependencies
  */
-export class TestRegistry implements IApplicationRegistry
+class TestRegistry implements IApplicationRegistry
 {
   Register(context: any):void {
     console.log("Register Test");

@@ -9,6 +9,7 @@ import rx = require('rx');
 
 import {User} from "../domain/Model";
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
+import {Url} from "url";
 
 export class MembershipService {
   private dependencies;
@@ -27,7 +28,7 @@ export class MembershipService {
    */
   constructor()
   {
-    this.dependencies = "Repository=userRepository";
+    this.dependencies = "_repository=userRepository";
   }
 
   /**
@@ -36,7 +37,7 @@ export class MembershipService {
    * @param email
    * @returns {rx.IObservable<User>}
    */
-  createUser(name: string, email: url.Url): rx.IObservable<User> {
+  createUser(name: string, email: Url): rx.IObservable<User> {
     var newId = this._repository.nextId();
 
     var newUser = new User(newId, name, email);

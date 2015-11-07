@@ -1,3 +1,4 @@
+import CreateContext = DiLite.CreateContext;
 /**
  * Created by bruenni on 01.11.15.
  */
@@ -24,8 +25,8 @@ export class RegistryComposite implements IApplicationRegistry
     public get Context() {
         return this._ctx;
     }
-    private _ctx;
-    private _registries:IApplicationRegistry[];
+    private _ctx: CreateContext;
+    private _registries: IApplicationRegistry[];
 
     /**
      * Constructor
@@ -42,13 +43,11 @@ export class RegistryComposite implements IApplicationRegistry
      * @param context
      * @constructor
      */
-    Register(context:any):void {
+    Register(context: any): void {
         this._registries.forEach(function (registry) {
             registry.Register(context);
-        })
+        });
     }
 }
-
-
 
 //var Context: DiLite.CreateContext = new ApplicationRegistry().Context;

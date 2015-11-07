@@ -9,6 +9,7 @@ import url = require('url');
 
 import {IdObject} from "../common/ddd/model";
 import {Id} from "../common/ddd/model";
+import {Url} from "url";
 
 //namespace sabbat {
   export class Note extends IdObject {
@@ -74,7 +75,7 @@ import {Id} from "../common/ddd/model";
 
     private _name;
 
-    constructor(id: Id, name: string, email: url.Url) {
+    constructor(id: Id, name: string, email: Url) {
       super(id)
       this._name = name;
       this._email = email;

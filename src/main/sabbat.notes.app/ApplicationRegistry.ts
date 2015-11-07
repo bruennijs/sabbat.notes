@@ -14,8 +14,6 @@ import {MessageService} from "./application/MessageService";
 
 require('./node_modules/di-lite/di-lite');    // no commonjs module exported file
 
-var appConfig = require('./appconfig');
-
 export class ApplicationRegistry implements IApplicationRegistry
 {
     /**
@@ -35,14 +33,4 @@ export class ApplicationRegistry implements IApplicationRegistry
         context.register("messageFactory", MessageFactory).strategy(di.strategy.singleton);
     }
 }
-
-export class ProductionRegistry implements IApplicationRegistry
-{
-    Register(context: any):void {
-        context.register("appConfig").object(appConfig);
-    }
-}
-
-
-
 //var Context: DiLite.CreateContext = new ApplicationRegistry().Context;
