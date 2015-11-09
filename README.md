@@ -30,6 +30,13 @@ REST API
 ** Response
 *** json object with {id, name}
 
+Test
+* run mongo db instance
+  docker run --name mongo -d -p 27017:27017 -p 28017:28017 bruenni/webapp:mongo
+
+* run unit tests with linked mongo db instance
+  docker run --rm -w /usr/local/share/sabbat --link mongo:mongolink -v /usr/local/src/git/sabbat.notes/src/main/sabbat.notes.app:/usr/local/share/sabbat bruenni/webapp:14.04-mean  node ./node_modules/gulp/bin/gulp.js test
+
 
 Todos managed in trello
 * https://trello.com/b/UKLb1n2w
