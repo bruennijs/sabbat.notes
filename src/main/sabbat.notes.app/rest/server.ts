@@ -13,6 +13,7 @@ import DiContainer = require("./../ProductionRegistry");
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
 import {UserRouter} from "./middleware/UserRouter";
+import {MessageRouter} from "./middleware/MessageRouter";
 import {LoginDigestRouter} from "./middleware/LoginDigestRouter";
 
 // *********** EXPRESS *************
@@ -22,11 +23,15 @@ app.use(bodyParser.json()); // for parsing application/json
 //app.use(express.session())
 //app.use(passport.session());
 
-// ************* USER Router ***************
-app.use("/user", UserRouter(DiContainer.Registry.Context)); // user Router
 
 // ************* LOGI & Authentication ***************
 app.use("/login", LoginDigestRouter(DiContainer.Registry.Context, app)); // login router
+
+// ************* USER Router ***************
+app.use("/user", UserRouter(DiContainer.Registry.Context)); // user Router
+
+// ************* Message Router ***************
+app.use("/message", MessageRouter(DiContainer.Registry.Context)); // user Router
 
 // *********************************
 
