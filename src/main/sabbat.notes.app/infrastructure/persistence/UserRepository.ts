@@ -6,6 +6,7 @@
 
 //import _ = require("underscore");
 
+import rx = require("rx");
 import mongodb = require("mongodb");
 
 import {MongoDbRepository} from "../../common/infrastructure/persistence/MongoDbRepository";
@@ -19,21 +20,34 @@ export class UserRepository extends MongoDbRepository<User> {
     this.dependencies = "configuration=appConfig,factory=userFactory";
   }
 
-  public FindByName(name: string, cb:(error: Error, obj: User[]) => void):void {
+  /**
+   * Finds user in database. When not found emoty array is returned
+   * @param name
+   * @returns {ReplaySubject<T>}
+   * @constructor
+   */
+  public FindByName(name: string): rx.Observable<User[]> {
 
     var that = this;
+
+    var subject = new rx.ReplaySubject<User[]>();
 
     //// fidn all items
     this.collection.find({name: name}).toArray(function(err, objs) {
 
-      var models = [];
-
-      //model.Note.Parse
-      objs.forEach(function(item, n, ar) {
-        models.push(that.factory.CreateFromMongoDocument(item));
-      });
-
-      cb(err, models);
+      if (!err)
+      {
+        subject.onNext(objs.map<User>(function(o, n, array) {
+          return that.factory.CreateFromMongoDocument(o);
+        }));
+        subject.onCompleted();
+      }
+      else
+      {
+        subject.onError(err);
+      }
     });
+
+    return subject;
   }
 }

@@ -6,17 +6,28 @@
 
 var bodyParser = require("body-parser");
 import express = require("express");
+
+
 // import DI container
 import DiContainer = require("./../ProductionRegistry");
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
 import {UserRouter} from "./middleware/UserRouter";
+import {LoginDigestRouter} from "./middleware/LoginDigestRouter";
 
 // *********** EXPRESS *************
 var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
+//app.use(express.session())
+//app.use(passport.session());
+
+// ************* USER Router ***************
 app.use("/user", UserRouter(DiContainer.Registry.Context)); // user Router
+
+// ************* LOGI & Authentication ***************
+app.use("/login", LoginDigestRouter(DiContainer.Registry.Context, app)); // login router
+
 // *********************************
 
 // *********** MONGO *************

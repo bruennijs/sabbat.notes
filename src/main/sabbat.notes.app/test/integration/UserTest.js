@@ -19,8 +19,9 @@ suite("UserTest", function() {
   suiteSetup(function(done) {
     suite.ctx = testReg.Registry.Context;
     // init database
-    var repo = suite.ctx.get('userRepository');
-    var init = repo.Init(true);
+    suite.repo = suite.ctx.get('userRepository');
+    suite.service = suite.ctx.get('membershipService');
+    var init = suite.repo.Init(true);
     init.subscribeOnCompleted(done);
     init.subscribeOnError(done);
   });
@@ -30,17 +31,39 @@ suite("UserTest", function() {
   });
 
   test("#when get membershipservice expect user inserted", function(done) {
-    var sut = suite.ctx.get('membershipService');
-    sut.createUser('olli', url.parse("oliver.bruentje@gmx.de"))
+    suite.service.createUser('olli', url.parse("oliver.bruentje@gmx.de"))
         .subscribe(function (next) {
-          assert.equal(next.name, "olli");
-          //assert.equal(next.email, "oliver.bruentje@gmx.de");
-        },
-        function (error) {
-          done(error);
-        },
-        function() {
-          done();
-        })
+              assert.equal(next.name, "olli");
+              //assert.equal(next.email, "oliver.bruentje@gmx.de");
+            },
+            function (error) {
+              done(error);
+            },
+            function() {
+              done();
+            })
+  });
+
+  test("#when find user by name in userRepository expect found one item", function(done) {
+
+    var userName = "32d2";
+
+    suite.service.createUser(userName, url.parse("oliver.bruentje@gmx.de")).subscribe(function() {
+      suite.repo.FindByName(userName)
+          .subscribe(function (users) {
+                assert.equal(users.length, 1);
+                assert.equal(users[0].name, userName);
+                //assert.equal(next.email, "oliver.bruentje@gmx.de");
+              },
+              function (error) {
+                done(error);
+              },
+              function() {
+                done();
+              })
+    },
+    function(error) {
+      done(error);
+    });
   });
 });

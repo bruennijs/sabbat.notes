@@ -24,9 +24,14 @@
   },
   "dependencies": {
     "body-parser": "^1.14.1",
+    "cookie-parser": "^1.4.0",
     "di-lite": "^0.3.3",
     "express": "^4.13.3",
+    "express-jwt": "^3.3.0",
+    "jsonwebtoken": "^5.4.1",
     "mongodb": "^2.0.43",
+    "passport": "^0.3.0",
+    "passport-http": "^0.3.0",
     "rx": "^4.0.6",
     "underscore": "^1.8.3",
     "urijs": "^1.16.1"
