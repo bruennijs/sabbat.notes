@@ -17,6 +17,29 @@ import rx = require('rx');
         group: string;
     }
 
+/**
+ * All domain events inherits IDomainEvent
+ */
+export class DomainEventBase implements IDomainEvent {
+    /**
+     * Name of group a event contains to, can be an aggregate root name (e.g. can be mapped to specific channels in rabbitmq)
+     * Contains values like "message", "user"
+     */
+    public get group():string {
+        return this._group;
+    }
+
+    private _group:string = "";
+
+  /**
+   * Constructor
+   * @param group
+   */
+  constructor(group:string) {
+      this._group = group;
+    }
+}
+
     /**
      * Event bus can be implemented by RabbitMQ e.g. to get distributed events.
      */

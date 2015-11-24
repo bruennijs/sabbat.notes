@@ -4,78 +4,102 @@
  */
 
 import {Id} from "../../common/ddd/model";
-import {IDomainEvent} from "../../common/ddd/event";
+import {DomainEventBase} from "../../common/ddd/event";
+import {Destination} from "./Message";
+
+export class MessageEventBase extends DomainEventBase {
+    get id() {
+        return this._id;
+    }
+
+    private _id;
+
+  /**
+   * Constructor.
+   * @param id
+   * @param group
+   */
+  constructor(id: Id, group: string) {
+        super(group);
+        this._id = id;
+    }
+}
 
 /**
  * Fired WHEN message was sent but not delivered
  *
  */
-    export class MessageCreatedEvent implements IDomainEvent {
-        public get to(): Id {
-            return this._to;
-        }
-
-        public get from(): Id {
-            return this._from;
-        }
-
-        public get id() {
-            return this._id;
-        }
-
-        private _id;
-
-        public get group():string {
-            return this._group;
-        }
-
-        private _group:string = 'message';
-
-        private _from:Id;
-
-        private _to:Id;
-
-        constructor(id:Id, from:Id, to:Id, content:string) {
-            this._id = id;
-            this._from = from;
-            this._to = to;
-        }
+export class MessageCreatedEvent extends MessageEventBase {
+    get content() {
+        return this._content;
     }
+
+    private _content;
+
+    public get to(): Destination {
+        return this._to;
+    }
+
+    public get from():Id {
+        return this._from;
+    }
+
+    private _from:Id;
+
+    private _to: Destination;
+
+    constructor(id: Id, from: Id, to: Destination) {
+        super(id, "message");
+        this._from = from;
+        this._to = to;
+    }
+}
+
+/**
+ * Fired WHEN message was delivered to a client
+ */
+export class MessageDeliveryRequestedEvent extends MessageEventBase {
+    get content():string{
+            return this._content;
+      }
+
+    get to():Id{
+            return this._to;
+      }
+
+    get from():Id{
+            return this._from;
+      }
+
+    private _from:Id;
+    private _to:Id;
+    private _content:string;
 
     /**
-     * Fired WHEN message was delivered to a client
+     *
+     * @param id
+     * @param deliveredOn
      */
-    export class MessageDeliveredEvent implements IDomainEvent {
-        public get toUserId():Id {
-            return this._toUserId;
-        }
-
-        public set toUserId(value:Id) {
-            this._toUserId = value;
-        }
-
-        public get deliveredOn() {
-            return this._deliveredOn;
-        }
-
-        private _deliveredOn;
-
-        public get id() {
-            return this._id;
-        }
-
-        private _id;
-
-        public get group():string {
-            return this._group;
-        }
-
-        private _group:string = 'message';
-        private _toUserId:Id;
-
-        constructor(id:Id, deliveredOn:Date, toUserId:Id) {
-            this._id = id;
-            this._deliveredOn = deliveredOn;
-            this._toUserId = toUserId;
-        }
+    constructor(id:Id, from: Id, to: Id, content: string) {
+        super(id, "message");
+        this._from = from;
+        this._to = to;
+        this._content = content;
     }
+}
+
+/**
+ * Fired WHEN message was delivered to a client
+ */
+ export class MessageDeliveredEvent extends MessageEventBase {
+        public get deliveredOn() {
+        return this._deliveredOn;
+    }
+
+    private _deliveredOn:Date;
+
+    constructor(id:Id, deliveredOn:Date) {
+        super(id, "message");
+        this._deliveredOn = deliveredOn;
+    }
+}

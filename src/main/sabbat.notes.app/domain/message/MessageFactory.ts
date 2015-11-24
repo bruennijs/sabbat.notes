@@ -7,22 +7,37 @@ import _ = require('underscore');
 
 import {Message, MessageState} from "./Message";
 import {IFactory} from "../../common/ddd/factory";
+import {Destination} from "./Message";
 
 export class MessageFactory implements IFactory<Message> {
 
+  /**
+   * Serialization.
+   * @param obj
+   * @returns {{_id: "mongodb".ObjectID, fromId: Id, toId: Id, destinationType: DestinationType, content: *, state: any}}
+   * @constructor
+   */
   ToMongoDocument(obj: Message): any
   {
     return {
       _id: new mongodb.ObjectID(obj.id.value),
-      fromUserId: obj.from,
-      toUserId: obj.to,
+      fromId: obj.from,
+      toId: obj.destination.To,
+      destinationType: obj.destination.Type,
       content: obj.content,
       state: obj.currentState.toString()
-    }
+    };
   }
 
+  /**
+   * Deserialization
+   */
   CreateFromMongoDocument(document: any): Message {
-    return new Message(document._id, document.fromUserId, document.toUserId, document.content, MessageState[<string>document.state]);
+    return new Message(document._id,
+        document.fromId,
+        new Destination(document.toId, document.destinationType),
+        document.content,
+        MessageState[<string>document.state]);
   }
 }
 
