@@ -106,7 +106,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
   }
 
   public Find(cb: Func2<Error, TModel[], void>):void {
-  if (!this._collection)
+    if (!this._collection)
     {
       throw new Error('Not initialized');
     }

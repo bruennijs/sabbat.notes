@@ -21,22 +21,16 @@ suite("MessageTest", function() {
     // init database
     var userRepo = suite.ctx.get('userRepository');
     var msgRepo = suite.ctx.get('messageRepository');
-    var initMsgRepo = msgRepo.Init(true);
 
-    var initUserRepo = userRepo.Init(true)
-        .do(function(next) {
-            // create users
-          console.log("sr completed");
-          userRepo.Insert(new builder.UserBuilder().withId("1").Build());
-          userRepo.Insert(new builder.UserBuilder().withId("2").Build());
-        });
+    var dbsInitialized = rx.Observable.when(userRepo.Init(true).and(msgRepo.Init(true)).thenDo(function(r1, r2) { return r1 && r2; }));
 
-    var merged = initMsgRepo.merge(initUserRepo);
-    merged.subscribeOnCompleted(function() {
-      console.log("merge completed");
+    dbsInitialized.subscribeOnCompleted(function() {
+      userRepo.Insert(new builder.UserBuilder().withId("1").Build());
+      userRepo.Insert(new builder.UserBuilder().withId("2").Build());
       done();
     });
-    merged.subscribeOnError(function(err) {
+
+    dbsInitialized.subscribeOnError(function(err) {
       console.log("merge completed");
       done(err);
     });

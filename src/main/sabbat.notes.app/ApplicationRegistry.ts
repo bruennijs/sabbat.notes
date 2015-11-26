@@ -31,6 +31,7 @@ export class ApplicationRegistry implements IApplicationRegistry
         context.register("messageRepository", MessageRepository).strategy(di.strategy.singleton);
         context.register("messageService", MessageService).strategy(di.strategy.proto);
         context.register("messageFactory", MessageFactory).strategy(di.strategy.singleton);
+
     }
 }
 //var Context: DiLite.CreateContext = new ApplicationRegistry().Context;

@@ -2,6 +2,10 @@
  * Created by bruenni on 05.11.15.
  */
 
+import rx = require("rx");
+import {MessageRepository} from "../infrastructure/persistence/MessageRepository";
+import Observable = Rx.Observable;
+
 /// <reference path="./../typings/tsd.d.ts" />
 
 var bodyParser = require("body-parser");
@@ -20,8 +24,6 @@ import {LoginDigestRouter} from "./middleware/LoginDigestRouter";
 var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
-//app.use(express.session())
-//app.use(passport.session());
 
 
 // ************* LOGI & Authentication ***************
@@ -37,13 +39,18 @@ app.use("/message", MessageRouter(DiContainer.Registry.Context)); // user Router
 
 // *********** MONGO *************
 var userRepo = DiContainer.Registry.Context.get("userRepository") as UserRepository;
+var messageRepo = DiContainer.Registry.Context.get("messageRepository") as MessageRepository;
 
-userRepo.Init(false).subscribe(
+var dbsInitialized = rx.Observable.when(userRepo.Init(false).and(messageRepo.Init(false)).thenDo(function(r1, r2): any {
+  return r1 && r2;
+}));
+
+dbsInitialized.subscribe(
     function(next) {
-      console.log("User repository connected");
+      console.log("Repositories connection successful");
     },
     function(err) {
-      console.log("User repository connection failed");
+      console.log("Repository connection failed");
     },
     function() {
 

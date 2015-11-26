@@ -52,7 +52,6 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
 var passportInit = function (app: Express, di: DiLite.CreateContext) {
 
   var jwtRequestHandler = expressJwt({secret: "32d2IsFantastic"}).unless({path: ["/login", "/user/create"]}); //// authenticate all routes woth JWT check but not login itself
-  //jwtRequestHandler = jwtRequestHandler.unless({path: "/user/create"}); //// ...or user must be crated without authenticated
 
   app.use(passport.initialize());
   app.use(jwtRequestHandler);

@@ -23,6 +23,10 @@ export class Id {
     this._value = value;
   }
 
+  public static parse(value: string): Id {
+    return new Id(value);
+  }
+
   public toString(): string {
       return this._value;
   }

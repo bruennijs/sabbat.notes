@@ -17,18 +17,20 @@ Documentation
 
 REST API
 
-* /login: login with BASIC authentication
-** Request
-*** Authorization: Basic name:pwd
-** Response is JSON web token in body
-** curl -X POST -u testuser:mypassword -D /dev/pts/2 http://localhost:3000/login > ~/.jwt
+/user/create
+* content-type: application/json
+* query parameters: name=<username, email=<address>
+* request: curl -X POST -d "name=testuser" -v "http://localhost:3000/user/create?name=user1&email=some@gmx.de"
 
-* /login/whoami
-** Request
-*** Authorization: Bearer <JWT_TOKEN_RETURNED_FROM_LOGIN>
-*** curl -X POST -H "Authorization: Bearer $(cat ~/.jwt)" -D /dev/pts/2 http://localhost:3000/login/whoami
-** Response
-*** json object with {id, name}
+/login: login with BASIC authentication
+* Request: Authorization: Basic name:pwd
+* Response is JSON web token in body: curl -X POST -u testuser:mypassword -v "http://localhost:3000/login" > ~/.jwt
+
+/login/whoami
+* Authorization: Bearer <JWT_TOKEN_RETURNED_FROM_LOGIN>
+* curl -X POST -H "Authorization: Bearer $(cat ~/.jwt)" -v "http://localhost:3000/login/whoami"
+
+* Response: json object with {id, name}
 
 Test
 * run mongo db instance
