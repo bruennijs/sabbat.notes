@@ -8,7 +8,7 @@ var spawn = require('child_process').spawn;
 var exec = require('gulp-exec');
 var path = require('path');
 
-var distBaseDir = './../dist/sabbat.notes.app';
+var distBaseDir = './dist';
 //var distBaseDir = './dist';
 
 gulp.task('dts.generator', function() {
