@@ -32,10 +32,10 @@ Deployment
 New release builds are deployed in docker hub https://hub.docker.com/r/bruenni/sabbat/app
 
 Run
-* docker run -it -d -p 8081:8081 --link mongo:mongolink bruenni/webapp:app
+* docker run -it -d -p 8081:8081 --link mongo:mongolink bruenni/sabbat:app.latest
 
 Build
-* docker build -t bruenni/webapp:app .
+* docker build -t bruenni/sabbat:app.latest .
 
 Pull
 * docker pull bruenni/sabbat:app.latest
@@ -45,6 +45,7 @@ Push
 
 Run in mean stack
 * cd ./dist
+* docker run -it --rm -p 8081:8081 --link mongo:mongolink -v $(pwd):/www bruenni/sabbat:app.latest
 * docker run -it --rm -p 8081:8081 --link mongo:mongolink -v $(pwd):/www bruenni/webapp:14.04-mean sh -c 'node /www/rest/server.js'
 
 =====================================================
@@ -83,7 +84,7 @@ REST API
 =====================================================
 Database
 To run the application an mongo db 3.0.x is needed. For this use mongodb from docker hub
-*
+* docker pull bruenni/mongo
 
 Run mongodb instance
 * docker run --name mongo -d -p 27017:27017 -p 28017:28017 bruenni/webapp:mongo

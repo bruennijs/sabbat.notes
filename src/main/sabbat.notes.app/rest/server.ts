@@ -67,21 +67,3 @@ dbsInitialized.subscribe(
       });
 });
 
-// *********************************
-
-//app.post('/users/:from/sendMessage', function (req, res) {
-//  var messageService = ctx.get('messageService');
-//  messageService
-//      .sendMessage(req.query.to, url.parse('bruenni@volloeko.de'))
-//      .subscribe(function(message)
-//          {
-//            res.writeHead(200);
-//            res.send(user);
-//          },
-//          function(err) {
-//            res.status(500);
-//            res.send("User could not be created [" + err + "]");
-//          });
-//})
-
-
