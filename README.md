@@ -27,13 +27,34 @@ Main use cases are:
 2) Messaging via mobile devices (Angular JS application)
 
 =====================================================
+Deployment
 
+New release builds are deployed in docker hub https://hub.docker.com/r/bruenni/sabbat/app
+
+Run
+* docker run -it -d -p 8081:8081 --link mongo:mongolink bruenni/webapp:app
+
+Build
+* docker build -t bruenni/webapp:app .
+
+Pull
+* docker pull bruenni/sabbat:app.latest
+
+Push
+* docker push bruenni/sabbat:app.latest
+
+Run in mean stack
+* cd ./dist
+* docker run -it --rm -p 8081:8081 --link mongo:mongolink -v $(pwd):/www bruenni/webapp:14.04-mean sh -c 'node /www/rest/server.js'
+
+=====================================================
 Installation
 * cd src/main/sabbat.notes.app
 ** npm install
 ** node_modules/.bin/tsd reinstall
 ** install additional packages (will extend typings/tsd.d.ts file):node_modules/.bin/tsd install rx --save
 
+=====================================================
 Documentation
 * For application documentation see UMLs containing erms, domain models, sequence diagrams, state diagrams, use case views
   in src/main/sabbat.notes.app/documentation
@@ -60,10 +81,16 @@ REST API
 * Response: json object with {id, name}
 
 =====================================================
+Database
+To run the application an mongo db 3.0.x is needed. For this use mongodb from docker hub
+*
+
+Run mongodb instance
+* docker run --name mongo -d -p 27017:27017 -p 28017:28017 bruenni/webapp:mongo
+
+=====================================================
 
 Test
-* run mongo db instance
-  docker run --name mongo -d -p 27017:27017 -p 28017:28017 bruenni/webapp:mongo
 
 * run unit tests with linked mongo db instance
   docker run --rm -w /usr/local/share/sabbat --link mongo:mongolink -v /usr/local/src/git/sabbat.notes/src/main/sabbat.notes.app:/usr/local/share/sabbat bruenni/webapp:14.04-mean  node ./node_modules/gulp/bin/gulp.js test

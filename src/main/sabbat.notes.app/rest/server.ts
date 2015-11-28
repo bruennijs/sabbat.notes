@@ -54,7 +54,7 @@ dbsInitialized.subscribe(
     },
     function() {
 
-      var port = 3000;
+      var port = 8081;
       console.log("listening on port " + port);
 
       var httpServer = app.listen(port);

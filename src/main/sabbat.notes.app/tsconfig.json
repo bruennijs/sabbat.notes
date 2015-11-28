@@ -5,11 +5,11 @@
         "target": "es5",
         "noImplicitAny": false,
         "removeComments": true,
-        "outDir": "./../dist/sabbat.notes.app",
+        "outDir": "./dist",
         "rootDir": ".",
         "sourceMap": false,
         "noResolve": false,
-        "outFile": "./../dist/sabbat.notes.app/sabbat-app-all.js"
+        "outFile": "./dist/sabbat-app-all.js"
     },
     "exclude": [
         "node_modules"
