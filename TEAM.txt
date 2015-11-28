@@ -1,0 +1,8 @@
+Project team
+------------
+
+Today the project has a one man team cause it is a project for learning and applying DDD patterns, technical frameworks and learning typescript/javascript in high available microservice platforms.
+
+The team consists of
+1) Oliver Brüntje - Initiator, Developer, System Architect, Tester
+

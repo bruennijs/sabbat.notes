@@ -1,7 +1,32 @@
-# sabbat.notes
+# Sabbat - A high available private cloud application
 
-Purpouses
-Implement a private cloud for sending messages, storing files, notes for sharing with a community. Participants can be invited per email.
+=====================================================
+
+Why this project?
+-----------------
+This project is up front a project for applying DDD patterns and use new technical frameworks needed to engineer high available distributed applications that scaling horizontally.
+Learning of new technical frameworks like rabbitmq, typescript, nodejs, mongodb, angular js for client side, typescript/javascript and nodejs.
+
+What is implemented?
+--------------------
+Implement a private cloud for sending messages, storing files, notes for sharing with a community. Users can host the software in hoome servers hosting the softwar in docker containers.
+Several nodes can be connected to a logical private cloud and communicating with each other. The purpouse is the failure and offline state of several nodes and transparent use of the application functionality to the user.
+
+
+More deep description
+--------------------
+A project for high available private cloud. A RESTful API facing a middleware hosted in docker containers. A distrubuted application communicating via rabbitmq to multiple notes of same type.
+The backend is an mongodb database with one master and multiple slaves.
+
+The whole application is driven by private server hardware and public (e.g. digital ocean PaaS platforms) for hosting:
+1) NGINX for load balancing
+2) RabbitMQ for distributed communication of the nodes
+
+Main use cases are:
+1) Storinig of personal notes to be shared
+2) Messaging via mobile devices (Angular JS application)
+
+=====================================================
 
 Installation
 * cd src/main/sabbat.notes.app
@@ -14,6 +39,8 @@ Documentation
   in src/main/sabbat.notes.app/documentation
 * Deployment view
 ** tbd
+
+=====================================================
 
 REST API
 
@@ -31,6 +58,8 @@ REST API
 * curl -X POST -H "Authorization: Bearer $(cat ~/.jwt)" -v "http://localhost:3000/login/whoami"
 
 * Response: json object with {id, name}
+
+=====================================================
 
 Test
 * run mongo db instance
