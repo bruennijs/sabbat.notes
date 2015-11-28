@@ -7,7 +7,6 @@
 import rx = require("rx");
 import express = require("express");
 import di = require("di-lite");
-import expressjwt = require("express-jwt");
 
 import {MessageService} from "../../application/MessageService";
 import {RequestHandler, Request, Response} from "express";

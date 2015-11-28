@@ -47,13 +47,12 @@ var dbsInitialized = rx.Observable.when(userRepo.Init(false).and(messageRepo.Ini
 
 dbsInitialized.subscribe(
     function(next) {
-      console.log("Repositories connection successful");
     },
     function(err) {
       console.log("Repository connection failed");
     },
     function() {
-
+      // on coompleted
       var port = 8081;
       console.log("listening on port " + port);
 

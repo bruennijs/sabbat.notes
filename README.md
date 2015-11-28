@@ -44,9 +44,8 @@ Push
 * docker push bruenni/sabbat:app.latest
 
 Run in mean stack
-* cd ./dist
-* docker run -it --rm -p 8081:8081 --link mongo:mongolink -v $(pwd):/www bruenni/sabbat:app.latest
-* docker run -it --rm -p 8081:8081 --link mongo:mongolink -v $(pwd):/www bruenni/webapp:14.04-mean sh -c 'node /www/rest/server.js'
+* cd root of project
+* docker run -it --rm -p 8081:8081 --link mongo:mongolink -v $(pwd)/dist:/www bruenni/sabbat:app.latest sh -c 'node /www/rest/server.js'
 
 =====================================================
 Installation
@@ -73,11 +72,11 @@ REST API
 
 /login: login with BASIC authentication
 * Request: Authorization: Basic name:pwd
-* Response is JSON web token in body: curl -X POST -u testuser:mypassword -v "http://localhost:3000/login" > ~/.jwt
+* Response is JSON web token in body: curl -X POST -u testuser:mypassword -v "http://localhost:8081/login" > ~/.jwt
 
 /login/whoami
 * Authorization: Bearer <JWT_TOKEN_RETURNED_FROM_LOGIN>
-* curl -X POST -H "Authorization: Bearer $(cat ~/.jwt)" -v "http://localhost:3000/login/whoami"
+* curl -X POST -H "Authorization: Bearer $(cat ~/.jwt)" -v "http://localhost:8081/login/whoami"
 
 * Response: json object with {id, name}
 

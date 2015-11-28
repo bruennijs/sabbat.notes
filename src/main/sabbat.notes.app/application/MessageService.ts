@@ -71,13 +71,13 @@ export class MessageService implements IEventHandler<IDomainEvent> {
                 return {message: createdMsg, events: createdEvents};
               });
         }, this)
-        .do(function (msg) {
+        .select(function (msgEventMap) {
           // fire events
-          msg.events.forEach(function (event, idx, arr) {
+          msgEventMap.events.forEach(function (event, idx, arr) {
             that.eventBus.Publish(event);
           });
 
-          return msg.message;
+          return msgEventMap.message;
         }, this);
   }
 

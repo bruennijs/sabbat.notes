@@ -55,7 +55,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
         return;
       }
 
-      //console.log("Mongo connected [" + that.configuration.mongodb_url + "]");
+      console.log("Mongodb connection established [" + that.configuration.mongodb_url + "]");
       that._db = db;
 
       // get collection users
