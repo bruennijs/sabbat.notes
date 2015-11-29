@@ -60,8 +60,8 @@ gulp.task('dist.ts', function() {
 });
 
 gulp.task('dist.js', function() {
-  gulp.src('**/*.js').
-      pipe(gulp.dest(distBaseDir));
+  gulp.src('*.{js,json}').
+  pipe(gulp.dest(path.join(distBaseDir, '')));
 });
 
 gulp.task('dist.modules', function() {
@@ -94,7 +94,7 @@ gulp.task('test.run', function () {
         .pipe(exec.reporter());
 });
 
-gulp.task('dist', ['dist.js', 'dist.ts', 'dist.test']);
+gulp.task('dist', ['dist.js', 'dist.test', 'dist.ts']);
 
 gulp.task('test', ['dist', 'test.run']);
 

@@ -167,7 +167,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
   }
 
   nextId():Id {
-    return new Id(new mongodb.ObjectID().toString());
+    return Id.parse(new mongodb.ObjectID().toString());
   }
 
   /**
@@ -187,8 +187,9 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
             subject.onNext(objs[0]);
             subject.onCompleted();
           }
-          else
+          else {
             subject.onError(err);
+          }
         });
 
     return subject;

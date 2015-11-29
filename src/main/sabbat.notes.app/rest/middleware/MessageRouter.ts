@@ -30,7 +30,7 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
                 var messageService = di.get("messageService") as MessageService;
 
                 //// send message
-                messageService.sendMessage(Id.parse(req.user.id), Id.parse(req.body.to), req.body.content)
+                messageService.sendByName(Id.parse(req.user.id), req.body.to, req.body.content)
                     .select(function(msg: Message) { return toDto(req.baseUrl, msg); })
                     .subscribe(function(dto: any)
                         {

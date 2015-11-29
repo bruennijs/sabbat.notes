@@ -4,7 +4,6 @@
 
 import rx = require("rx");
 import {MessageRepository} from "../infrastructure/persistence/MessageRepository";
-import Observable = Rx.Observable;
 
 /// <reference path="./../typings/tsd.d.ts" />
 

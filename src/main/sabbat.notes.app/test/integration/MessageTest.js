@@ -44,7 +44,7 @@ suite("MessageTest", function() {
     var sut = suite.ctx.get('messageService');
     var userRepo = suite.ctx.get('userRepository');
 
-    sut.sendMessage(userRepo.nextId(), userRepo.nextId(), "some content")
+    sut.sendById(userRepo.nextId(), userRepo.nextId(), "some content")
         .subscribe(function (next) {
           assert.equal(next.content, "some content");
           //assert.equal(next.email, "oliver.bruentje@gmx.de");

@@ -37,23 +37,24 @@ suite('MessageServiceTest', function () {
       //var userRepoMock = new builder().BuildStubbed();
       //var msgRepoMock = new builder().BuildStubbed();
 
-      var userFrom = new userBuilder().Build(new dddModel.Id("1"));
-      var userTo   = new userBuilder().Build(new dddModel.Id("2"));
-
       var userRepoMock = new repoBuilder().BuildMock();
-      jsm.JsMockito.when(userRepoMock).GetById(userFrom.id).thenReturn(rx.Observable.return(userFrom));
-      jsm.JsMockito.when(userRepoMock).GetById(userTo.id).thenReturn(rx.Observable.return(userTo));
+      jsm.JsMockito.when(userRepoMock).GetById(JsHamcrest.Matchers.anything()).then(function(id) { return rx.Observable.return(new userBuilder().withId(id).Build()); });
 
       var msgRepoMock = new repoBuilder().BuildMock();
 
       // create sut
-      var sut = new ns.MessageService(msgRepoMock, userRepoMock, new factory.MessageFactory(), new eventbus.DomainEventBusImpl());
-      var messageObs = sut.sendMessage(userFrom.id.toString(), userTo.id.toString(), 'some content');
+      var sut = new ns.MessageService();
+      sut.messageRepository = msgRepoMock;
+      sut.userRepository = userRepoMock;
+      sut.messageFactory = new factory.MessageFactory();
+      sut.eventBus = new eventbus.DomainEventBusImpl();
+
+      var messageObs = sut.sendById(dddModel.Id.parse("1"), dddModel.Id.parse("2"), "some content");
 
       messageObs.subscribe(
           function(msg) {
-            assert.equal(msg.from.toString(), '1');
-            assert.equal(msg.to.toString(), '2');
+            assert.equal(msg.from.toString(), "1");
+            assert.equal(msg.destination.To.toString(), "2");
             assert.equal(msg.content, 'some content');
           },
           function(error) {
@@ -80,8 +81,13 @@ suite('MessageServiceTest', function () {
     var msgRepoMock = new repoBuilder().BuildMock();
 
     // create sut
-    var sut = new ns.MessageService(msgRepoMock, userRepoMock, new factory.MessageFactory(), bus);
-    var message = sut.sendMessage(userFrom.id.toString(), userTo.id.toString(), 'some content');
+    var sut = new ns.MessageService();
+    sut.messageRepository = msgRepoMock;
+    sut.userRepository = userRepoMock;
+    sut.messageFactory = new factory.MessageFactory();
+    sut.eventBus = bus;
+
+    var message = sut.sendById(userFrom.id, userTo.id, 'some content');
 
     var combined = rx.Observable.when(message.and(bus).thenDo(function(msg, ev) { return {message: msg, event: ev }})).timeout(500);
 

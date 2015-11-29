@@ -7,11 +7,11 @@
         "removeComments": true,
         "outDir": "./dist",
         "rootDir": ".",
-        "sourceMap": false,
+        "sourceMap": true,
         "noResolve": false,
         "outFile": "./dist/sabbat-app-all.js"
     },
     "exclude": [
-        "node_modules"
+        "node_modules", "dist"
     ]
 }

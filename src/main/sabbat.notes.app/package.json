@@ -17,6 +17,7 @@
     "gulp-print": "^1.1.0",
     "gulp-watch": "^4.3.4",
     "jshamcrest": "^0.6.7",
+    "jsmockito": "^1.0.5",
     "mocha": "^2.2.5",
     "tsd": "^0.6.5",
     "tslint": "^2.5.1",
@@ -24,7 +25,6 @@
   },
   "dependencies": {
     "body-parser": "^1.14.1",
-    "cookie-parser": "^1.4.0",
     "di-lite": "^0.3.3",
     "express": "^4.13.3",
     "express-jwt": "^3.3.0",

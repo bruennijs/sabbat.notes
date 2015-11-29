@@ -7,24 +7,54 @@
 import rx = require('rx');
 import _ = require('underscore');
 
-import {IEventHandler} from "../common/ddd/event";
-import {IDomainEvent} from "../common/ddd/event";
+import {IEventHandler, IDomainEvent} from "../common/ddd/event";
 import {Id} from "../common/ddd/model";
 import {Message} from "../domain/message/Message";
 import {MessageCreatedEvent, MessageDeliveredEvent} from "../domain/message/MessageEvents";
 import {User} from "../domain/Model";
 import {IRepository} from "../common/ddd/persistence";
 import {MessageEventBase} from "../domain/message/MessageEvents";
+import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
 export class MessageService implements IEventHandler<IDomainEvent> {
-  public messageRepository:IRepository<Message>;
+  public messageRepository: IRepository<Message>;
   public messageFactory;
-  public userRepository;
+  public userRepository: UserRepository;
   public eventBus;
   public dependencies;
 
   constructor() {
     this.dependencies = "eventBus, messageFactory, userRepository, messageRepository";
+  }
+
+  /***
+   * sends a message to a user in the domain by user name.
+   * 1) gets from and to user from UserRepo
+   * 2) sends message
+   * @param from
+   * @param toName name of the user to send message to.
+   * @param content
+   * @returns {Rx.ReplaySubject<T>}
+   */
+  public sendByName(from: Id, toName: string, content: string): rx.Observable<Message> {
+    var that = this;
+
+    var fromUserObs = this.userRepository.GetById(from).map(function (user: User) {
+      return {from: user};
+    });
+
+    var toUserObs = this.userRepository.FindByName(toName).map(function (user: User[]) {
+      return {to: user[0]};
+    });
+
+    // map id -> user instance
+    var reduced = rx.Observable.when(fromUserObs.and(toUserObs).thenDo(function(ret1, ret2) { return _.extend(ret1, ret2); }));
+
+    // reduce to one object containing 'to' and 'from' property mapped to its user instance
+    return reduced
+        .selectMany(function (usersMap: any) {
+          return that.send(usersMap.from, usersMap.to, content);
+        });
   }
 
   /***
@@ -36,49 +66,63 @@ export class MessageService implements IEventHandler<IDomainEvent> {
    * @param content
    * @returns {Rx.ReplaySubject<T>}
    */
-  public sendMessage(from:Id, to:Id, content:string):rx.Observable<Message> {
+  public sendById(from: Id, to: Id, content: string): rx.Observable<Message> {
     var that = this;
 
-    var fromUserObs = this.userRepository.GetById(from).map(function (user:User) {
-      return {from: user}
+    var fromUserObs = this.userRepository.GetById(from).map(function (user: User) {
+      return {from: user};
     });
-    var toUserObs = this.userRepository.GetById(to).map(function (user:User) {
-      return {to: user}
+
+    var toUserObs = this.userRepository.GetById(to).map(function (user: User) {
+      return {to: user};
     });
 
     // map id -> user instance
-    var mapped = fromUserObs.merge(toUserObs);
+    var reduced = rx.Observable.when(fromUserObs.and(toUserObs).thenDo(function(ret1, ret2) { return _.extend(ret1, ret2); }));
 
-    var reduced = mapped.reduce(function (acc:any, val:any) {
-      return _.extend(acc, val)
-    });
     // reduce to one object containing 'to' and 'from' property mapped to its user instance
-
-    //var subject = new rx.ReplaySubject<msg.Message>();
-
-    ////// contains business logic
     return reduced
-        .select(function (usersMap, idx, obs) {
-          var id = this.messageRepository.nextId();
+        .do(function(usersMap: any) {
+          if (usersMap.from) {
+            throw new Error("user with id=" + usersMap.from + " could not be found");
+          }
+        })
+        .do(function(usersMap: any) {
+          if (usersMap.to) {
+            throw new Error("user with id=" + usersMap.to + " could not be found");
+          }
+        })
+        .selectMany(function (usersMap: any) {
+          return that.send(usersMap.from, usersMap.to, content);
+        });
+  }
 
-          var createdMsg = new Message(id);
+  /**
+   * Creates message and publishes event to bus.
+   * @param from
+   * @param to
+   * @param content
+   * @returns {Observable<Message>}
+   */
+  public send(from: User, to: User, content: string): rx.Observable<Message> {
+    var that = this;
 
-          var createdEvents = createdMsg.create(usersMap.from, usersMap.to, content);
+    var id = this.messageRepository.nextId();
 
-          return this.messageRepository
-              .Insert(createdMsg)
-              .Select(function (next) {
-                return {message: createdMsg, events: createdEvents};
-              });
-        }, this)
-        .select(function (msgEventMap) {
-          // fire events
-          msgEventMap.events.forEach(function (event, idx, arr) {
-            that.eventBus.Publish(event);
-          });
+    var createdMsg = new Message(id);
 
-          return msgEventMap.message;
-        }, this);
+    var createdEvents = createdMsg.create(from, to, content);
+
+    return this.messageRepository
+          .Insert(createdMsg)
+          .select(function (next) {
+            // fire events
+            createdEvents.forEach(function (event, idx, arr) {
+              that.eventBus.Publish(event);
+            });
+
+            return createdMsg;
+        });
   }
 
   /**
