@@ -4,6 +4,8 @@
 
 var suite = require('mocha').suite;
 var setup = require('mocha').setup;
+var suiteSetup = require('mocha').suiteSetup;
+var suiteTeardown = require('mocha').suiteTeardown;
 var test = require('mocha').test;
 var assert = require('assert');
 
@@ -22,16 +24,25 @@ suite("MessageTest", function() {
     var userRepo = suite.ctx.get('userRepository');
     var msgRepo = suite.ctx.get('messageRepository');
 
-    var dbsInitialized = rx.Observable.when(userRepo.Init(true).and(msgRepo.Init(true)).thenDo(function(r1, r2) { return r1 && r2; }));
+    var initialized = rx.Observable.when(userRepo.Init(true).and(msgRepo.Init(true)).thenDo(function(ret1, ret2) { return true; }));
 
-    dbsInitialized.subscribeOnCompleted(function() {
-      userRepo.Insert(new builder.UserBuilder().withId("1").Build());
-      userRepo.Insert(new builder.UserBuilder().withId("2").Build());
+    // insert users
+    suite.u1 = new builder.UserBuilder().withId(userRepo.nextId()).Build();
+    suite.u2 = new builder.UserBuilder().withId(userRepo.nextId()).Build();
+
+    //// after db is initialized insert users
+    var inserted = initialized.selectMany(function(success) {
+      console.log("inserting users");
+      return userRepo.Insert(suite.u1).merge(userRepo.Insert(suite.u2));
+    });
+
+    inserted.subscribeOnCompleted(function() {
+      console.log("users inserted");
       done();
     });
 
-    dbsInitialized.subscribeOnError(function(err) {
-      console.log("merge completed");
+    inserted.subscribeOnError(function(err) {
+      console.log("users insert failed");
       done(err);
     });
   });
@@ -40,11 +51,9 @@ suite("MessageTest", function() {
 
   });
 
-  test("#when get membershipservice expect user inserted", function(done) {
+  test("#If send message by id expect message created with content", function(done) {
     var sut = suite.ctx.get('messageService');
-    var userRepo = suite.ctx.get('userRepository');
-
-    sut.sendById(userRepo.nextId(), userRepo.nextId(), "some content")
+    sut.sendById(suite.u1.id, suite.u2.id, "some content")
         .subscribe(function (next) {
           assert.equal(next.content, "some content");
           //assert.equal(next.email, "oliver.bruentje@gmx.de");
@@ -54,6 +63,6 @@ suite("MessageTest", function() {
         },
         function() {
           done();
-        })
+        });
   });
 });

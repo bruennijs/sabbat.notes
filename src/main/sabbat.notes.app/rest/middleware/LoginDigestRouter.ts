@@ -1,3 +1,4 @@
+import {AuthenticationError} from "../../application/MembershipService";
 /**
  * Created by bruenni on 09.11.15.
  */
@@ -15,6 +16,7 @@ import {UserRepository} from "./../../infrastructure/persistence/UserRepository"
 import {RequestHandler, Request, Response, Express, Router} from "express";
 import {User} from "../../domain/Model";
 import {sign} from "jsonwebtoken";
+import {MembershipService} from "../../application/MembershipService";
 
 var routerInit = function(router: Router, di: DiLite.CreateContext) {
 
@@ -23,7 +25,7 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
               passport.authenticate("basic", {session: false}),
               function(req: Request, res: Response, next) {
 
-                console.log("User login [id=" + req.user.id.toString() + "]");
+                console.log("User login [" + req.user.name + "," + req.user.id.toString() + "]");
 
                 var jwtPayload = {
                   id: req.user.id.toString(),
@@ -57,20 +59,21 @@ var passportInit = function (app: Express, di: DiLite.CreateContext) {
   app.use(jwtRequestHandler);
   passport.use(new passportHttp.BasicStrategy(function (userName, password, done) {
 
-    var userRepo = di.get("userRepository") as UserRepository;
+    var service = di.get("membershipService") as MembershipService;
 
-    userRepo.FindByName(userName).subscribe(function (users) {
+    service.login(userName, password).subscribe(function (user: User) {
           //// set user used in subsequent middleware functions
-          if (users && users.length > 0) {
-            done(null, users[0]);
+          if (user !== null) {
+            done(null, user);
           }
           else {
-            console.log("User not found[id=" + userName + "]");
+            console.log("User not found[name=" + userName + "]");
             done(null, false); /// not found
           }
         },
-        function (err) {
-          done(null, err);
+        function (err: AuthenticationError) {
+          console.log("Authentication failed [" + err.toString() + "]");
+          done(null, false);
         });
   }));
 };

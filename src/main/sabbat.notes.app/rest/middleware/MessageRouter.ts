@@ -26,19 +26,28 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
    */
   router.post("/send",
               function(req: Request, res: Response, next) {
-                console.log("Send message [user.id=" + req.user.id + "]");
                 var messageService = di.get("messageService") as MessageService;
 
-                //// send message
-                messageService.sendByName(Id.parse(req.user.id), req.body.to, req.body.content)
-                    .select(function(msg: Message) { return toDto(req.baseUrl, msg); })
-                    .subscribe(function(dto: any)
-                        {
-                          res.status(201).json(dto);
-                        },
-                        function (err) {
-                          res.status(500).send("Entity could not be created [" + err + "]");
-                        });
+                if (req.user.id && req.query.to && req.query.content) {
+
+                  console.log("Send message [from=" + req.user.id + ",to" + req.query.to + "]");
+
+                  //// send message
+                  messageService.sendByName(Id.parse(req.user.id), req.query.to, req.query.content)
+                      .select(function (msg:Message) {
+                        return toDto(req.baseUrl, msg);
+                      })
+                      .subscribe(function (dto:any) {
+                            res.status(201).json(dto);
+                          },
+                          function (err) {
+                            res.status(500).send("Entity could not be created [" + err + "]");
+                          });
+                }
+                else
+                {
+                  res.status(400).send("query must contain parameter 'to' and 'content'");
+                }
               });
 }
 

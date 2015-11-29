@@ -80,5 +80,13 @@ import {Url} from "url";
       this._name = name;
       this._email = email;
     }
+
+    /**
+     * Checks password.
+     * @param plainPassword plain password
+     */
+    public checkPassword(plainPassword: string): boolean {
+      return true;
+    }
   }
 //} // end of ns 'sabbat'

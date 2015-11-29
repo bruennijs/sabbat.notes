@@ -71,12 +71,10 @@ suite('MessageServiceTest', function () {
 
     var bus = new eventbus.DomainEventBusImpl();
 
-    var userFrom = new userBuilder().withId(new dddModel.Id("1")).Build();
-    var userTo   = new userBuilder().withId(new dddModel.Id("2")).Build();
-
     var userRepoMock = new repoBuilder().BuildMock();
-    jsm.JsMockito.when(userRepoMock).GetById(userFrom.id).thenReturn(rx.Observable.return(userFrom));
-    jsm.JsMockito.when(userRepoMock).GetById(userTo.id).thenReturn(rx.Observable.return(userTo));
+    //jsm.JsMockito.when(userRepoMock).GetById(userFrom.id).thenReturn(rx.Observable.return(userFrom));
+    //jsm.JsMockito.when(userRepoMock).GetById(userTo.id).thenReturn(rx.Observable.return(userTo));
+    jsm.JsMockito.when(userRepoMock).GetById(JsHamcrest.Matchers.anything()).then(function(id) { return rx.Observable.return(new userBuilder().withId(id).Build()); });
 
     var msgRepoMock = new repoBuilder().BuildMock();
 
@@ -87,14 +85,20 @@ suite('MessageServiceTest', function () {
     sut.messageFactory = new factory.MessageFactory();
     sut.eventBus = bus;
 
-    var message = sut.sendById(userFrom.id, userTo.id, 'some content');
+    var message = sut.sendById(dddModel.Id.parse("1"), dddModel.Id.parse("3"), 'some content');
 
-    var combined = rx.Observable.when(message.and(bus).thenDo(function(msg, ev) { return {message: msg, event: ev }})).timeout(500);
+    var combined = rx.Observable.when(message.and(bus.Subscribe("message")).thenDo(function(msg, ev) { return {message: msg, event: ev }})).timeout(500);
 
     // check whether message and event are correct
-    combined.subscribe(function(c) {
-        assert.equal(c.event instanceof msgEvents.MessageCreatedEvent);
-      })
+    combined.subscribe(function(map) {
+        assert.ok(map.event instanceof msgEvents.MessageCreatedEvent, "bus event is not expected type[" + map.event + "]");
+      },
+      function(err) {
+        done(err);
+      },
+        function() {
+          done();
+        });
   })
 
   test('when extend document expect properties are copyied', function () {
