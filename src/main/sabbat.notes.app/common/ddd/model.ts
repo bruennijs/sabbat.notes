@@ -52,7 +52,7 @@ export class IdObject {
      * @returns {*}
      * @constructor
      */
-    static Parse(json: string):IdObject {
+    static Parse(json: string): IdObject {
       var obj = JSON.parse(json);
       ///util.inherits(model, Models.IdObject); //// no, only copies prototype's function into a constructor's prototype
       //return _.create(IdObject.prototype, obj);

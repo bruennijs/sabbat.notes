@@ -9,7 +9,7 @@ var userDto = function(user: User): any {
   return {
     id: user.id.toString(),
     name: user.name,
-    email: user.email.host
+    email: user.email.toString()
   };
 };
 

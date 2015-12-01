@@ -11,7 +11,7 @@ var messageDto = function (msg:Message): any {
     id: msg.id.toString(),
     state: msg.currentState,
     from: msg.from.toString(),
-    to: msg.destination.To.toString(),
+    to: msg.destination.to.toString(),
     content: msg.content,
     date: msg.deliveryDate
   };

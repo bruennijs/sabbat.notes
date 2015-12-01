@@ -29,7 +29,7 @@
     "express": "^4.13.3",
     "express-jwt": "^3.3.0",
     "jsonwebtoken": "^5.4.1",
-    "mongodb": "^2.0.43",
+    "mongodb": "^2.0.49",
     "passport": "^0.3.0",
     "passport-http": "^0.3.0",
     "rx": "^4.0.6",

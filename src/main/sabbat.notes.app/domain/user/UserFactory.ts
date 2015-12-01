@@ -6,6 +6,8 @@ import mongodb = require('mongodb');
 import _ = require('underscore');
 import {IFactory} from "../../common/ddd/factory";
 import {User} from "../Model";
+import {Id} from "../../common/ddd/model";
+import {ObjectID} from "mongodb";
 
 export class UserFactory implements IFactory<User> {
 
@@ -13,16 +15,30 @@ export class UserFactory implements IFactory<User> {
 
   }
 
+  /**
+   * Serializes domain model to mongodb document.
+   * primary ids become ObjectID objects (12 byte bson)
+   * @param obj
+   * @returns {{_id: "mongodb".ObjectID, name: *, email: string}}
+   * @constructor
+   */
   ToMongoDocument(obj: User): any
   {
     return {
-      _id: new mongodb.ObjectID(obj.id.value),
-      name: obj.name
+      _id: new ObjectID(obj.id.value),
+      name: obj.name,
+      email: obj.email
     }
   }
 
+  /**
+   * Deserializes from mongodb document.
+   * @param document
+   * @returns {User}
+   * @constructor
+   */
   CreateFromMongoDocument(document: any): User {
-    return new User(document._id, document.name, document.email);
+    return new User(Id.parse(document._id.toHexString()), document.name, document.email);
   }
 }
 

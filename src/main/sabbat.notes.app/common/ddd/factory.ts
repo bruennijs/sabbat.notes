@@ -4,6 +4,9 @@
 
 import {IdObject} from "./model";
 
+/**
+ * Generic factory from/ domain model <-> db model
+ */
 export interface IFactory<TModel extends IdObject> {
   /**
    * Creates a domain model from persistence document.

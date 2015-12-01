@@ -8,6 +8,8 @@ import _ = require('underscore');
 import {Message, MessageState} from "./Message";
 import {IFactory} from "../../common/ddd/factory";
 import {Destination} from "./Message";
+import {Id} from "../../common/ddd/model";
+import {ObjectID} from "mongodb";
 
 export class MessageFactory implements IFactory<Message> {
 
@@ -20,10 +22,10 @@ export class MessageFactory implements IFactory<Message> {
   ToMongoDocument(obj: Message): any
   {
     return {
-      _id: new mongodb.ObjectID(obj.id.value),
-      fromId: obj.from,
-      toId: obj.destination.To,
-      destinationType: obj.destination.Type,
+      _id: new ObjectID(obj.id.value),
+      from: new ObjectID(obj.from.value),
+      to: new ObjectID(obj.destination.to.value),
+      destinationType: obj.destination.type,
       content: obj.content,
       state: obj.currentState.toString()
     };
@@ -33,9 +35,9 @@ export class MessageFactory implements IFactory<Message> {
    * Deserialization
    */
   CreateFromMongoDocument(document: any): Message {
-    return new Message(document._id,
-        document.fromId,
-        new Destination(document.toId, document.destinationType),
+    return new Message(Id.parse(document._id.toHexString()),
+        Id.parse(document.from.toHexString()),
+        new Destination(Id.parse(document.to.toHexString()), document.destinationType),
         document.content,
         MessageState[<string>document.state]);
   }

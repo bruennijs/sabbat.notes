@@ -39,19 +39,15 @@ export class MessageService implements IEventHandler<IDomainEvent> {
   public sendByName(from: Id, toName: string, content: string): rx.Observable<Message> {
     var that = this;
 
-    var fromUserObs = this.userRepository.GetById(from).map(function (user: User) {
-      return {from: user};
-    });
+    var fromUserObs = this.GetUserById(from, "from");
 
     var toUserObs = this.userRepository.FindByName(toName).map(function (user: User[]) {
-      console.log(JSON.stringify(user[0]));
       return {to: user[0]};
     });
 
     // map id -> user instance
     var reduced = rx.Observable.when(fromUserObs.and(toUserObs).thenDo(function(ret1, ret2)
     {
-      console.log(JSON.stringify(ret1) + "-" + JSON.stringify(ret2));
       return _.extend(ret1, ret2);
     }));
 
@@ -81,7 +77,6 @@ export class MessageService implements IEventHandler<IDomainEvent> {
     // map id -> user instance
     var reduced = rx.Observable.when(fromUserObs.and(toUserObs).thenDo(function(ret1, ret2)
     {
-      console.log(JSON.stringify(ret1) + "-" + JSON.stringify(ret2));
       return _.extend(ret1, ret2);
     }));
 
@@ -98,17 +93,17 @@ export class MessageService implements IEventHandler<IDomainEvent> {
    * @constructor
    */
   private GetUserById(to: Id, mapKey: string): rx.Observable<any> {
-    return this.userRepository.GetById(to).
-    do(function (user: User) {
-      if (user === null) {
-        throw new Error("user with id=" + to.toString() + " could not be found");
-      }
-    }).
-    map(function (user: User) {
-      var mapObj = {};
-      mapObj[mapKey] = user;
-      return mapObj;
-    });
+    return this.userRepository.GetById(to)
+                              .do(function (user: User) {
+                                if (user === null) {
+                                  throw new Error("user with id=" + to.toString() + " could not be found");
+                                }
+                              })
+                              .map(function (user: User) {
+                                var mapObj = {};
+                                mapObj[mapKey] = user;
+                                return mapObj;
+                              });
   };
 
   /**
@@ -134,6 +129,8 @@ export class MessageService implements IEventHandler<IDomainEvent> {
             createdEvents.forEach(function (event, idx, arr) {
               that.eventBus.Publish(event);
             });
+
+            //console.log("msg=[" + JSON.stringify(createdMsg) + "]");
 
             return createdMsg;
         });

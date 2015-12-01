@@ -74,11 +74,16 @@ var rx = require('rx');
   };
 
   Builder.prototype.Build = function () {
-    return new user.User(this.id, "buildername", url.parse("test@sabbat.de"));
+    return new user.User(this.id, this.name, url.parse("test@sabbat.de"));
   };
 
   Builder.prototype.withId = function (id) {
     this.id = id;
+    return this;
+  }
+
+  Builder.prototype.withName = function (value) {
+    this.name = value;
     return this;
   }
 

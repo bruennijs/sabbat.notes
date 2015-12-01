@@ -27,7 +27,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
   }
 
   public  configuration:any;
-  public factory:IFactory<TModel>;
+  public factory: IFactory<TModel>;
 
   private _db: mongodb.Db = null;
   private _collection: mongodb.Collection = null;
@@ -129,7 +129,6 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
   }
 
   public Insert(object: TModel): rx.Observable<TModel> {
-    //console.log(JSON.stringify(object));
     var insertOne = rx.Observable.fromNodeCallback(this._collection.insertOne, this._collection);
 
     return insertOne(this.factory.ToMongoDocument(object)).select(function(mongoResult: any)
@@ -167,7 +166,7 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
   }
 
   nextId():Id {
-    return Id.parse(new mongodb.ObjectID().toString());
+    return Id.parse(new mongodb.ObjectID().toHexString());
   }
 
   /**
@@ -178,13 +177,14 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
    */
   GetById(id: Id): Rx.Observable<TModel> {
     var subject = new rx.ReplaySubject<TModel>();
+    var that = this;
 
     this.collection
-        .find({_id: new mongodb.ObjectID(id.toString())})
+        .find({_id: new mongodb.ObjectID(id.value)})
         .toArray(function(err, objs)
         {
           if(!err) {
-            subject.onNext(objs[0]);
+            subject.onNext(that.factory.CreateFromMongoDocument(objs[0]));
             subject.onCompleted();
           }
           else {

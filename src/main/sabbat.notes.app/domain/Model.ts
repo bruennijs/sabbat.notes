@@ -67,7 +67,7 @@ import {Url} from "url";
       return this._email;
     }
 
-    private _email;
+    private _email: string;
 
     public get name() {
       return this._name;
@@ -78,7 +78,7 @@ import {Url} from "url";
     constructor(id: Id, name: string, email: Url) {
       super(id)
       this._name = name;
-      this._email = email;
+      this._email = email.toString();
     }
 
     /**

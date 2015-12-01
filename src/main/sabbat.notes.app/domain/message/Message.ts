@@ -30,8 +30,8 @@ import {MessageDeliveryRequestedEvent} from "./MessageEvents";
  * Messages can be delivered to users or groups
  */
 export enum DestinationType {
-  User,
-  Group
+  User = 1,
+  Group = 2
 }
 
 
@@ -39,33 +39,33 @@ export enum DestinationType {
  * Destination is of type user or group
  */
 export class Destination {
-  set To(value:Id) {
-    this._To = value;
+  set to(value: Id) {
+    this._to = value;
   }
-  get Type():DestinationType {
-    return this._Type;
-  }
-
-  set Type(value:DestinationType) {
-    this._Type = value;
+  get type():DestinationType {
+    return this._type;
   }
 
-  get To(): Id {
-    return this._To;
+  set type(value:DestinationType) {
+    this._type = value;
   }
 
-  private _To:Id;
+  get to(): Id {
+    return this._to;
+  }
 
-  private _Type: DestinationType = DestinationType.User;
+  private _to: Id;
+
+  private _type: DestinationType = DestinationType.User;
 
   /**
    * Constructor
    * @param To
    * @param Type
    */
-  constructor(to:Id, Type:DestinationType) {
-    this._To = to;
-    this._Type = Type;
+  constructor(to: Id, Type: DestinationType) {
+    this._to = to;
+    this._type = Type;
   }
 }
 
@@ -104,7 +104,7 @@ export class Destination {
 
     private _from: Id;
 
-    private _currentState;
+    private _currentState: MessageState;
 
     /**
      * Constructor
@@ -133,16 +133,13 @@ export class Destination {
      */
     public create(from: User, to: User, content: string): IDomainEvent[] {
 
-      var destination = new Destination(to.id, DestinationType.User);
-
       this._from = from.id;
-      this._destination = destination;
+      this._destination = new Destination(to.id, DestinationType.User);
       this._content = content;
-      //this._currentState = MessageState.Created;
 
-      var createdEvent = new MessageCreatedEvent(this.id, from.id, destination);
+      var createdEvent = new MessageCreatedEvent(this.id, this._from, this._destination);
 
-      var deliveryRequestedEvent = new MessageDeliveryRequestedEvent(this.id, this._from, this._destination.To, this._content);
+      var deliveryRequestedEvent = new MessageDeliveryRequestedEvent(this.id, this._from, this._destination.to, this._content);
 
       this._currentState = MessageState.Delivering;
 

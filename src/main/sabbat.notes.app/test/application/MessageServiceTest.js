@@ -54,7 +54,7 @@ suite('MessageServiceTest', function () {
       messageObs.subscribe(
           function(msg) {
             assert.equal(msg.from.toString(), "1");
-            assert.equal(msg.destination.To.toString(), "2");
+            assert.equal(msg.destination.to.toString(), "2");
             assert.equal(msg.content, 'some content');
           },
           function(error) {

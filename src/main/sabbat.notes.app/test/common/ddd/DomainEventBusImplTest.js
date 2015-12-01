@@ -23,7 +23,6 @@ suite("DomainEventBusImplTest", function() {
         var observable = sut.Subscribe('test');
         var disposable = observable.subscribe(
             function(next) {
-                console.log("onNext[" + next + "]");
                 assert.equal(event.data, next.data, "evented data not equal");
                 done();
             },
@@ -64,7 +63,6 @@ suite("DomainEventBusImplTest", function() {
 
         observable0.merge(observable1).take(2).subscribe(function(next)
             {
-                console.log("onNext[" + next + "]");
                 actualEvents.push(next);
             },
             function(exception) {

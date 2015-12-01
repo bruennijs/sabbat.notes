@@ -16,7 +16,6 @@ class TestRegistry implements IApplicationRegistry
     console.log("Register Test");
     //context.register("appConfig", ).strategy(di.strategy.singleton);
     context.register("appConfig", function () {
-      console.log("appConfig creator");
       return appConfig;
     }).factory(di.factory.func).strategy(di.strategy.singleton);
   }

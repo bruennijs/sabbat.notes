@@ -28,7 +28,6 @@ export class DomainEventBusImpl implements IDomainEventBus {
      * @constructor
      */
     Publish(event: IDomainEvent):void {
-        console.log(event);
         var observables = this.map[event.group];
         if (observables !== undefined) {
             observables.forEach((observable, n, array) => {
