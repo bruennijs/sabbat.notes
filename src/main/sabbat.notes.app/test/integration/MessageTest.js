@@ -11,6 +11,7 @@ var assert = require('assert');
 
 var dddModel = require('./../../common/ddd/model');
 var builder = require('./../builder/Builder');
+var events = require("./../../domain/message/MessageEvents");
 var _ = require('underscore');
 var rx = require('rx');
 
@@ -81,6 +82,30 @@ suite("MessageTest", function() {
               function() {
                 done();
               });
+    });
+
+
+    test("#If send expect MessageDeliveryRequestedEvent fired", function(done) {
+      var busEvent = suite.ctx.get("eventBus")
+                          .subscribe("message")
+                          .do(function(ev) { console.log(JSON.stringify(ev)); })
+                          .where(function(ev) { return ev instanceof events.MessageDeliveryRequestedEvent; })
+                          .take(1)
+                          .timeout(1000);
+
+      var sut = suite.ctx.get('messageService');
+      sut.sendById(suite.u1.id, suite.u2.id, "").subscribeOnCompleted(function() {console.log("message sent");});
+
+      //// wait for bus to send MessageDeliveryRequestedEvent event
+      busEvent.subscribe(function(e) {
+        assert.equal(e.to.value, suite.u2.id.value);
+      },
+      function(err) {
+        done(err);
+      },
+      function() {
+        done();
+      });
     });
   });
 });

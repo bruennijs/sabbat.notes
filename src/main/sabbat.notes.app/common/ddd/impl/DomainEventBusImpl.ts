@@ -27,7 +27,7 @@ export class DomainEventBusImpl implements IDomainEventBus {
      * @param event
      * @constructor
      */
-    Publish(event: IDomainEvent):void {
+    publish(event: IDomainEvent): void {
         var observables = this.map[event.group];
         if (observables !== undefined) {
             observables.forEach((observable, n, array) => {
@@ -42,7 +42,7 @@ export class DomainEventBusImpl implements IDomainEventBus {
      * @returns {null}
      * @constructor
      */
-    Subscribe(groupName: string): rx.Observable<IDomainEvent> {
+    subscribe(groupName: string): rx.Observable<IDomainEvent> {
         if (groupName === undefined)
         {
             throw new Error("groupName undefined");

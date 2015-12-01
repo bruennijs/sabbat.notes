@@ -20,7 +20,7 @@ suite("DomainEventBusImplTest", function() {
         };
 
         var sut = new bus.DomainEventBusImpl();
-        var observable = sut.Subscribe('test');
+        var observable = sut.subscribe('test');
         var disposable = observable.subscribe(
             function(next) {
                 assert.equal(event.data, next.data, "evented data not equal");
@@ -34,7 +34,7 @@ suite("DomainEventBusImplTest", function() {
             });
 
         //// fire event
-        sut.Publish(event);
+        sut.publish(event);
     });
 
     test("#when subscribed two groups expect events dispatched to correct observables", function (done) {
@@ -54,12 +54,12 @@ suite("DomainEventBusImplTest", function() {
         var actualEvents = [];
 
         var sut = new bus.DomainEventBusImpl();
-        var observable0 = sut.Subscribe(event0.group);
-        var observable1 = sut.Subscribe(event1.group);
+        var observable0 = sut.subscribe(event0.group);
+        var observable1 = sut.subscribe(event1.group);
 
         //// fire event (can be done like this cause replaysubjects)
-        sut.Publish(event0);
-        sut.Publish(event1);
+        sut.publish(event0);
+        sut.publish(event1);
 
         observable0.merge(observable1).take(2).subscribe(function(next)
             {

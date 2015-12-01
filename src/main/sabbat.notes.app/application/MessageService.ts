@@ -127,10 +127,8 @@ export class MessageService implements IEventHandler<IDomainEvent> {
           .select(function (next) {
             // fire events
             createdEvents.forEach(function (event, idx, arr) {
-              that.eventBus.Publish(event);
+              that.eventBus.publish(event);
             });
-
-            //console.log("msg=[" + JSON.stringify(createdMsg) + "]");
 
             return createdMsg;
         });

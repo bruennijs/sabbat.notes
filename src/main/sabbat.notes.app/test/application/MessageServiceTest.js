@@ -87,7 +87,7 @@ suite('MessageServiceTest', function () {
 
     var message = sut.sendById(dddModel.Id.parse("1"), dddModel.Id.parse("3"), 'some content');
 
-    var combined = rx.Observable.when(message.and(bus.Subscribe("message")).thenDo(function(msg, ev) { return {message: msg, event: ev }})).timeout(500);
+    var combined = rx.Observable.when(message.and(bus.subscribe("message")).thenDo(function(msg, ev) { return {message: msg, event: ev }})).timeout(500);
 
     // check whether message and event are correct
     combined.subscribe(function(map) {
