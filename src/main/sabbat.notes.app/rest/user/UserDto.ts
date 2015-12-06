@@ -3,7 +3,7 @@
  */
 
 import {User} from "../../domain/Model";
-import {httpDto} from "./HttpResourceDto";
+import {httpDto} from "./../dto/HttpResourceDto";
 
 var userDto = function(user: User): any {
   return {

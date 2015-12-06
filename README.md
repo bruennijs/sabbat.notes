@@ -30,7 +30,6 @@ Main use cases are:
 Deployment
 
 New release builds are deployed in docker hub https://hub.docker.com/r/bruenni/sabbat/app
-
 Run
 * docker run -it -d -p 8081:8081 --link mongo:mongolink bruenni/sabbat:app.latest
 
@@ -42,6 +41,12 @@ Pull
 
 Push
 * docker push bruenni/sabbat:app.latest
+
+OR...
+To run & build the application and its dependent servers (e.g. mongo) docker-compose v1.5.2 is used
+* <root_directory>/docker-compose up
+
+See details for docker composehttps://docs.docker.com/compose/install
 
 Run in mean stack
 * cd root of project

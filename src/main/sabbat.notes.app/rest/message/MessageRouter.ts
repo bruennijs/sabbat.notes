@@ -11,13 +11,14 @@ import di = require("di-lite");
 import expressJwt = require("express-jwt");
 var secret = require("../jwt_secret").secret;
 
+import {Router} from "express";
 import {MessageService} from "../../application/MessageService";
 import {RequestHandler, Request, Response} from "express";
-import {Router} from "express";
+
 import {User} from "../../domain/Model";
 import {IDomainEventBus} from "../../common/ddd/event";
 import {Message} from "../../domain/message/Message";
-import {toDto} from "../dto/MessageDto";
+import {toDto} from "./MessageDto";
 import {Id} from "../../common/ddd/model";
 
 var routerInit = function(router: Router, di: DiLite.CreateContext) {

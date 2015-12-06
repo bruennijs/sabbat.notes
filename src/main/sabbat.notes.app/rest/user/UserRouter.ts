@@ -13,7 +13,7 @@ import {MembershipService} from "../../application/MembershipService";
 import {RequestHandler, Request, Response} from "express";
 import {Router} from "express";
 import {User} from "../../domain/Model";
-import {toDto} from "../dto/UserDto";
+import {toDto} from "./UserDto";
 
 var routerInit = function(router: Router, di: DiLite.CreateContext) {
 

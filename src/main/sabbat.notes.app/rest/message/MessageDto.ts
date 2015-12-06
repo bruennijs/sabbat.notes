@@ -4,7 +4,7 @@
 
 import url = require("url");
 import {Message} from "../../domain/message/Message";
-import {httpDto} from "./HttpResourceDto";
+import {httpDto} from "./../dto/HttpResourceDto";
 
 var messageDto = function (msg:Message): any {
   return {

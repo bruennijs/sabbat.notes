@@ -15,9 +15,9 @@ import express = require("express");
 import DiContainer = require("./../ProductionRegistry");
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
-import {UserRouter} from "./middleware/UserRouter";
-import {MessageRouter} from "./middleware/MessageRouter";
-import {LoginDigestRouter} from "./middleware/LoginRouter";
+import {UserRouter} from "./user/UserRouter";
+import {MessageRouter} from "./message/MessageRouter";
+import {LoginDigestRouter} from "./user/LoginRouter";
 
 // *********** EXPRESS *************
 var app = express();
