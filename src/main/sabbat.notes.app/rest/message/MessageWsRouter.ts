@@ -26,15 +26,15 @@ export var MessageWsInit = function (route: string, di:DiLite.CreateContext, htt
   var socketIoServer = socketIoStatic(httpServer,
       {
         path: route,
-        transports: "websocket"
+        transports: ["websocket"]
       });
 
   var adapter = di.get("messageWsIoAdapter") as MessageWsIoAdapter;
 
-  socketIoServer.use(function(socket: SocketIO.Socket, err: (err: any) => void) {
+  socketIoServer.use(function(socket: SocketIO.Socket, err: (err?: any) => void) {
     //// push new socket to ddd input/outputhandler
+    console.log("ws connection established [ip=" + socket.client.conn.remoteAddress + "]");
     adapter.onConnection(socket);
+    err();
   })
 };
-
-module.exports = MessageWsInit;

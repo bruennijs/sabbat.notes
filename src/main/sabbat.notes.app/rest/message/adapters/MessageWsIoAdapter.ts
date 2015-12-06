@@ -37,6 +37,7 @@ export class MessageWsIoAdapter {
    * @param socket
    */
   onConnection(socket: SocketIO.Socket): void {
-    socket.emit("hello world");
+
+    //socket.emit("hello world");
   }
 }

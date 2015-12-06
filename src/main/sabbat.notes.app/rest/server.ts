@@ -21,7 +21,7 @@ import {MessageRouter} from "./message/MessageRouter";
 import {MessageWsInit} from "./message/MessageWsRouter";
 import {LoginRouter} from "./user/LoginRouter";
 
-/// ********** create http server with express as request handler **************++
+/// ********** create http server with express as request handler **************
 var server = createServer(app);
 
 // *********** EXPRESS *************
