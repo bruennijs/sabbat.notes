@@ -6,6 +6,7 @@
       <task>dist</task>
     </tasks>
     <arguments />
+    <pass-parent-envs>true</pass-parent-envs>
     <envs />
     <method />
   </configuration>

@@ -11,6 +11,7 @@ import passport = require("passport");
 import expressJwt = require("express-jwt");
 
 import di = require("di-lite");
+var jwtSecretString = require("../jwt_secret").secret;
 
 import {UserRepository} from "./../../infrastructure/persistence/UserRepository";
 import {RequestHandler, Request, Response, Express, Router} from "express";
@@ -39,7 +40,7 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
                 };
 
                 //// tbd set cookie OR better JSON web token
-                var token = sign(jwtPayload, "32d2IsFantastic", options);
+                var token = sign(jwtPayload, jwtSecretString, options);
 
                 res.status(200).contentType("text/plain").send(token);
               });
@@ -53,10 +54,10 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
 
 var passportInit = function (app: Express, di: DiLite.CreateContext) {
 
-  var jwtRequestHandler = expressJwt({secret: "32d2IsFantastic"}).unless({path: ["/login", "/user/create"]}); //// authenticate all routes woth JWT check but not login itself
+  //var jwtRequestHandler = expressJwt({secret: jwtSecretString}).unless({path: ["/login", "/user/create"]}); //// authenticate all routes woth JWT check but not login itself
 
   app.use(passport.initialize());
-  app.use(jwtRequestHandler);
+  //app.use(jwtRequestHandler);
   passport.use(new passportHttp.BasicStrategy(function (userName, password, done) {
 
     var service = di.get("membershipService") as MembershipService;

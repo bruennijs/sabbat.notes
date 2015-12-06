@@ -8,6 +8,9 @@ import rx = require("rx");
 import express = require("express");
 import di = require("di-lite");
 
+import expressJwt = require("express-jwt");
+var secret = require("../jwt_secret").secret;
+
 import {MessageService} from "../../application/MessageService";
 import {RequestHandler, Request, Response} from "express";
 import {Router} from "express";
@@ -20,11 +23,13 @@ import {Id} from "../../common/ddd/model";
 var routerInit = function(router: Router, di: DiLite.CreateContext) {
 
   //router.eventBus = di.get("eventBus") as IDomainEventBus;
+  var jwtRequestHandler = expressJwt({secret: secret});
 
   /**
    * CREATE USER
    */
   router.post("/send",
+              jwtRequestHandler,  ///// sets req.user with fields of jwtoken
               function(req: Request, res: Response, next) {
                 var messageService = di.get("messageService") as MessageService;
 

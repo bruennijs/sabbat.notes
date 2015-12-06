@@ -17,7 +17,7 @@ import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
 import {UserRouter} from "./middleware/UserRouter";
 import {MessageRouter} from "./middleware/MessageRouter";
-import {LoginDigestRouter} from "./middleware/LoginDigestRouter";
+import {LoginDigestRouter} from "./middleware/LoginRouter";
 
 // *********** EXPRESS *************
 var app = express();

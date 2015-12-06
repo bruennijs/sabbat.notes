@@ -1,0 +1,16 @@
+app:
+  build: .
+  ports:
+   - "8081:8081"
+  volumes:
+   - ./dist:/www
+  links:
+   - mongo:mongolink
+mongo:
+  container_name: mongo
+  image: bruenni/webapp:mongo
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  expose:
+    - "27017"

@@ -64,6 +64,11 @@ gulp.task('dist.js', function() {
   pipe(gulp.dest(path.join(distBaseDir, '')));
 });
 
+gulp.task('rest.api', function() {
+  gulp.src("rest/*.{js,json}").
+      pipe(gulp.dest(path.join(distBaseDir, 'rest')));
+});
+
 gulp.task('dist.modules', function() {
     gulp.src('node_modules/**/*').
         pipe(gulp.dest(path.join(distBaseDir, 'node_modules')));
@@ -94,7 +99,7 @@ gulp.task('test.run', function () {
         .pipe(exec.reporter());
 });
 
-gulp.task('dist', ['dist.js', 'dist.test', 'dist.ts']);
+gulp.task('dist', ['dist.js', 'rest.api', 'dist.test', 'dist.ts']);
 
 gulp.task('test', ['dist', 'test.run']);
 

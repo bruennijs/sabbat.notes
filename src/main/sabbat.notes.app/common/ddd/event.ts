@@ -49,14 +49,14 @@ export class DomainEventBase implements IDomainEvent {
          * @param event to publish.
          * @constructor
          */
-        Publish(event: IDomainEvent): void;
+        publish(event: IDomainEvent): void;
 
         /**
          * Subcribes for asynchronous event
          * @group: name of the group to listen for events. See IDomainEvent for property 'group'
          * @constructor
          */
-        Subscribe(group:string): rx.Observable<IDomainEvent>;
+        subscribe(group:string): rx.Observable<IDomainEvent>;
     }
 
     /**
