@@ -85,7 +85,7 @@ var passportInit = function (app: Express, di: DiLite.CreateContext) {
  * @returns {Router}
  * @constructor
  */
-export var LoginDigestRouter = function (di: DiLite.CreateContext, app: Express): Router {
+export var LoginRouter = function (di: DiLite.CreateContext, app: Express): Router {
   var router = Router();
   passportInit(app, di);
   routerInit(router, di);

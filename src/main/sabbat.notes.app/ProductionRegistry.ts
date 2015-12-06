@@ -5,6 +5,7 @@
 import {RegistryComposite} from "./RegistryComposite";
 import {ApplicationRegistry} from "./ApplicationRegistry";
 import {IApplicationRegistry} from "./RegistryComposite";
+import {RestApiRegistry} from "./rest/RestApiRegistry";
 
 var appConfig = require('./appconfig');
 
@@ -15,4 +16,4 @@ class ProductionRegistry implements IApplicationRegistry
   }
 }
 
-export var Registry: RegistryComposite = new RegistryComposite([new ProductionRegistry(), new ApplicationRegistry()]);
+export var Registry: RegistryComposite = new RegistryComposite([new ProductionRegistry(), new ApplicationRegistry(), new RestApiRegistry()]);

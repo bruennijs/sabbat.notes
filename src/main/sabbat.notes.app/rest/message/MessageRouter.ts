@@ -6,10 +6,11 @@
 
 import rx = require("rx");
 import express = require("express");
+import {Server} from "http";
 import di = require("di-lite");
 
-import expressJwt = require("express-jwt");
 var secret = require("../jwt_secret").secret;
+import expressJwt = require("express-jwt");
 
 import {Router} from "express";
 import {MessageService} from "../../application/MessageService";
@@ -63,7 +64,7 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
  * @returns {Router}
  * @constructor
  */
-export var MessageRouter = function (di: DiLite.CreateContext): Router {
+export var MessageRouter = function (di:DiLite.CreateContext) {
   var router = Router();
   routerInit(router, di);
   return router;

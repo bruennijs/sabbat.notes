@@ -8,8 +8,9 @@ import {MessageRepository} from "../infrastructure/persistence/MessageRepository
 /// <reference path="./../typings/tsd.d.ts" />
 
 var bodyParser = require("body-parser");
-import express = require("express");
 
+var app = require("express")();
+import {createServer} from "http";
 
 // import DI container
 import DiContainer = require("./../ProductionRegistry");
@@ -17,22 +18,27 @@ import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
 import {UserRouter} from "./user/UserRouter";
 import {MessageRouter} from "./message/MessageRouter";
-import {LoginDigestRouter} from "./user/LoginRouter";
+import {MessageWsInit} from "./message/MessageWsRouter";
+import {LoginRouter} from "./user/LoginRouter";
+
+/// ********** create http server with express as request handler **************++
+var server = createServer(app);
 
 // *********** EXPRESS *************
-var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
 
 
 // ************* LOGI & Authentication ***************
-app.use("/login", LoginDigestRouter(DiContainer.Registry.Context, app)); // login router
+app.use("/login", LoginRouter(DiContainer.Registry.Context, app)); // login router
 
 // ************* USER Router ***************
 app.use("/user", UserRouter(DiContainer.Registry.Context)); // user Router
 
 // ************* Message Router ***************
 app.use("/message", MessageRouter(DiContainer.Registry.Context)); // user Router
+// ************* Message web socket router ***************
+MessageWsInit("/message/notification", DiContainer.Registry.Context, server);
 
 // *********************************
 
@@ -55,7 +61,8 @@ dbsInitialized.subscribe(
       var port = 8081;
       console.log("listening on port " + port);
 
-      var httpServer = app.listen(port);
+
+      var httpServer = server.listen(port);
 
       process.on('SIGTERM', function () {
         console.log('Handling SIGTERM');
