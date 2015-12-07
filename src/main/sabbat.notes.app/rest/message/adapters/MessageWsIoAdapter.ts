@@ -36,7 +36,7 @@ export class MessageWsIoAdapter {
    * If ws connection has been established this adpater
    * @param socket
    */
-  onConnection(socket: SocketIO.Socket): void {
+  onConnection(socket: WebSocket): void {
 
     //socket.emit("hello world");
   }

@@ -1,33 +1,30 @@
-/**
- * Created by bruenni on 05.11.15.
- */
-
-import rx = require("rx");
-import {MessageRepository} from "../infrastructure/persistence/MessageRepository";
-
 /// <reference path="./../typings/tsd.d.ts" />
 
-var bodyParser = require("body-parser");
-
+/// ********** HTTP server **************
 var app = require("express")();
-import {createServer} from "http";
+var httpServer = require("http").createServer(app);
+
+var bodyParser = require("body-parser");
+var morgan = require("morgan");
+import rx = require("rx");
 
 // import DI container
 import DiContainer = require("./../ProductionRegistry");
-import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
+// ============= express router ================
 import {UserRouter} from "./user/UserRouter";
+import {LoginRouter} from "./user/LoginRouter";
 import {MessageRouter} from "./message/MessageRouter";
 import {MessageWsInit} from "./message/MessageWsRouter";
-import {LoginRouter} from "./user/LoginRouter";
 
-/// ********** create http server with express as request handler **************
-var server = createServer(app);
+// ============= REPOS ================
+import {UserRepository} from "../infrastructure/persistence/UserRepository";
+import {MessageRepository} from "../infrastructure/persistence/MessageRepository";
+
 
 // *********** EXPRESS *************
-
 app.use(bodyParser.json()); // for parsing application/json
-
+app.use(morgan("combined"));  // log express traffic only
 
 // ************* LOGI & Authentication ***************
 app.use("/login", LoginRouter(DiContainer.Registry.Context, app)); // login router
@@ -37,8 +34,9 @@ app.use("/user", UserRouter(DiContainer.Registry.Context)); // user Router
 
 // ************* Message Router ***************
 app.use("/message", MessageRouter(DiContainer.Registry.Context)); // user Router
+
 // ************* Message web socket router ***************
-MessageWsInit("/message/notification", DiContainer.Registry.Context, server);
+MessageWsInit("/message/notification", DiContainer.Registry.Context, httpServer);
 
 // *********************************
 
@@ -57,12 +55,11 @@ dbsInitialized.subscribe(
       console.log("Repository connection failed");
     },
     function() {
-      // on coompleted
+      // on completed
       var port = 8081;
       console.log("listening on port " + port);
 
-
-      var httpServer = server.listen(port);
+      httpServer.listen(port);
 
       process.on('SIGTERM', function () {
         console.log('Handling SIGTERM');
