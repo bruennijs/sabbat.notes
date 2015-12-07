@@ -2,7 +2,8 @@
  * Created by bruenni on 25.10.15.
  */
 
-import rx = require('rx');
+//import rx = require('rx');
+import * as rx from "rx";
 
 import {IDomainEventBus} from "../event";
 import {IDomainEvent} from "../event";
