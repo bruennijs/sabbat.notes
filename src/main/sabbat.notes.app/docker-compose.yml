@@ -4,14 +4,12 @@ app:
   image: bruenni/sabbat:app.latest
   ports:
    - "8081:8081"
-   - "3000:3000"
   volumes:
    - ./dist:/www
   links:
    - mongo:mongolink
   expose:
     - "8081"
-    - "3000"
 mongo:
   container_name: webapp.mongo
   image: bruenni/webapp:mongo

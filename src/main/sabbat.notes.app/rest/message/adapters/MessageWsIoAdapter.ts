@@ -3,13 +3,14 @@
  */
 
 import * as ws from "ws";
-import rx = require("rx");
+import * as rx from "rx.all";
 import {Server} from "http";
 import di = require("di-lite");
 
 //import {MessageService} from "../../application/MessageService";
-import {IDomainEventBus} from "../../../common/ddd/event";
+import {IDomainEventBus, IDomainEvent} from "../../../common/ddd/event";
 import {Message} from "../../../domain/message/Message";
+import {MessageDeliveryRequestedEvent, MessageDeliveredEvent} from "../../../domain/message/MessageEvents";
 import {toDto} from "./../MessageDto";
 import {Id} from "../../../common/ddd/model";
 
@@ -42,7 +43,29 @@ export class MessageWsIoAdapter {
    * @param socket
    */
   onConnection(userId: string, socket): void {
+
+    var that = this;
+
     this.userId2SocketMap[userId] = [socket];
+
+    this.eventBus.subscribe("message")
+                 .where(function(domainEvent) { return domainEvent instanceof MessageDeliveryRequestedEvent; })
+                 .subscribeOnNext(function(domainEvent: IDomainEvent) {
+
+          // iterate all sockets of the user the message is sent to...
+          var deliveryEvent = domainEvent as MessageDeliveryRequestedEvent;
+
+          console.log(JSON.stringify(that.userId2SocketMap));
+
+          var socketArray:any[] = that.userId2SocketMap[deliveryEvent.to.value];
+          if (socketArray !== undefined) {
+            console.log("2");
+            //// ...send object to each connected websocket
+            socketArray.forEach(function (socket, idx, array) {
+              socket.send(JSON.stringify(domainEvent));
+            });
+          }
+        });
   }
 
   /**
@@ -53,7 +76,7 @@ export class MessageWsIoAdapter {
     var socketArray = this.userId2SocketMap[userId];
     if (socketArray !== undefined)
     {
-      console.log("delete socketarray [%s]", userId);
+      //console.log("delete socketarray [%s]", userId);
       delete this.userId2SocketMap[userId];
     }
   }

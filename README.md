@@ -85,6 +85,15 @@ REST API
 
 * Response: json object with {id, name}
 
+/message
+* Message can be sent from user to one different user by name.
+* TBD
+
+/message/notification
+* Clients can connect to the server by websocket (RFC 6455, protocol version 13).Initial http upgrade request must contain a Authorization header (see /login) conatining the json web token.
+* wscat is a command line tool in js/node.
+** node node_modules/wscat/bin/wscat -H "Authorization: Bearer $(cat ~/.jwt)" -c ws://127.0.0.1:8081/message/notification
+
 =====================================================
 Database
 To run the application an mongo db 3.0.x is needed. For this use mongodb from docker hub

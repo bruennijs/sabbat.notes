@@ -30,7 +30,7 @@ var authenticateOnWsConnnection = function(socket, onAuthenticated: (jwtToken: a
     else
     {
       // contains user.id field
-      console.log("jwt[%s]", JSON.stringify(decoded));
+      console.log("websocket connection established [jwt=%s]", JSON.stringify(decoded));
 
       onAuthenticated(decoded);
     }
@@ -60,8 +60,6 @@ export var MessageWsInit = function (route: string, di:DiLite.CreateContext, htt
   var wss = new wsns.Server({ server: httpServer, path: route });
 
   wss.on("connection", function(socket) {
-    console.log("ws connected");
-
     //// handle json web token to get the current user id
     //socket.close(1000, "valid json web token needed for authentication!");
     authenticateOnWsConnnection(socket, function(jwtToken: any) {
