@@ -29,6 +29,7 @@ export class MessageWsIoAdapter {
    * Contains the userId to websocket map
    */
   private userId2SocketMap: any = {};
+  private subscription:rx.IDisposable;
 
   /**
    * Constructor
@@ -46,26 +47,44 @@ export class MessageWsIoAdapter {
 
     var that = this;
 
-    this.userId2SocketMap[userId] = [socket];
+    if (this.userId2SocketMap[userId] !== undefined) {
+      this.userId2SocketMap[userId].push(socket);
+    }
+    else
+    {
+      this.userId2SocketMap[userId] = [socket];
+    }
 
-    this.eventBus.subscribe("message")
-                 .where(function(domainEvent) { return domainEvent instanceof MessageDeliveryRequestedEvent; })
-                 .subscribeOnNext(function(domainEvent: IDomainEvent) {
+    this.SubscribeEventBusObserver();
+  }
 
-          // iterate all sockets of the user the message is sent to...
-          var deliveryEvent = domainEvent as MessageDeliveryRequestedEvent;
+  /**
+   * Subscribe to event bus listening for message delivery request events.
+   * @constructor
+   */
+  private SubscribeEventBusObserver(): void {
+    var that = this;
+    if (this.subscription === undefined) {
+      this.subscription = this.eventBus.subscribe("message")
+           .where(function (domainEvent) { return domainEvent instanceof MessageDeliveryRequestedEvent; })
+           .subscribe(function (domainEvent:IDomainEvent) {
 
-          console.log(JSON.stringify(that.userId2SocketMap));
+              // iterate all sockets of the user the message is sent to...
+              var deliveryEvent = domainEvent as MessageDeliveryRequestedEvent;
 
-          var socketArray:any[] = that.userId2SocketMap[deliveryEvent.to.value];
-          if (socketArray !== undefined) {
-            console.log("2");
-            //// ...send object to each connected websocket
-            socketArray.forEach(function (socket, idx, array) {
-              socket.send(JSON.stringify(domainEvent));
-            });
-          }
-        });
+              var socketArray:any[] = that.userId2SocketMap[deliveryEvent.to.value];
+              if (socketArray !== undefined) {
+                if (socketArray.length > 0) {
+                  //// ...send object to each connected websocket
+                  socketArray.forEach(function (socket, idx, array) {
+                    socket.send(JSON.stringify(domainEvent));
+                });
+              }
+            }
+          },
+          function(err) { console.log("message observer error[%s]", err); },
+          function() { console.log("message observer completed"); });
+    }
   }
 
   /**
@@ -76,7 +95,6 @@ export class MessageWsIoAdapter {
     var socketArray = this.userId2SocketMap[userId];
     if (socketArray !== undefined)
     {
-      //console.log("delete socketarray [%s]", userId);
       delete this.userId2SocketMap[userId];
     }
   }

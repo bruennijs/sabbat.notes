@@ -67,14 +67,14 @@ export var MessageWsInit = function (route: string, di:DiLite.CreateContext, htt
       //// push new socket to ddd input/outputhandler
       adapter.onConnection(jwtToken.id, socket);
 
+      socket.on("close", function(code: number, reason: string) {
+        console.log("ws close[code=%s,jwt=%s]", code, JSON.stringify(jwtToken));
+        adapter.onClose(jwtToken.id);
+      });
+
       socket.on("message", function(message) {
         console.log("msg received[%s]", JSON.stringify(message));
         socket.send(message);
-      });
-
-      socket.on("close", function(code: number, message: string) {
-        console.log("ws closed received[code=%s,message=%s]", code, JSON.stringify(message));
-        adapter.onClose(jwtToken.id);
       });
 
       socket.on("ping", function(message) {
