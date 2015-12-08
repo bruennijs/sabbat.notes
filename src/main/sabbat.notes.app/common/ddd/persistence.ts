@@ -38,6 +38,13 @@ export interface IRepository<TModel extends IdObject>  {
   Insert(object: TModel): rx.Observable<TModel>;
 
   /**
+   * Updates existing entity.
+   * @param object
+   * @constructor
+   */
+  Update(object: TModel): rx.Observable<TModel>;
+
+  /**
    * Generates next id.
    */
   nextId(): Id;

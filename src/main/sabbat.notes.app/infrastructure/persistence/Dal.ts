@@ -3,6 +3,7 @@
  */
 
 /// <reference path="./../../typings/tsd.d.ts" />
+///<reference path="../../common/ddd/persistence.ts"/>
 
 import util = require('util');
 import fs = require('fs');
@@ -19,6 +20,9 @@ import {Func2} from "../../common/ddd/persistence";
      * File based db
      */
     export class FsObjectRepository implements IRepository<IdObject> {
+        Update(object:IdObject):Rx.Observable<IdObject> {
+            return null;
+        }
         GetById(id:Id):Rx.Observable<IdObject> {
             return undefined;
         }

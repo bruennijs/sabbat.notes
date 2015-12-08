@@ -68,5 +68,5 @@ export class DomainEventBase implements IDomainEvent {
          * @param event
          * @constructor
          */
-        Handle(event:TEvent): void;
+        Handle(event:TEvent): IDomainEvent[];
     }

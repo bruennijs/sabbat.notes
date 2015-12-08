@@ -7,7 +7,7 @@
 import rx = require('rx');
 import _ = require('underscore');
 
-import {IEventHandler, IDomainEvent} from "../common/ddd/event";
+import {IEventHandler, IDomainEvent, IDomainEventBus} from "../common/ddd/event";
 import {Id} from "../common/ddd/model";
 import {Message} from "../domain/message/Message";
 import {MessageCreatedEvent, MessageDeliveredEvent} from "../domain/message/MessageEvents";
@@ -16,11 +16,19 @@ import {IRepository} from "../common/ddd/persistence";
 import {MessageEventBase} from "../domain/message/MessageEvents";
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
-export class MessageService implements IEventHandler<IDomainEvent> {
+export class MessageService {
+  public get eventBus():IDomainEventBus {
+    return this._eventBus;
+  }
+
+  public set eventBus(value:IDomainEventBus) {
+    this._eventBus = value;
+    this.SubscribeEventBus();
+  }
   public messageRepository: IRepository<Message>;
   public messageFactory;
   public userRepository: UserRepository;
-  public eventBus;
+  private _eventBus: IDomainEventBus;
   public dependencies;
 
   constructor() {
@@ -127,7 +135,7 @@ export class MessageService implements IEventHandler<IDomainEvent> {
           .select(function (next) {
             // fire events
             createdEvents.forEach(function (event, idx, arr) {
-              that.eventBus.publish(event);
+              that._eventBus.publish(event);
             });
 
             return createdMsg;
@@ -141,18 +149,34 @@ export class MessageService implements IEventHandler<IDomainEvent> {
    * @constructor
    */
   Handle(event: IDomainEvent): void {
+    var that = this;
     if(event instanceof MessageEventBase) {
       var msgGet = this.messageRepository.GetById(event.id);
 
       msgGet.subscribe(function (msg) {
         //// transition to delivered state and store to repo
-        msg.Handle(event);
+        if (msg.Handle(event)) {
 
-        this.messageRepository.Update(msg).subscribe(function (updatedMsg) {
-          // log that msg was updated
-          console.log("message updated[" + msg.id.toString() + ",state=" + updatedMsg.currentState + "]");
-        });
+          //// message handled by business logic
+
+          that.messageRepository.Update(msg).subscribe(function (updatedMsg) {
+            // log that msg was updated
+            console.log("message updated[" + msg.id.toString() + ",state=" + updatedMsg.currentState + "]");
+          });
+        }
       });
     }
   };
+
+  /**
+   * Subscribes to message events
+   * @constructor
+   */
+  private SubscribeEventBus():void {
+    var that = this;
+    this._eventBus.subscribe("message")
+        .subscribe(function(event: IDomainEvent) {
+          that.Handle(event);
+        });
+  }
 }

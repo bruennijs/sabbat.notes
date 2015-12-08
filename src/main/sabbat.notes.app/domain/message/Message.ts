@@ -76,7 +76,7 @@ export class Destination {
     get deliveryDate() {
       return this._deliveryDate;
     }
-    private _deliveryDate;
+    private _deliveryDate: Date;
 
     get destination(): Destination {
       return this._destination;
@@ -116,13 +116,14 @@ export class Destination {
      * @param state
      * @param state
      */
-    constructor(id: Id, fromId?: Id, destination?: Destination, content?:string, state?: MessageState) {
+    constructor(id: Id, fromId?: Id, destination?: Destination, content?:string, state?: MessageState, deliveryDate?: Date) {
       super(id);
 
       this._currentState = state;
       this._content = content;
       this._from = fromId;
       this._destination = destination;
+      this._deliveryDate = deliveryDate;
     }
 
     /**
@@ -151,12 +152,15 @@ export class Destination {
      * @param event
      * @constructor
      */
-    Handle(event: IDomainEvent): void {
+    Handle(event: IDomainEvent): boolean {
       if (event instanceof MessageDeliveredEvent)
       {
         this._deliveryDate = event.deliveredOn;
         this._currentState = MessageState.Delivered;
+        return true;
       }
+
+      return false;
     }
   }
 

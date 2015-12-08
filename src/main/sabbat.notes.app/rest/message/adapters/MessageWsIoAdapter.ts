@@ -66,25 +66,54 @@ export class MessageWsIoAdapter {
     var that = this;
     if (this.subscription === undefined) {
       this.subscription = this.eventBus.subscribe("message")
-           .where(function (domainEvent) { return domainEvent instanceof MessageDeliveryRequestedEvent; })
-           .subscribe(function (domainEvent:IDomainEvent) {
+          .subscribe(function (domainEvent:IDomainEvent) {
 
-              // iterate all sockets of the user the message is sent to...
-              var deliveryEvent = domainEvent as MessageDeliveryRequestedEvent;
+            if (domainEvent instanceof MessageDeliveryRequestedEvent) {
+              var concreteEvent = domainEvent as MessageDeliveryRequestedEvent;
 
-              var socketArray:any[] = that.userId2SocketMap[deliveryEvent.to.value];
-              if (socketArray !== undefined) {
-                if (socketArray.length > 0) {
-                  //// ...send object to each connected websocket
-                  socketArray.forEach(function (socket, idx, array) {
-                    socket.send(JSON.stringify(domainEvent));
-                });
+              if (that.send(concreteEvent.to.value, concreteEvent))
+              {
+                // publish delivered event
+                that.eventBus.publish(new MessageDeliveredEvent(concreteEvent.id, concreteEvent.from, concreteEvent.to, new Date(Date.now())));
               }
             }
+
+            if (domainEvent instanceof MessageDeliveredEvent) {
+              var deliveredEvent = domainEvent as MessageDeliveredEvent;
+
+              that.send(deliveredEvent.from.value, deliveredEvent);
+            }
           },
-          function(err) { console.log("message observer error[%s]", err); },
-          function() { console.log("message observer completed"); });
+          function (err) {
+            console.log("message observer error[%s]", err);
+          },
+          function () {
+            console.log("message observer completed");
+          });
     }
+  }
+
+  /**
+   * Send data to socket.
+   * @param userId iser id to send data to
+   * @param data object to sent.
+   * @constructor
+   */
+  private send(userId: string, data: any): boolean {
+    var socketArray:any[] = this.userId2SocketMap[userId];
+    if (socketArray !== undefined) {
+      if (socketArray.length > 0) {
+        //// ...send object to each connected websocket
+        // iterate all sockets of the user the message is sent to...
+        socketArray.forEach(function (socket, idx, array) {
+          socket.send(JSON.stringify(data));
+        });
+
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**

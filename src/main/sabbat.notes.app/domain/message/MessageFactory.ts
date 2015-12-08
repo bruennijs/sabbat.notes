@@ -27,7 +27,8 @@ export class MessageFactory implements IFactory<Message> {
       to: new ObjectID(obj.destination.to.value),
       destinationType: obj.destination.type,
       content: obj.content,
-      state: obj.currentState.toString()
+      state: obj.currentState,
+      deliveryDate: (obj.deliveryDate !== undefined) ? obj.deliveryDate.toISOString() : null
     };
   }
 
@@ -39,7 +40,8 @@ export class MessageFactory implements IFactory<Message> {
         Id.parse(document.from.toHexString()),
         new Destination(Id.parse(document.to.toHexString()), document.destinationType),
         document.content,
-        MessageState[<string>document.state]);
+        MessageState[<string>document.state],
+        (document.deliveryDate !== undefined) ? new Date(Date.parse(<string>document.deliveryDate)) : null);
   }
 }
 

@@ -105,6 +105,11 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
     return subject;
   }
 
+  /**
+   * Finds entities by predicate.
+   * @param cb
+   * @constructor
+   */
   public Find(cb: Func2<Error, TModel[], void>):void {
     if (!this._collection)
     {
@@ -128,6 +133,12 @@ export class MongoDbRepository<TModel extends IdObject> implements IRepository<I
     });
   }
 
+  /**
+   * Inserts mdoels to database
+   * @param object
+   * @returns {Observable<TModel>}
+   * @constructor
+   */
   public Insert(object: TModel): rx.Observable<TModel> {
     var insertOne = rx.Observable.fromNodeCallback(this._collection.insertOne, this._collection);
 

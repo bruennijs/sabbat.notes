@@ -92,14 +92,27 @@ export class MessageDeliveryRequestedEvent extends MessageEventBase {
  * Fired WHEN message was delivered to a client
  */
  export class MessageDeliveredEvent extends MessageEventBase {
-        public get deliveredOn() {
+    public get deliveredOn() {
         return this._deliveredOn;
     }
 
+    get to():Id {
+      return this._to;
+    }
+
+    get from():Id{
+      return this._from;
+    }
+
+    private _from:Id;
+    private _to:Id;
+
     private _deliveredOn:Date;
 
-    constructor(id:Id, deliveredOn:Date) {
+    constructor(id:Id, from:Id, to:Id, deliveredOn:Date) {
         super(id, "message");
         this._deliveredOn = deliveredOn;
+      this._from = from;
+      this._to = to;
     }
 }
