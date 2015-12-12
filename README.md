@@ -109,6 +109,14 @@ Test
 * run unit tests with linked mongo db instance
   docker run --rm -w /usr/local/share/sabbat --link mongo:mongolink -v /usr/local/src/git/sabbat.notes/src/main/sabbat.notes.app:/usr/local/share/sabbat bruenni/webapp:14.04-mean  node ./node_modules/gulp/bin/gulp.js test
 
-
 Todos managed in trello
 * https://trello.com/b/UKLb1n2w
+
+======================================
+CoreOS
+
+make VMware configdrive with cloud-config.yaml
+ mkdir -p /tmp/new-drive/openstack/latest
+ cp cloud-config.yaml /tmp/new-drive/openstack/latest/user_data
+ mkisofs -R -V config-2 -o configdrive.iso /tmp/new-drive
+ rm -r /tmp/new-drive

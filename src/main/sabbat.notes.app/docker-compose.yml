@@ -1,6 +1,16 @@
 app:
   #build: .
-  container_name: sabbat.app.latest
+  container_name: sabbat.app
+  image: bruenni/sabbat:app.latest
+  ports:
+   - "8081:8081"
+  links:
+   - mongo:mongolink
+  expose:
+    - "8081"
+app-dev:
+  #build: .
+  container_name: sabbat.app-dev
   image: bruenni/sabbat:app.latest
   ports:
    - "8081:8081"

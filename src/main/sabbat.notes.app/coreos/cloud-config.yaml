@@ -1,0 +1,22 @@
+#cloud-config
+
+hostname: sabbat1
+users:
+  - name: core1
+    ssh_authorized_keys: 
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDC0X7cliCjAHfRO1MbB4eZml7oHbU/jouDJHmyTcTCxTjlHtNPn1Wx3Z2czjDT+jw8rTdv6QnCWlzrB9m26gpnxhVNbs+JSZfLMcPgrU0ax1x8plvn84PdXGEPOPDUGFs8kAViuWG73H82tllFoPIz7Qblr3RHsawzge9tp1KSwh780e4DCOP15bTOookTl4CFalrYzE0Ku/UrE10+IIIny7qrER1W1+/7bdC/jEn53q9KrdyxhOE6fd8n5SEAKpoFyi9MV5hf4fwshFWvRI3wjVrmtYX+1PBOkXX/5aMsYWk/ETT7hBsCuwxk6QJPOLTwwWVJutE77h4W+1V3U933 bruenni@lvmdesktop
+    #sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: 
+     - sudo
+     - docker
+    shell: /bin/bash
+coreos:
+  units:
+    - name: etcd2.service
+      command: start
+    - name: fleet.service
+      command: start
+  etcd2:
+    # generate a new token for each unique cluster from https://discovery.etcd.io/new?size=3
+    # specify the initial size of your cluster with ?size=X
+    discovery: "https://discovery.etcd.io/d8b70d89ddc6ed570a7ef821804bd91b"
