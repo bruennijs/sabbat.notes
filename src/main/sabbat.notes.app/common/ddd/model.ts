@@ -36,15 +36,25 @@ export class Id {
    * Created by bruenni on 16.08.15.
    */
 export class IdObject {
+    public get version():number {
+      return this._version;
+    }
+
+    public set version(value:number) {
+      this._version = value;
+    }
     public get id() {
       return this._id;
     }
 
     private _id: Id;
 
-    constructor(id: Id) {
+    constructor(id: Id, version?: number) {
       this._id = id;
+      this._version = version;
     }
+
+    private _version: number = 0;
 
     /**
      * Parses json content to IdObject

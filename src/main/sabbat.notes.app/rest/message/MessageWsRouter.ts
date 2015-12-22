@@ -11,7 +11,7 @@ import di = require("di-lite");
 var secret = require("../jwt_secret").secret;
 import jwt = require("jsonwebtoken");
 
-import {MessageWsIoAdapter} from "./adapters/MessageWsIoAdapter";
+import {MessageWsIoAdapter} from "./MessageWsIoAdapter";
 
 // Initialize web socket (socket.io) handler
 
@@ -43,7 +43,7 @@ var authenticateOnWsConnnection = function(socket, onAuthenticated: (jwtToken: a
  * @returns {Router}
  * @constructor
  */
-export var MessageWsInit = function (route: string, di:DiLite.CreateContext, httpServer) {
+export var MessageWsInit = function (route:string, di:DiLite.CreateContext, httpServer) {
 
   console.log("Register websocket middleware");
 

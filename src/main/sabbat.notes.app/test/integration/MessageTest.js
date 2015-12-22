@@ -85,18 +85,18 @@ suite("MessageTest", function() {
     });
 
 
-    test("#If send expect MessageDeliveryRequestedEvent fired", function(done) {
+    test("#If send expect MessageReceivedEvent fired", function(done) {
       var busEvent = suite.ctx.get("eventBus")
                           .subscribe("message")
                           .do(function(ev) { console.log(JSON.stringify(ev)); })
-                          .where(function(ev) { return ev instanceof events.MessageDeliveryRequestedEvent; })
+                          .where(function(ev) { return ev instanceof events.MessageReceivedEvent; })
                           .take(1)
                           .timeout(1000);
 
       var sut = suite.ctx.get('messageService');
       sut.sendById(suite.u1.id, suite.u2.id, "").subscribeOnCompleted(function() {console.log("message sent");});
 
-      //// wait for bus to send MessageDeliveryRequestedEvent event
+      //// wait for bus to send MessageReceivedEvent event
       busEvent.subscribe(function(e) {
         assert.equal(e.to.value, suite.u2.id.value);
       },

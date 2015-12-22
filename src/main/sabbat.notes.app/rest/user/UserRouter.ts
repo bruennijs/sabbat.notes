@@ -25,7 +25,7 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
 
     //memberShipService
           //.find()
-          //.select(function(user: User) { return toDto(req.baseUrl, user); })
+          //.select(function(user: User) { return serialize(req.baseUrl, user); })
           //.subscribe(function(dto: any)
           //    {
           //      res.status(200).json(dto);

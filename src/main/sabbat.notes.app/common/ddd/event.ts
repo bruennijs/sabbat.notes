@@ -4,6 +4,8 @@
 
 /// <reference path="./../../typings/tsd.d.ts" />
 
+import {Id} from "../../common/ddd/model";
+
 import rx = require('rx');
 
     /**
@@ -14,30 +16,70 @@ import rx = require('rx');
          * Name of group a event contains to, can be an aggregate root name (e.g. can be mapped to specific channels in rabbitmq)
          * Contains values like "message", "user"
          */
-        group: string;
+        context: string;
+
+        /**
+         * Name of the event
+         */
+        name: string;
     }
 
 /**
  * All domain events inherits IDomainEvent
  */
 export class DomainEventBase implements IDomainEvent {
+    public get name():string {
+        return this._name;
+    }
+    private _name: string;
     /**
-     * Name of group a event contains to, can be an aggregate root name (e.g. can be mapped to specific channels in rabbitmq)
+     * Name of context a event contains to, can be an aggregate root name (e.g. can be mapped to specific channels in rabbitmq)
      * Contains values like "message", "user"
      */
-    public get group():string {
-        return this._group;
+    public get context():string {
+        return this._context;
     }
 
-    private _group:string = "";
+    private _context:string = "";
 
   /**
    * Constructor
    * @param group
    */
-  constructor(group:string) {
-      this._group = group;
+  constructor(group:string, name: string) {
+      this._context = group;
+      this._name = name;
     }
+}
+
+/**
+ * Fired after aggregate root was updated.
+ * Clients can retrieve entity when they don'z have the current version
+ * already
+ */
+export class AggregateEvent extends DomainEventBase {
+    public get id() {
+        return this._id;
+    }
+
+    private _id;
+
+    public get version():string {
+        return this._version;
+    }
+    private _version:string;
+
+    /**
+     * Constructor
+     * @param group
+     * @param id
+     * @param version
+     */
+   constructor(context: string, name: string, id: Id, version: string) {
+       super(context, name);
+       this._version = version;
+        this._id = id;
+   }
 }
 
     /**
@@ -53,7 +95,7 @@ export class DomainEventBase implements IDomainEvent {
 
         /**
          * Subcribes for asynchronous event
-         * @group: name of the group to listen for events. See IDomainEvent for property 'group'
+         * @context: name of the context to listen for events. See IDomainEvent for property 'context'
          * @constructor
          */
         subscribe(group:string): rx.Observable<IDomainEvent>;
@@ -68,5 +110,5 @@ export class DomainEventBase implements IDomainEvent {
          * @param event
          * @constructor
          */
-        Handle(event:TEvent): IDomainEvent[];
+        Handle(event:TEvent): TEvent[];
     }

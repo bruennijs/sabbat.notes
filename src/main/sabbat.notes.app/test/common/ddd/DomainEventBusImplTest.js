@@ -15,7 +15,7 @@ suite("DomainEventBusImplTest", function() {
     test("#when subscribed expect publish of event publishes rx observable", function (done) {
 
         var event = {
-            group: "test",
+            context: "test",
             data: "some event data"
         };
 
@@ -42,20 +42,20 @@ suite("DomainEventBusImplTest", function() {
         var that = this;
 
         var event0 = {
-            group: "group0",
+            context: "context0",
             data: "some event data"
         };
 
         var event1 = {
-            group: "group1",
+            context: "context1",
             data: "some event data"
         };
 
         var actualEvents = [];
 
         var sut = new bus.DomainEventBusImpl();
-        var observable0 = sut.subscribe(event0.group);
-        var observable1 = sut.subscribe(event1.group);
+        var observable0 = sut.subscribe(event0.context);
+        var observable1 = sut.subscribe(event1.context);
 
         //// fire event (can be done like this cause replaysubjects)
         sut.publish(event0);
@@ -71,8 +71,8 @@ suite("DomainEventBusImplTest", function() {
             function() {
                 console.log("onCompleted");
                 assert.equal(2, actualEvents.length, "evented events not 2");
-                assert.equal(true, actualEvents.some(function(e) { return e.group === event0.group; }));
-                assert.equal(true, actualEvents.some(function(e) { return e.group === event1.group; }));
+                assert.equal(true, actualEvents.some(function(e) { return e.context === event0.context; }));
+                assert.equal(true, actualEvents.some(function(e) { return e.context === event1.context; }));
                 done();
             });
     });

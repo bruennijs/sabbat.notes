@@ -10,10 +10,9 @@ import _ = require('underscore');
 import {IEventHandler, IDomainEvent, IDomainEventBus} from "../common/ddd/event";
 import {Id} from "../common/ddd/model";
 import {Message} from "../domain/message/Message";
-import {MessageCreatedEvent, MessageDeliveredEvent} from "../domain/message/MessageEvents";
+import {MessageCreatedEvent, MessageReceiveAcknowledgedEvent, MessageContextName} from "../domain/message/MessageEvents";
 import {User} from "../domain/Model";
 import {IRepository} from "../common/ddd/persistence";
-import {MessageEventBase} from "../domain/message/MessageEvents";
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
 
 export class MessageService {
@@ -95,6 +94,34 @@ export class MessageService {
   }
 
   /**
+   * Gets messages sent to or received the user.
+   * Messages where 'to' or 'from' field is equals to user id.
+   * @param user
+   */
+  public getMessages(user: Id): rx.Observable<Message> {
+    return null;
+  }
+
+  /**
+   * Gets the message sent to the user.
+   * Messages where 'to' field is equals to user id and state is
+   * 'Delivering' or 'Delivered'.
+   * @param user
+   */
+  public getInbox(user: Id): rx.Observable<Message> {
+    return null;
+  }
+
+  /**
+   * Gets the message sent by the user.
+   * Messages where 'from' field is equals to user id.
+   * @param user
+   */
+  public getOutbox(user: Id): rx.Observable<Message> {
+    return null;
+  }
+
+  /**
    * Gets iser by id and throws exception if user could not be found.
    * @param to
    * @returns {Observable<{to: User}>}
@@ -144,27 +171,33 @@ export class MessageService {
 
   /**
    * Handles:
-   * 1) MessageDeliveredEvent
+   * 1) MessageReceiveAcknowledgedEvent
    * @param event
    * @constructor
    */
   Handle(event: IDomainEvent): void {
     var that = this;
-    if(event instanceof MessageEventBase) {
-      var msgGet = this.messageRepository.GetById(event.id);
+    if(event.context === MessageContextName) {
 
-      msgGet.subscribe(function (msg) {
-        //// transition to delivered state and store to repo
-        if (msg.Handle(event)) {
+      if (event.name === MessageReceiveAcknowledgedEvent.Name) {
 
-          //// message handled by business logic
+        var concreteEvent = event as MessageReceiveAcknowledgedEvent;
 
-          that.messageRepository.Update(msg).subscribe(function (updatedMsg) {
-            // log that msg was updated
-            console.log("message updated[" + msg.id.toString() + ",state=" + updatedMsg.currentState + "]");
-          });
-        }
-      });
+        var msgGet = this.messageRepository.GetById(concreteEvent.id);
+
+        msgGet.subscribe(function (msg) {
+          //// transition to delivered state and store to repo
+          if (msg.Handle(event)) {
+
+            //// message handled by business logic
+
+            that.messageRepository.Update(msg).subscribe(function (updatedMsg) {
+              // log that msg was updated
+              console.log("message updated[" + msg.id.toString() + ",state=" + updatedMsg.currentState + "]");
+            });
+          }
+        });
+      }
     }
   };
 

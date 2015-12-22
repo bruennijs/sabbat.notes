@@ -33,10 +33,10 @@ app.use("/login", LoginRouter(DiContainer.Registry.Context, app)); // login rout
 app.use("/user", UserRouter(DiContainer.Registry.Context)); // user Router
 
 // ************* Message Router ***************
-app.use("/message", MessageRouter(DiContainer.Registry.Context)); // user Router
+app.use("/messages", MessageRouter(DiContainer.Registry.Context)); // user Router
 
 // ************* Message web socket router ***************
-MessageWsInit("/message/notification", DiContainer.Registry.Context, httpServer);
+MessageWsInit("/messages/notification", DiContainer.Registry.Context, httpServer);
 
 // *********************************
 

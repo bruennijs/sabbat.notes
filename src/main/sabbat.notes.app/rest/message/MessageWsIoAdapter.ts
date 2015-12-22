@@ -8,11 +8,11 @@ import {Server} from "http";
 import di = require("di-lite");
 
 //import {MessageService} from "../../application/MessageService";
-import {IDomainEventBus, IDomainEvent} from "../../../common/ddd/event";
-import {Message} from "../../../domain/message/Message";
-import {MessageDeliveryRequestedEvent, MessageDeliveredEvent} from "../../../domain/message/MessageEvents";
-import {toDto} from "./../MessageDto";
-import {Id} from "../../../common/ddd/model";
+import {IDomainEventBus, IDomainEvent} from "../../common/ddd/event";
+import {Message} from "../../domain/message/Message";
+import {serialize, serializeEvent} from "./MessageRestDtoParser";
+import {MessageReceivedEvent, MessageUpdatedEvent, MessageReceiveAcknowledgedEvent} from "../../domain/message/MessageEvents";
+import {Id} from "../../common/ddd/model";
 
 
 /**
@@ -59,7 +59,7 @@ export class MessageWsIoAdapter {
   }
 
   /**
-   * Subscribe to event bus listening for message delivery request events.
+   * Subscribe to event bus listening for message rabbitmq request events.
    * @constructor
    */
   private SubscribeEventBusObserver(): void {
@@ -68,20 +68,26 @@ export class MessageWsIoAdapter {
       this.subscription = this.eventBus.subscribe("message")
           .subscribe(function (domainEvent:IDomainEvent) {
 
-            if (domainEvent instanceof MessageDeliveryRequestedEvent) {
-              var concreteEvent = domainEvent as MessageDeliveryRequestedEvent;
+            //// REST resource representation
+            var eventDtoObject = serializeEvent(domainEvent);
 
-              if (that.send(concreteEvent.to.value, concreteEvent))
+            if (domainEvent instanceof MessageReceivedEvent) {
+              var concreteEvent = domainEvent as MessageReceivedEvent;
+
+              if (that.send(concreteEvent.message.destination.to.value, eventDtoObject))
               {
                 // publish delivered event
-                that.eventBus.publish(new MessageDeliveredEvent(concreteEvent.id, concreteEvent.from, concreteEvent.to, new Date(Date.now())));
+                that.eventBus.publish(new MessageReceiveAcknowledgedEvent(concreteEvent.message.id, new Date(Date.now())));
               }
             }
 
-            if (domainEvent instanceof MessageDeliveredEvent) {
-              var deliveredEvent = domainEvent as MessageDeliveredEvent;
+            if (domainEvent instanceof MessageUpdatedEvent) {
+              var updateEvent = domainEvent as MessageUpdatedEvent;
 
-              that.send(deliveredEvent.from.value, deliveredEvent);
+              //// send to bot users
+              updateEvent.notifyingUsers.forEach(function(item, idx, array) {
+                that.send(item.value, eventDtoObject);
+              });
             }
           },
           function (err) {

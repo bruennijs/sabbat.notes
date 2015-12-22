@@ -29,7 +29,7 @@ export class DomainEventBusImpl implements IDomainEventBus {
      * @constructor
      */
     publish(event: IDomainEvent): void {
-        var observables = this.map[event.group];
+        var observables = this.map[event.context];
         if (observables !== undefined) {
             observables.forEach((observable, n, array) => {
                 //// fire event for each observable subscribed.
@@ -43,8 +43,8 @@ export class DomainEventBusImpl implements IDomainEventBus {
      * @returns {null}
      * @constructor
      */
-    subscribe(groupName: string): rx.Observable<IDomainEvent> {
-        if (groupName === undefined)
+    subscribe(contextName: string): rx.Observable<IDomainEvent> {
+        if (contextName === undefined)
         {
             throw new Error("groupName undefined");
         }
@@ -52,14 +52,14 @@ export class DomainEventBusImpl implements IDomainEventBus {
         var subject = new rx.ReplaySubject<IDomainEvent>();
 
         //// add when not already existing
-        var observableList = this.map[groupName];
+        var observableList = this.map[contextName];
         if (observableList !== undefined)
         {
             observableList.push(subject);
         }
         else
         {
-            this.map[groupName] = [subject];
+            this.map[contextName] = [subject];
         }
 
         return subject;

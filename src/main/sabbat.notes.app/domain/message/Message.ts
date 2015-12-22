@@ -7,13 +7,13 @@ import rx = require('rx');
 import url = require('url');
 
 import {IdObject, Id} from "../../common/ddd/model";
-import {MessageDeliveredEvent} from "./MessageEvents";
-import {MessageCreatedEvent} from "./MessageEvents";
-import {IDomainEvent} from "../../common/ddd/event";
+import {MessageReceiveAcknowledgedEvent} from "./MessageEvents";
+import {MessageCreatedEvent, MessageUpdatedEvent} from "./MessageEvents";
+import {IDomainEvent, AggregateEvent} from "../../common/ddd/event";
 import {User} from "../Model";
 import {IEventHandler} from "../../common/ddd/event";
 import {Handler} from "express";
-import {MessageDeliveryRequestedEvent} from "./MessageEvents";
+import {MessageReceivedEvent} from "./MessageEvents";
 
   /**
    * A message can have the state 'Sent' when the user has sent a message to the to 
@@ -30,19 +30,18 @@ import {MessageDeliveryRequestedEvent} from "./MessageEvents";
  * Messages can be delivered to users or groups
  */
 export enum DestinationType {
-  User = 1,
-  Group = 2
+  User,
+  Group
 }
 
-
 /**
- * Destination is of type user or group
+ * Destination is of type user or context
  */
 export class Destination {
   set to(value: Id) {
     this._to = value;
   }
-  get type():DestinationType {
+  get type(): DestinationType {
     return this._type;
   }
 
@@ -138,9 +137,9 @@ export class Destination {
       this._destination = new Destination(to.id, DestinationType.User);
       this._content = content;
 
-      var createdEvent = new MessageCreatedEvent(this.id, this._from, this._destination);
+      var createdEvent = new MessageCreatedEvent(this);
 
-      var deliveryRequestedEvent = new MessageDeliveryRequestedEvent(this.id, this._from, this._destination.to, this._content);
+      var deliveryRequestedEvent = new MessageReceivedEvent(this);
 
       this._currentState = MessageState.Delivering;
 
@@ -152,15 +151,15 @@ export class Destination {
      * @param event
      * @constructor
      */
-    Handle(event: IDomainEvent): boolean {
-      if (event instanceof MessageDeliveredEvent)
+    Handle(event: IDomainEvent): IDomainEvent[] {
+      if (event instanceof MessageReceiveAcknowledgedEvent)
       {
         this._deliveryDate = event.deliveredOn;
         this._currentState = MessageState.Delivered;
-        return true;
+        return [new MessageUpdatedEvent(this.id, [this._from, this._destination.to])];
       }
 
-      return false;
+      return [];
     }
   }
 

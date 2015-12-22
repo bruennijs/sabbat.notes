@@ -3,7 +3,7 @@
  */
 
 import {User} from "../../domain/Model";
-import {httpDto} from "./../dto/HttpResourceDto";
+import {addSelfUrl} from "../dto/HttpResourceDto";
 
 var userDto = function(user: User): any {
   return {
@@ -14,7 +14,9 @@ var userDto = function(user: User): any {
 };
 
 export var toDto = function(baseUrl: string, user: User): any {
-  return httpDto(baseUrl, userDto(user), user);
+  var dtoObject = userDto(user);
+  addSelfUrl.call(dtoObject, "users", user.id.value);
+  return dtoObject;
 };
 
 

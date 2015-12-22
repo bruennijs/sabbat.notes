@@ -5,7 +5,6 @@
 import url = require("url");
 import {IdObject} from "../../common/ddd/model";
 
-export var httpDto = function(baseUrl: string, dto: any, entity: IdObject): any {
-  dto.link = url.resolve(baseUrl, entity.id.toString());
-  return dto;
+export var addSelfUrl = function(baseUrl: string, resourceId: string): void {
+  this.link = url.resolve(baseUrl, resourceId);
 };

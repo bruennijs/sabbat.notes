@@ -6,7 +6,7 @@
 
 require('./../node_modules/di-lite/di-lite');    // no commonjs module exported file
 
-import {MessageWsIoAdapter} from "./message/adapters/MessageWsIoAdapter";
+import {MessageWsIoAdapter} from "./message/MessageWsIoAdapter";
 
 export class RestApiRegistry
 {

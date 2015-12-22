@@ -4,115 +4,89 @@
  */
 
 import {Id} from "../../common/ddd/model";
-import {DomainEventBase} from "../../common/ddd/event";
-import {Destination} from "./Message";
+import {DomainEventBase, AggregateEvent} from "../../common/ddd/event";
+import {Destination, Message} from "./Message";
 
-export class MessageEventBase extends DomainEventBase {
-    get id() {
-        return this._id;
-    }
-
-    private _id;
-
-  /**
-   * Constructor.
-   * @param id
-   * @param group
-   */
-  constructor(id: Id, group: string) {
-        super(group);
-        this._id = id;
-    }
-}
+export var MessageContextName: string = "message";
 
 /**
  * Fired WHEN message was sent but not delivered
  *
  */
-export class MessageCreatedEvent extends MessageEventBase {
-    get content() {
-        return this._content;
-    }
+export class MessageCreatedEvent extends DomainEventBase {
+  public get msg():Message {
+    return this._msg;
+  }
+  private _msg:Message;
 
-    private _content;
+  /**
+   * Constructor
+   * @param msg
+   */
+  constructor(msg: Message) {
+      super(MessageContextName, "created");
+    this._msg = msg;
+  }
+}
 
-    public get to(): Destination {
-        return this._to;
-    }
+/**
+ * Fired after event entity was updated
+ */
+export class MessageUpdatedEvent extends AggregateEvent {
+  public get notifyingUsers():Id[] {
+    return this._notifyingUsers;
+  }
+  private _notifyingUsers:Id[];
 
-    public get from():Id {
-        return this._from;
-    }
+  constructor(msgId: Id, notifyingUsers: Id[]) {
+    super(MessageContextName, "updated", msgId, "");
+    this._notifyingUsers = notifyingUsers;
+  }
+}
 
-    private _from:Id;
+/**
+ * Fired after message sent to a specific user/context os users and should be delivered.
+ */
+export class MessageReceivedEvent extends AggregateEvent {
 
-    private _to: Destination;
+  /**
+   * Message name
+   * @type {string}
+   */
+  public static Name: string = "received";
 
-    constructor(id: Id, from: Id, to: Destination) {
-        super(id, "message");
-        this._from = from;
-        this._to = to;
-    }
+  public get message() {
+    return this._message;
+  }
+
+  private _message: Message;
+
+  /**
+   * Constructor
+   * @param msg
+   * @param toUserId
+   */
+  constructor(msg: Message) {
+    super(MessageContextName, MessageReceivedEvent.Name, msg.id, "");
+    this._message = msg;
+  }
 }
 
 /**
  * Fired WHEN message was delivered to a client
  */
-export class MessageDeliveryRequestedEvent extends MessageEventBase {
-    get content():string{
-            return this._content;
-      }
+ export class MessageReceiveAcknowledgedEvent extends AggregateEvent {
 
-    get to():Id{
-            return this._to;
-      }
+  public static Name: string = "receive-acknowledged";
 
-    get from():Id{
-            return this._from;
-      }
+  public get deliveredOn() {
+      return this._deliveredOn;
+  }
 
-    private _from:Id;
-    private _to:Id;
-    private _content:string;
+  private _deliveredOn:Date;
 
-    /**
-     *
-     * @param id
-     * @param deliveredOn
-     */
-    constructor(id:Id, from: Id, to: Id, content: string) {
-        super(id, "message");
-        this._from = from;
-        this._to = to;
-        this._content = content;
-    }
-}
-
-/**
- * Fired WHEN message was delivered to a client
- */
- export class MessageDeliveredEvent extends MessageEventBase {
-    public get deliveredOn() {
-        return this._deliveredOn;
-    }
-
-    get to():Id {
-      return this._to;
-    }
-
-    get from():Id{
-      return this._from;
-    }
-
-    private _from:Id;
-    private _to:Id;
-
-    private _deliveredOn:Date;
-
-    constructor(id:Id, from:Id, to:Id, deliveredOn:Date) {
-        super(id, "message");
-        this._deliveredOn = deliveredOn;
-      this._from = from;
-      this._to = to;
-    }
+  constructor(id:Id, deliveredOn:Date) {
+      super(MessageContextName, MessageReceiveAcknowledgedEvent.Name, id, "");
+      this._deliveredOn = deliveredOn;
+  }
 }

@@ -19,10 +19,10 @@ import {RequestHandler, Request, Response} from "express";
 import {User} from "../../domain/Model";
 import {IDomainEventBus} from "../../common/ddd/event";
 import {Message} from "../../domain/message/Message";
-import {toDto} from "./MessageDto";
+import {serialize} from "./MessageRestDtoParser";
 import {Id} from "../../common/ddd/model";
 
-var routerInit = function(router: Router, di: DiLite.CreateContext) {
+var routerInit = function (router, di:DiLite.CreateContext) {
 
   //router.eventBus = di.get("eventBus") as IDomainEventBus;
   var jwtRequestHandler = expressJwt({secret: secret});
@@ -42,7 +42,7 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
                   //// send message
                   messageService.sendByName(Id.parse(req.user.id), req.query.to, req.query.content)
                       .select(function (msg:Message) {
-                        return toDto(req.baseUrl, msg);
+                        return serialize(msg);
                       })
                       .subscribe(function (dto:any) {
                             res.status(201).json(dto);
