@@ -10,7 +10,7 @@ import rx = require("rx");
 import mongodb = require("mongodb");
 
 import {MongoDbRepository} from "../../common/infrastructure/persistence/MongoDbRepository";
-import {User} from "../../domain/Model";
+import {User} from "../../domain/user/User";
 
 export class UserRepository extends MongoDbRepository<User> {
   private dependencies;

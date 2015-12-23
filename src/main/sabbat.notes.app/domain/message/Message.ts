@@ -10,10 +10,10 @@ import {IdObject, Id} from "../../common/ddd/model";
 import {MessageReceiveAcknowledgedEvent} from "./MessageEvents";
 import {MessageCreatedEvent, MessageUpdatedEvent} from "./MessageEvents";
 import {IDomainEvent, AggregateEvent} from "../../common/ddd/event";
-import {User} from "../Model";
 import {IEventHandler} from "../../common/ddd/event";
 import {Handler} from "express";
 import {MessageReceivedEvent} from "./MessageEvents";
+import {User} from "../user/User";
 
   /**
    * A message can have the state 'Sent' when the user has sent a message to the to 

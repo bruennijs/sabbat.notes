@@ -11,9 +11,9 @@ import {IEventHandler, IDomainEvent, IDomainEventBus} from "../common/ddd/event"
 import {Id} from "../common/ddd/model";
 import {Message} from "../domain/message/Message";
 import {MessageCreatedEvent, MessageReceiveAcknowledgedEvent, MessageContextName} from "../domain/message/MessageEvents";
-import {User} from "../domain/Model";
 import {IRepository} from "../common/ddd/persistence";
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
+import {User} from "../domain/user/User";
 
 export class MessageService {
   public get eventBus():IDomainEventBus {

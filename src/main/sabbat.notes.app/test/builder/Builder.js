@@ -6,7 +6,7 @@ var jsm = require('jsmockito');
 var JsHamcrest = require('jshamcrest').JsHamcrest;
 var dddModel = require('./../../common/ddd/model');
 
-var user = require('./../../domain/Model');
+var user = require('./../../domain/user/User');
 var url = require('url');
 
 var rx = require('rx');

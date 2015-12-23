@@ -7,7 +7,6 @@
  */
 
 import {Message} from "../../domain/message/Message";
-import {User} from "../../domain/Model";
 import {Note} from "../../domain/Model";
 import {IdObject} from "../../common/ddd/model";
 import {Id} from "../../common/ddd/model";

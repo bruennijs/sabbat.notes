@@ -6,6 +6,7 @@
     <envs />
     <ui>tdd</ui>
     <extra-mocha-options />
+    <test-kind>DIRECTORY</test-kind>
     <test-directory>$PROJECT_DIR$/src/main/sabbat.notes.ui/dist</test-directory>
     <recursive>false</recursive>
     <method />

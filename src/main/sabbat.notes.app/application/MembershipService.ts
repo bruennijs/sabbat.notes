@@ -7,10 +7,10 @@
 import url = require('url');
 import rx = require('rx');
 
-import {User} from "../domain/Model";
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
 import {Url} from "url";
 import IObservable = Rx.IObservable;
+import {User} from "../domain/user/User";
 
 /**
  * Thrown in login process if user password did not match.
@@ -78,7 +78,7 @@ export class MembershipService {
   public createUser(name: string, email: Url): rx.Observable<User> {
     var newId = this._repository.nextId();
 
-    var newUser = new User(newId, name, email);
+    var newUser = new User(newId, name, url.format(email));
 
     return this._repository.Insert(newUser);
   }

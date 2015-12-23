@@ -15,9 +15,9 @@ var jwtSecretString = require("../jwt_secret").secret;
 
 import {UserRepository} from "./../../infrastructure/persistence/UserRepository";
 import {RequestHandler, Request, Response, Express, Router} from "express";
-import {User} from "../../domain/Model";
 import {sign} from "jsonwebtoken";
 import {MembershipService} from "../../application/MembershipService";
+import {User} from "../../domain/user/User";
 
 var routerInit = function(router: Router, di: DiLite.CreateContext) {
 

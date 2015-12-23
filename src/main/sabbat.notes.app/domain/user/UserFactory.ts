@@ -5,9 +5,9 @@
 import mongodb = require('mongodb');
 import _ = require('underscore');
 import {IFactory} from "../../common/ddd/factory";
-import {User} from "../Model";
 import {Id} from "../../common/ddd/model";
 import {ObjectID} from "mongodb";
+import {User} from "./User";
 
 export class UserFactory implements IFactory<User> {
 
@@ -27,7 +27,7 @@ export class UserFactory implements IFactory<User> {
     return {
       _id: new ObjectID(obj.id.value),
       name: obj.name,
-      email: obj.email
+      email: obj.email.toString()
     }
   }
 

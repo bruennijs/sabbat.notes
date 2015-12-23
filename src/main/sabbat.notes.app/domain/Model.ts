@@ -58,35 +58,4 @@ import {Url} from "url";
       });
     }
   }
-
-  /**
-   * User entity
-   */
-  export class User extends IdObject {
-    public get email() {
-      return this._email;
-    }
-
-    private _email: string;
-
-    public get name() {
-      return this._name;
-    }
-
-    private _name;
-
-    constructor(id: Id, name: string, email: Url) {
-      super(id)
-      this._name = name;
-      this._email = email.toString();
-    }
-
-    /**
-     * Checks password.
-     * @param plainPassword plain password
-     */
-    public checkPassword(plainPassword: string): boolean {
-      return true;
-    }
-  }
 //} // end of ns 'sabbat'

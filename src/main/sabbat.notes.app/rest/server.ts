@@ -30,7 +30,7 @@ app.use(morgan("combined"));  // log express traffic only
 app.use("/login", LoginRouter(DiContainer.Registry.Context, app)); // login router
 
 // ************* USER Router ***************
-app.use("/user", UserRouter(DiContainer.Registry.Context)); // user Router
+app.use("/users", UserRouter(DiContainer.Registry.Context)); // user Router
 
 // ************* Message Router ***************
 app.use("/messages", MessageRouter(DiContainer.Registry.Context)); // user Router

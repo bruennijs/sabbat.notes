@@ -12,8 +12,8 @@ import di = require("di-lite");
 import {MembershipService} from "../../application/MembershipService";
 import {RequestHandler, Request, Response} from "express";
 import {Router} from "express";
-import {User} from "../../domain/Model";
-import {toDto} from "./UserDto";
+import {serialize} from "./UserDto";
+import {User} from "../../domain/user/User";
 
 var routerInit = function(router: Router, di: DiLite.CreateContext) {
 
@@ -47,9 +47,10 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
     {
       memberShipService
           .createUser(name, url.parse(email))
-          .select(function(user: User) { return toDto(req.baseUrl, user); })
+          .select(function(user: User) { return serialize(user); })
           .subscribe(function(dto: any)
               {
+                console.log(dto);
                 res.status(200).json(dto);
               },
               function (err) {

@@ -74,14 +74,6 @@ gulp.task('dist.modules', function() {
         pipe(gulp.dest(path.join(distBaseDir, 'node_modules')));
 });
 
-gulp.task('watch.test', function() {
-  gulp.watch('./common/**/*.{ts,js}', ['test']);
-  gulp.watch('./application/**/*.{ts,js}', ['test']);
-  gulp.watch('./domain/**/*.{ts,js}', ['test']);
-  gulp.watch('./infrastructure/**/*.{ts,js}', ['test']);
-  gulp.watch('./test/**/*.{ts,js}', ['test']);
-});
-
 gulp.task('dist.test', function () {
     gulp.src(['test/**/*.js', 'test/**/*.json'])
        .pipe(gulp.dest(path.join(distBaseDir, 'test')));
@@ -97,6 +89,24 @@ gulp.task('test.run', function () {
         .pipe(print())
         .pipe(exec(path.join(distBaseDir, 'node_modules/mocha/bin/mocha') + ' --ui tdd --reporter dot <%= file.path %>', opt))
         .pipe(exec.reporter());
+});
+
+gulp.task('watch.dist', function() {
+  gulp.watch(path.join(distBaseDir, '**/*.{ts,js}'), ["docker.app.run"]);
+  //gulp.watch('./application/**/*.{ts,js}', ['test']);
+  //gulp.watch('./domain/**/*.{ts,js}', ['test']);
+  //gulp.watch('./infrastructure/**/*.{ts,js}', ['test']);
+  //gulp.watch('./test/**/*.{ts,js}', ['test']);
+});
+
+gulp.task("docker.app.run", function() {
+  var opt = {
+    continueOnError: true, // default = false, true means don't emit error event
+    pipeStdout: false
+  };
+
+  //exec("docker-compose up app", opt)
+  exec("echo hello", opt);
 });
 
 gulp.task('dist', ['dist.js', 'rest.api', 'dist.test', 'dist.ts']);
