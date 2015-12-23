@@ -73,6 +73,7 @@ export class MessageWsIoAdapter {
 
               if (that.send(concreteEvent.message.destination.to.value, eventDtoObject))
               {
+                //console.log(concreteEvent);
                 // publish delivered event
                 that.eventBus.publish(new MessageReceiveAcknowledgedEvent(concreteEvent.message.id, new Date(Date.now())));
               }
@@ -109,7 +110,6 @@ export class MessageWsIoAdapter {
         //// ...send object to each connected websocket
         // iterate all sockets of the user the message is sent to...
         socketArray.forEach(function (socket, idx, array) {
-          console.log(object);
           socket.send(JSON.stringify(object));
         });
 

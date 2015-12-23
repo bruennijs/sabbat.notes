@@ -178,11 +178,14 @@ export class MessageService {
    */
   Handle(event: IDomainEvent): void {
     var that = this;
+    //console.log(event);
     if(event.context === MessageContextName) {
 
       if (event.name === MessageReceiveAcknowledgedEvent.Name) {
 
         var concreteEvent = event as MessageReceiveAcknowledgedEvent;
+
+        //console.log(concreteEvent);
 
         var msgGet = this.messageRepository.GetById(concreteEvent.id);
 
