@@ -25,9 +25,9 @@ export class MessageFactory implements IFactory<Message> {
       _id: new ObjectID(obj.id.value),
       from: new ObjectID(obj.from.value),
       to: new ObjectID(obj.destination.to.value),
-      destinationType: DestinationType[obj.destination.type],
+      destinationType: <string>DestinationType[obj.destination.type],
       content: obj.content,
-      state: obj.currentState,
+      state: <string>MessageState[obj.currentState],
       deliveryDate: (obj.deliveryDate !== undefined) ? obj.deliveryDate.toISOString() : null
     };
   }

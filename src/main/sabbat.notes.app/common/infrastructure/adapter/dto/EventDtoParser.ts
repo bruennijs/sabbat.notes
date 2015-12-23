@@ -15,7 +15,7 @@ export class DomainEventDtoParser {
    * @param msg
    * @returns {MessageDto}
    */
-  serialize(dtoObject: any, event:IDomainEvent): void {
+  serialize(dtoObject: any, event: IDomainEvent): void {
     dtoObject["context"] = event.context;
     dtoObject["name"] = event.name;
     dtoObject["content"] = {};

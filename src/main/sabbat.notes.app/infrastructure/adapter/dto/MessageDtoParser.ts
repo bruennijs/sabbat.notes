@@ -65,7 +65,7 @@ export class MessageDtoParser {
     dtoObject["from"] = domainObject.from.value;
     dtoObject["to"] = domainObject.destination.to.value;
     dtoObject["destinationType"] = domainObject.destination.type;
-    dtoObject["deliveryDate"] = domainObject.deliveryDate.toISOString();
+    dtoObject["deliveryDate"] = domainObject.deliveryDate !== undefined ? domainObject.deliveryDate.toISOString() : null;
     dtoObject["content"] = domainObject.content;
   }
 
