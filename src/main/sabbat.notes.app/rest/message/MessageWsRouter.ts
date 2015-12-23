@@ -19,22 +19,28 @@ var authenticateOnWsConnnection = function(socket, onAuthenticated: (jwtToken: a
   var serverRequest: http.ServerRequest = socket.upgradeReq as http.ServerRequest;
 
   /// Authorization: Bearer <base64jwttoken>
-  var authenticationHeaderValue: string = serverRequest.headers["authorization"].split(" ")[1];
+  var authorizationHeader = serverRequest.headers["authorization"];
+  if (authorizationHeader) {
+    var authenticationHeaderValue: string = authorizationHeader.split(" ")[1];
 
-  jwt.verify(authenticationHeaderValue, secret, function(err: Error, decoded: any) {
-    if (err)
-    {
-      console.log("Client jwt authentication failed[%s]", err);
-      socket.close(1001, err);
-    }
-    else
-    {
-      // contains user.id field
-      console.log("websocket connection established [jwt=%s]", JSON.stringify(decoded));
+    jwt.verify(authenticationHeaderValue, secret, function (err: Error, decoded:any) {
+      if (err) {
+        console.log("Client jwt authentication failed[%s]", err);
+        socket.close(1001, err.toString());
+      }
+      else {
+        // contains user.id field
+        console.log("websocket connection established [jwt=%s]", JSON.stringify(decoded));
 
-      onAuthenticated(decoded);
-    }
-  });
+        onAuthenticated(decoded);
+      }
+    });
+  }
+  else {
+    // no authorization header found
+    socket.close(1002, "No Authorization header found");
+  }
+
 }
 
 /**

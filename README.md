@@ -70,10 +70,10 @@ Documentation
 
 REST API
 
-/user/create
+/users/create
 * content-type: application/json
 * query parameters: name=<username, email=<address>
-* request: curl -X POST -d "name=testuser" -v "http://localhost:3000/user/create?name=user1&email=some@gmx.de"
+* request: curl -X POST -d "name=testuser" -v "http://localhost:3000/users/create?name=user1&email=some@gmx.de"
 
 /login: login with BASIC authentication
 * Request: Authorization: Basic name:pwd
@@ -85,14 +85,14 @@ REST API
 
 * Response: json object with {id, name}
 
-/message
+/messages
 * Message can be sent from user to one different user by name.
-* TBD
+** curl -X POST -d "name=testuser" -v "http://localhost:3000/messages/send?name=user1&email=some@gmx.de"
 
-/message/notification
+/messages/notification
 * Clients can connect to the server by websocket (RFC 6455, protocol version 13).Initial http upgrade request must contain a Authorization header (see /login) conatining the json web token.
 * wscat is a command line tool in js/node.
-** node node_modules/wscat/bin/wscat -H "Authorization: Bearer $(cat ~/.jwt)" -c ws://127.0.0.1:8081/message/notification
+** node node_modules/wscat/bin/wscat -H "Authorization: Bearer $(cat ~/.jwt)" -c ws://127.0.0.1:8081/messages/notification
 
 =====================================================
 Database
