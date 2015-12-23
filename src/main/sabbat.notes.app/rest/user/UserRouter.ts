@@ -50,7 +50,6 @@ var routerInit = function(router: Router, di: DiLite.CreateContext) {
           .select(function(user: User) { return serialize(user); })
           .subscribe(function(dto: any)
               {
-                console.log(dto);
                 res.status(200).json(dto);
               },
               function (err) {
