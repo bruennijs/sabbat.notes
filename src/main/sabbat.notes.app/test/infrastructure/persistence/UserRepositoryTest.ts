@@ -3,7 +3,6 @@
  */
 
 import {IdObject,Id} from "../../../common/ddd/model";
-//import {MongoDbRepository} from "./../../../common/infrastructure/persistence/MongoDbRepository";
 import {Observable} from "rx.all";
 import {UserFactory} from "../../../domain/user/UserFactory";
 import {UserRepository} from "../../../infrastructure/persistence/UserRepository";

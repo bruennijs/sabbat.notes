@@ -28,7 +28,7 @@ import rx = require('rx');
  * All domain events inherits IDomainEvent
  */
 export class DomainEventBase implements IDomainEvent {
-    public get name():string {
+    public get name(): string {
         return this._name;
     }
     private _name: string;
@@ -36,18 +36,18 @@ export class DomainEventBase implements IDomainEvent {
      * Name of context a event contains to, can be an aggregate root name (e.g. can be mapped to specific channels in rabbitmq)
      * Contains values like "message", "user"
      */
-    public get context():string {
+    public get context(): string {
         return this._context;
     }
 
-    private _context:string = "";
+    private _context: string = "";
 
   /**
    * Constructor
    * @param group
    */
-  constructor(group:string, name: string) {
-      this._context = group;
+  constructor(context: string, name: string) {
+      this._context = context;
       this._name = name;
     }
 }
@@ -62,7 +62,7 @@ export class AggregateEvent extends DomainEventBase {
         return this._id;
     }
 
-    private _id;
+    private _id: Id;
 
     public get version():string {
         return this._version;
@@ -77,8 +77,7 @@ export class AggregateEvent extends DomainEventBase {
      */
    constructor(context: string, name: string, id: Id, version: string) {
        super(context, name);
-       this._version = version;
-        this._id = id;
+       this._version = version;this._id = id;
    }
 }
 

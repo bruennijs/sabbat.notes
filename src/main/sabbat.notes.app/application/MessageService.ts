@@ -14,6 +14,7 @@ import {MessageCreatedEvent, MessageReceiveAcknowledgedEvent, MessageContextName
 import {IRepository} from "../common/ddd/persistence";
 import {UserRepository} from "../infrastructure/persistence/UserRepository";
 import {User} from "../domain/user/User";
+import {MessageState} from "../domain/message/Message";
 
 export class MessageService {
   public get eventBus():IDomainEventBus {
@@ -191,9 +192,9 @@ export class MessageService {
 
             //// message handled by business logic
 
-            that.messageRepository.Update(msg).subscribe(function (updatedMsg) {
+            that.messageRepository.Update(msg).subscribe(function (updatedMsg: Message) {
               // log that msg was updated
-              console.log("message updated[" + msg.id.toString() + ",state=" + updatedMsg.currentState + "]");
+              console.log("message updated[" + updatedMsg.id.toString() + ",state=" + <string>MessageState[updatedMsg.state] + "]");
             });
           }
         });
@@ -207,7 +208,7 @@ export class MessageService {
    */
   private SubscribeEventBus():void {
     var that = this;
-    this._eventBus.subscribe("message")
+    this._eventBus.subscribe(MessageContextName)
         .subscribe(function(event: IDomainEvent) {
           that.Handle(event);
         });

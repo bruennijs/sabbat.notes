@@ -31,7 +31,7 @@ export var serializeEvent = function(domainEvent: IDomainEvent): any {
 
   if (domainEvent instanceof AggregateEvent) {
     var aggregateEvent = domainEvent as AggregateEvent;
-    addSelfUrl.call(dtoObject, MessagesCollectionUrl, aggregateEvent);
+    addSelfUrl.call(dtoObject, MessagesCollectionUrl, aggregateEvent.id.toString());
   }
 
   return dtoObject;

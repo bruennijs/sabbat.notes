@@ -7,12 +7,9 @@ import * as rx from "rx.all";
 import {Server} from "http";
 import di = require("di-lite");
 
-//import {MessageService} from "../../application/MessageService";
 import {IDomainEventBus, IDomainEvent} from "../../common/ddd/event";
-import {Message} from "../../domain/message/Message";
-import {serialize, serializeEvent} from "./MessageRestDtoParser";
-import {MessageReceivedEvent, MessageUpdatedEvent, MessageReceiveAcknowledgedEvent} from "../../domain/message/MessageEvents";
-import {Id} from "../../common/ddd/model";
+import {serializeEvent} from "./MessageRestDtoParser";
+import {MessageReceivedEvent, MessageUpdatedEvent, MessageReceiveAcknowledgedEvent, MessageContextName} from "../../domain/message/MessageEvents";
 
 
 /**
@@ -65,7 +62,7 @@ export class MessageWsIoAdapter {
   private SubscribeEventBusObserver(): void {
     var that = this;
     if (this.subscription === undefined) {
-      this.subscription = this.eventBus.subscribe("message")
+      this.subscription = this.eventBus.subscribe(MessageContextName)
           .subscribe(function (domainEvent:IDomainEvent) {
 
             //// REST resource representation
@@ -102,17 +99,18 @@ export class MessageWsIoAdapter {
   /**
    * Send data to socket.
    * @param userId iser id to send data to
-   * @param data object to sent.
+   * @param object object to sent.
    * @constructor
    */
-  private send(userId: string, data: any): boolean {
+  private send(userId: string, object: any): boolean {
     var socketArray:any[] = this.userId2SocketMap[userId];
     if (socketArray !== undefined) {
       if (socketArray.length > 0) {
         //// ...send object to each connected websocket
         // iterate all sockets of the user the message is sent to...
         socketArray.forEach(function (socket, idx, array) {
-          socket.send(JSON.stringify(data));
+          console.log(object);
+          socket.send(JSON.stringify(object));
         });
 
         return true;

@@ -89,8 +89,8 @@ export class Destination {
 
     private _content;
 
-    public get currentState() {
-      return this._currentState;
+    public get state() {
+      return this._state;
     }
 
     /**
@@ -103,7 +103,7 @@ export class Destination {
 
     private _from: Id;
 
-    private _currentState: MessageState;
+    private _state: MessageState;
 
     /**
      * Constructor
@@ -118,7 +118,7 @@ export class Destination {
     constructor(id: Id, fromId?: Id, destination?: Destination, content?: string, state?: MessageState, deliveryDate?: Date) {
       super(id);
 
-      this._currentState = state;
+      this._state = state;
       this._content = content;
       this._from = fromId;
       this._destination = destination;
@@ -141,7 +141,7 @@ export class Destination {
 
       var deliveryRequestedEvent = new MessageReceivedEvent(this);
 
-      this._currentState = MessageState.Delivering;
+      this._state = MessageState.Delivering;
 
       return [createdEvent, deliveryRequestedEvent];
     }
@@ -155,7 +155,7 @@ export class Destination {
       if (event instanceof MessageReceiveAcknowledgedEvent)
       {
         this._deliveryDate = event.deliveredOn;
-        this._currentState = MessageState.Delivered;
+        this._state = MessageState.Delivered;
         return [new MessageUpdatedEvent(this.id, [this._from, this._destination.to])];
       }
 

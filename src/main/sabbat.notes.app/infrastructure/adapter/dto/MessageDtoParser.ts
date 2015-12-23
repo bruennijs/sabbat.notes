@@ -6,7 +6,7 @@ import {IDomainEvent} from "../../../common/ddd/event";
 import {Id} from "../../../common/ddd/model";
 import {DomainEventDtoParser} from "../../../common/infrastructure/adapter/dto/EventDtoParser";
 import {Message, MessageState, Destination, DestinationType} from "../../../domain/message/Message";
-import {MessageReceivedEvent, MessageReceiveAcknowledgedEvent, MessageContextName} from "../../../domain/message/MessageEvents";
+import {MessageReceivedEvent, MessageContextName} from "../../../domain/message/MessageEvents";
 
 /**
  * Container of DTO data transferred to rabbitmq clients, REST clients)
@@ -61,7 +61,7 @@ export class MessageDtoParser {
    */
   serialize(dtoObject: any, domainObject: Message): void {
     dtoObject["id"] = domainObject.id.value;
-    dtoObject["state"] = MessageState[domainObject.currentState];
+    dtoObject["state"] = MessageState[domainObject.state];
     dtoObject["from"] = domainObject.from.value;
     dtoObject["to"] = domainObject.destination.to.value;
     dtoObject["destinationType"] = domainObject.destination.type;
@@ -100,16 +100,21 @@ export class MessageEventDtoParser {
    */
   serialize(event:IDomainEvent): any {
 
-    var dtoObject = {};
-
-    this.domainEventDtoParser.serialize(dtoObject, messageReceivedEvent);
+    var eventDtoObject = {};
+    var msgDtoObject = {};
 
     if (event instanceof MessageReceivedEvent)
     {
       var messageReceivedEvent = event as MessageReceivedEvent;
 
-      this.domainEventDtoParser.addContent(dtoObject, this.messageDtoParser.serialize(dtoObject, messageReceivedEvent.message));
+      this.domainEventDtoParser.serialize(eventDtoObject, messageReceivedEvent);
+
+      this.messageDtoParser.serialize(msgDtoObject, messageReceivedEvent.message);
+
+      this.domainEventDtoParser.addContent(eventDtoObject, msgDtoObject);
     }
+
+    return eventDtoObject;
   }
 
   /**
