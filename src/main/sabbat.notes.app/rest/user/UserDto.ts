@@ -15,7 +15,7 @@ var userDto = function(user: User): any {
 
 export var serialize = function(user: User): any {
   var dtoObject = userDto(user);
-  addSelfUrl.apply(dtoObject, ["users", user.id.value]);
+  addSelfUrl.call(dtoObject, "users", user.id.value);
   return dtoObject;
 };
 
