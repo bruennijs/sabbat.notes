@@ -55,6 +55,10 @@ export class MessageReceivedEvent extends AggregateEvent {
    */
   public static Name: string = "received";
 
+  /**
+   * gets received message domain object
+   * @returns {Message}
+   */
   public get message() {
     return this._message;
   }

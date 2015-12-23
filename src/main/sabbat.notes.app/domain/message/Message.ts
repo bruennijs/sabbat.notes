@@ -45,7 +45,7 @@ export class Destination {
     return this._type;
   }
 
-  set type(value:DestinationType) {
+  set type(value: DestinationType) {
     this._type = value;
   }
 
@@ -115,7 +115,7 @@ export class Destination {
      * @param state
      * @param state
      */
-    constructor(id: Id, fromId?: Id, destination?: Destination, content?:string, state?: MessageState, deliveryDate?: Date) {
+    constructor(id: Id, fromId?: Id, destination?: Destination, content?: string, state?: MessageState, deliveryDate?: Date) {
       super(id);
 
       this._currentState = state;

@@ -98,7 +98,11 @@ suite("MessageTest", function() {
 
       //// wait for bus to send MessageReceivedEvent event
       busEvent.subscribe(function(e) {
-        assert.equal(e.to.value, suite.u2.id.value);
+        //var msgReceivedEvent = new events.MessageReceivedEvent();
+        //_.extend(msgReceivedEvent, e);
+        if (e instanceof events.MessageReceivedEvent) {
+          assert.equal(e._message._destination._to._value, suite.u2.id.value);
+        }
       },
       function(err) {
         done(err);
