@@ -4,8 +4,9 @@
 
 Why this project?
 -----------------
-This project is up front a project for applying DDD patterns and use new technical frameworks needed to engineer high available distributed applications that scaling horizontally.
+This project is up front a project for applying DDD patterns and use new technical frameworks needed to engineer high available distributed applications scaling horizontally.
 Learning of new technical frameworks like rabbitmq, typescript, nodejs, mongodb, angular js for client side, typescript/javascript and nodejs.
+A bounded context to store binary files in blobs implemented in .Net (dotnet core or .net 4.5) in language C# is planned. This seriuce stores data in webdav repositories.
 
 What is implemented?
 --------------------
